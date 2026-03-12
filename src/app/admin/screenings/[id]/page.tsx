@@ -1,0 +1,63 @@
+import { createClient } from '@/lib/supabase/server';
+import { notFound } from 'next/navigation';
+import { t } from '@/lib/i18n';
+import EditScreeningForm from './EditScreeningForm';
+
+export default async function EditScreeningPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', user.id)
+    .single();
+  if (!profile?.is_admin) {
+    return (
+      <div className="p-8 font-mono text-[13px] text-[#f87171]">
+        {t.admin.adminOnly}
+      </div>
+    );
+  }
+
+  const { data: screening } = await supabase
+    .from('screenings')
+    .select('id, title, description, screening_at, room_id, squeeze_note, waitlist_mode, is_active, year, director, duration_minutes')
+    .eq('id', id)
+    .single();
+
+  if (!screening) notFound();
+
+  const { data: rooms } = await supabase
+    .from('rooms')
+    .select('id, name')
+    .order('name');
+
+  return (
+    <div className="max-w-lg mx-auto px-4 py-8 bg-[#0f0f0f]">
+      <EditScreeningForm
+        screening={{
+          id: screening.id,
+          title: screening.title ?? '',
+          description: screening.description ?? '',
+          screening_at: screening.screening_at ?? '',
+          room_id: screening.room_id ?? '',
+          squeeze_note: screening.squeeze_note ?? '',
+          waitlist_mode: (screening.waitlist_mode as 'auto' | 'manual') ?? 'auto',
+          is_active: screening.is_active ?? true,
+          year: (screening as { year?: number | null }).year ?? undefined,
+          director: (screening as { director?: string | null }).director ?? undefined,
+          duration_minutes: (screening as { duration_minutes?: number | null }).duration_minutes ?? undefined,
+        }}
+        rooms={rooms ?? []}
+      />
+    </div>
+  );
+}
