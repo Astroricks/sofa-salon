@@ -38,7 +38,11 @@ export default async function ProfilePage() {
 
   const pastScreenings: { screeningId: string; title: string; screeningAt: string; rating: number | null }[] = [];
   const seen = new Set<string>();
-  for (const r of reservations as Array<{ screening_id: string; screenings: { id: string; title: string; screening_at: string } | null }>) {
+  type ReservationRow = {
+    screening_id: string;
+    screenings: { id: string; title: string; screening_at: string }[] | { id: string; title: string; screening_at: string } | null;
+  };
+  for (const r of reservations as ReservationRow[]) {
     const screening = Array.isArray(r.screenings) ? r.screenings[0] : r.screenings;
     if (!screening?.id || seen.has(screening.id)) continue;
     seen.add(screening.id);
