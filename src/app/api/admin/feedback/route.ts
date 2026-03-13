@@ -47,7 +47,7 @@ export async function GET() {
     .order('created_at', { ascending: false })
     .limit(50);
 
-  const screeningIds = [...new Set((proposals ?? []).map((p: { screening_id: string }) => p.screening_id))];
+  const screeningIds = Array.from(new Set((proposals ?? []).map((p: { screening_id: string }) => p.screening_id)));
   const screeningTitles: Record<string, string> = {};
   const proposalOptions: Record<string, { id: string; option_date: string; time_slot: string; position: number }[]> = {};
   if (screeningIds.length > 0) {

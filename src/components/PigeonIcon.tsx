@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 /**
  * Pigeon icon (鸽子) — uses the gezi_1.svg design.
  * Used for: seat avatars when user is pigeon, profile badge, blood bar, NavBar, FAQ chatbot.
@@ -17,13 +19,14 @@ export default function PigeonIcon({
 }) {
   const h = Math.round(size * GEZI_ASPECT);
   return (
-    <img
+    <Image
       src="/gezi_1.svg"
       alt={title}
       width={size}
       height={h}
       className={className}
-      aria-hidden="true"
+      aria-hidden
+      unoptimized
     />
   );
 }

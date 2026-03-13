@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 /**
  * Pigeon avatar for FAQ chatbot — uses gezi_2 (pigeon + shadow) or split layers.
  * Other pigeon uses (seats, profile, NavBar) still use PigeonIcon / gezi_1.svg.
@@ -26,13 +28,14 @@ export default function PigeonHead({
 }) {
   const h = Math.round(size * GEZI2_ASPECT);
   return (
-    <img
+    <Image
       src={SRC[layer]}
       alt={title}
       width={size}
       height={h}
       className={className}
-      aria-hidden="true"
+      aria-hidden
+      unoptimized
     />
   );
 }
