@@ -49,7 +49,7 @@ export default function AttendanceManager({
         });
       }
     }
-    for (const row of map.values()) {
+    for (const row of Array.from(map.values())) {
       row.seatKeys.sort();
     }
     return map;

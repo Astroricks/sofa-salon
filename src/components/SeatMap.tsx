@@ -335,7 +335,7 @@ export default function SeatMap({
       list.push(r);
       byUser.set(r.user_id, list);
     }
-    for (const list of byUser.values()) {
+    for (const list of Array.from(byUser.values())) {
       const sorted = [...list].sort((a, b) =>
         (a.created_at ?? a.id).localeCompare(b.created_at ?? b.id)
       );
