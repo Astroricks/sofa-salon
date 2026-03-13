@@ -4,7 +4,6 @@ export type DecorationType =
   | 'lamp'
   | 'table'
   | 'rug'
-  | 'bookshelf'
   | 'tv'
   | 'coffee-table';
 export type LOrientation =
@@ -132,7 +131,6 @@ export const DECORATION_BOUNDS: Record<DecorationType, { w: number; h: number }>
   lamp: { w: 36, h: 24 },
   table: { w: 54, h: 54 },
   rug: { w: 80, h: 50 },
-  bookshelf: { w: 80, h: 50 },
   tv: { w: 160, h: 42 },
   'coffee-table': { w: 144, h: 56 },
 };

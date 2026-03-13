@@ -198,8 +198,6 @@ function DecorationSVG({ decoration }: Props) {
         return <SideTableSVG x={x} y={y} color={color} />;
       case 'rug':
         return <RugSVG x={x} y={y} color={decoration.color} />;
-      case 'bookshelf':
-        return <RugSVG x={x} y={y} color={decoration.color} />;
       case 'tv':
         return <TvSVG x={x} y={y} color={color} />;
       case 'coffee-table':
