@@ -248,3 +248,40 @@ export async function sendEventRescheduled(params: {
   if (error) throw error;
   return data;
 }
+
+/** After admin marks a support report as 已修复: tell user the issue has been fixed, please try again. */
+export async function sendBugFixedNotification(params: {
+  to: string;
+  issueTypeLabel: string;
+  locale: 'en' | 'zh';
+}) {
+  const { to, issueTypeLabel, locale } = params;
+  const resend = getResend();
+  if (!resend) return null;
+  const venue = getVenueName();
+  const isZh = locale === 'zh';
+  const subject = isZh
+    ? `问题已修复 — ${venue}`
+    : `Issue fixed — ${venue}`;
+  const html = isZh
+    ? `
+      <p>您好，</p>
+      <p>您之前反馈的问题（<strong>${issueTypeLabel}</strong>）我们已经修复。</p>
+      <p>请您再试一次。如仍有问题，欢迎再次通过页面内的支持入口联系我们。</p>
+      <p style="color:#888;font-size:12px;">— 来自 ${venue}</p>
+    `
+    : `
+      <p>Hi,</p>
+      <p>The issue you reported (<strong>${issueTypeLabel}</strong>) has been fixed.</p>
+      <p>Please try again. If you still have problems, you can contact us via the support option on the page.</p>
+      <p style="color:#888;font-size:12px;">— from ${venue}</p>
+    `;
+  const { data, error } = await resend.emails.send({
+    from: FROM,
+    to: [to],
+    subject,
+    html,
+  });
+  if (error) throw error;
+  return data;
+}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { APP_NAME_PARTS } from '@/lib/config';
 import { getT, type Locale } from '@/lib/i18n';
+import AdminRoomRow from './AdminRoomRow';
 
 export default async function AdminRoomsPage() {
   const supabase = await createClient();
@@ -54,18 +55,7 @@ export default async function AdminRoomsPage() {
       </Link>
       <ul className="space-y-2">
         {(rooms ?? []).map((room) => (
-          <li key={room.id}>
-            <Link
-              href={`/admin/rooms/${room.id}`}
-              className="block border border-[#2a2a2a] bg-[#161616] p-4 hover:border-[#e8c84a] transition-colors"
-              style={{ borderRadius: 0 }}
-            >
-              <span className="font-mono text-[13px] text-[#e8e4dc]">{room.name}</span>
-              <span className="font-mono text-[13px] text-[#444444] ml-2">
-                {new Date(room.created_at).toLocaleDateString()}
-              </span>
-            </Link>
-          </li>
+          <AdminRoomRow key={room.id} room={room} />
         ))}
       </ul>
     </div>

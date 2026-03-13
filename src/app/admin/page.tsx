@@ -78,6 +78,13 @@ export default async function AdminPage() {
           {t.admin.tickerManage}
         </Link>
         <Link
+          href="/admin/feedback"
+          className="border border-[#2a2a2a] text-[#888888] px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"
+          style={{ borderRadius: 0 }}
+        >
+          {t.admin.feedback}
+        </Link>
+        <Link
           href="/admin/settings"
           className="border border-[#2a2a2a] text-[#888888] px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"
           style={{ borderRadius: 0 }}

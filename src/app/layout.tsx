@@ -3,6 +3,7 @@ import { DM_Mono, Instrument_Serif, Press_Start_2P } from 'next/font/google';
 import './globals.css';
 import Ticker from '@/components/Ticker';
 import NavBar from '@/components/NavBar';
+import FaqChatbot from '@/components/FaqChatbot';
 import { LocaleProvider } from '@/components/LocaleProvider';
 import { APP_NAME, APP_TAGLINE } from '@/lib/config';
 
@@ -66,6 +67,7 @@ export default function RootLayout({
           </div>
           <div className="header-ticker-spacer" aria-hidden="true" />
           <main className="min-h-[60vh]">{children}</main>
+          <FaqChatbot />
         </LocaleProvider>
       </body>
     </html>

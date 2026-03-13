@@ -637,7 +637,7 @@ export default function SeatMap({
                   )}
                   {/* Pigeon only on my main seat; friend seats always show friend avatar */}
                   {(currentUserProfile?.no_show_count ?? 0) >= 3 && isMe && myMainSeatIds.has(reservation.id) && !reservation.ghost_avatar ? (
-                    <PigeonIcon size={slotW} title="Pigeon" className="flex-shrink-0" />
+                    <PigeonIcon size={slotW * 2} title="Pigeon" className="flex-shrink-0" />
                   ) : (
                     <AvatarSVG
                       config={
@@ -762,7 +762,7 @@ export default function SeatMap({
                       )}
                       {/* Pigeon only on my main seat; friend seats always show friend avatar */}
                       {(currentUserProfile?.no_show_count ?? 0) >= 3 && isMe && myMainSeatIds.has(reservation.id) && !reservation.ghost_avatar ? (
-                        <PigeonIcon size={slotW} title="Pigeon" className="flex-shrink-0" />
+                        <PigeonIcon size={slotW * 2} title="Pigeon" className="flex-shrink-0" />
                       ) : (
                         <AvatarSVG
                           config={
@@ -1166,7 +1166,7 @@ export default function SeatMap({
             {(guestPeekReservation.profiles?.no_show_count ?? 0) >= 3 &&
             guestPeekReservation.friend_avatar == null &&
             guestPeekReservation.ghost_avatar == null ? (
-              <PigeonIcon size={80} title="Pigeon" className="flex-shrink-0" />
+              <PigeonIcon size={160} title="Pigeon" className="flex-shrink-0" />
             ) : (
               <AvatarSVG
                 config={

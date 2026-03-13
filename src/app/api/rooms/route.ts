@@ -52,6 +52,8 @@ export async function POST(req: NextRequest) {
         name,
         furniture_json: furniture,
         decorations_json: decorations,
+        canvas_w: canvasW ?? undefined,
+        canvas_h: canvasH ?? undefined,
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)

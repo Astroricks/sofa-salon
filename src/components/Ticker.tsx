@@ -62,7 +62,7 @@ export default async function Ticker() {
 
   const supabase = await createClient();
 
-  const hostLabel = locale === 'zh' ? '放映人' : 'Host';
+  const hostLabel = locale === 'zh' ? '公告' : 'Announcement';
 
   const nowIso = new Date().toISOString();
   const [configRows, customRows, screeningsRes, ratingsRes, userMessagesRes, pastScreeningRes, systemEventsRes] = await Promise.all([

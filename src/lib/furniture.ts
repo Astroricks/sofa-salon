@@ -161,6 +161,14 @@ export function seatKeyToDisplayLabel(seatKey: string): string {
   return withoutTrailingId || id;
 }
 
+/**
+ * 画布坐标系（与 CSS/Canvas 一致，旋转前以家具中心 (x,y) 为参考）：
+ * - X 轴：正方向 = 屏幕向右。数值越大，座位越在右侧。
+ * - Y 轴：正方向 = 屏幕向下。数值越大，座位越在屏幕下方。
+ *
+ * 若人物看起来“坐在地上”（太靠上），说明座位 Y 偏小，应把相关 offset 调大（更正的数），
+ * 座位就会往屏幕下方移，人就会落在沙发上。
+ */
 export function getSeatPositions(piece: FurniturePiece): SeatPos[] {
   const positions: SeatPos[] = [];
   const { id, type, x, y, seats, rotation } = piece;
@@ -169,9 +177,11 @@ export function getSeatPositions(piece: FurniturePiece): SeatPos[] {
     const seatW = 52;
     const totalW = seatW * seats;
     const startX = x - totalW / 2 + seatW / 2;
+    /** 直沙发：座位在中心 y 下方的偏移。调大 = 座位整体下移（人更“坐进”沙发）。 */
+    const sofaSeatOffsetY = 8;
     for (let i = 0; i < seats; i++) {
       const sx = startX + i * seatW;
-      const sy = y + 8;
+      const sy = y + sofaSeatOffsetY;
       const [rx, ry] = rot(sx, sy, x, y, rotation);
       positions.push({ seatKey: `${id}:${i}`, x: rx, y: ry });
     }
@@ -181,21 +191,53 @@ export function getSeatPositions(piece: FurniturePiece): SeatPos[] {
     const [longN, shortN] = lSofaSeatSplit(seats);
     const seatW = 52;
     const lOr = piece.lOrientation ?? 'bottom-right';
-    const longStartX = x - (longN * seatW) / 2 + seatW / 2;
+    const longW = longN * seatW;
+    const longStartX = x - longW / 2 + seatW / 2;
+    /** 长边座位 Y 偏移。调大 = 长边上的座位整体下移。 */
+    const longSeatOffsetY = 8;
     for (let i = 0; i < longN; i++) {
       const sx = longStartX + i * seatW;
-      const sy = y + 8;
+      const sy = y + longSeatOffsetY;
       const [rx, ry] = rot(sx, sy, x, y, rotation);
       positions.push({ seatKey: `${id}:${i}`, x: rx, y: ry });
     }
-    const shortSeatH = 52;
-    const cornerX = lOr.includes('right')
-      ? x + (longN * seatW) / 2 - seatW / 2
-      : x - (longN * seatW) / 2 + seatW / 2;
-    const shortStartY = y + 8 + shortSeatH / 2;
+
+    /**
+     * 短边座位：与 FurnitureSVG 中 SofaLShape 的短边座垫几何一致。
+     * 四种方向各自规则（局部坐标系，再统一用 rotation 旋转）：
+     * - bottom-right: 短边在右、在下 → sx = x + (longW/2 - 38), sy = y + 57 + i*52
+     * - bottom-left:  短边在左、在下 → sx = x - (longW/2 - 38), sy = y + 57 + i*52
+     * - top-right:    短边在右、在上 → sx = x + (longW/2 - 38), sy = y - 57 - i*52
+     * - top-left:     短边在左、在上 → sx = x - (longW/2 - 38), sy = y - 57 - i*52
+     */
+    const shortOffsetFromCenter = 38;
+    const shortFirstSeatOffsetY = 57;
+    const shortSeatPitch = 52;
+
     for (let i = 0; i < shortN; i++) {
-      const sx = cornerX;
-      const sy = shortStartY + i * shortSeatH;
+      let sx: number;
+      let sy: number;
+      switch (lOr) {
+        case 'bottom-right':
+          sx = x + (longW / 2 - shortOffsetFromCenter);
+          sy = y + (shortFirstSeatOffsetY + i * shortSeatPitch);
+          break;
+        case 'bottom-left':
+          sx = x - (longW / 2 - shortOffsetFromCenter);
+          sy = y + (shortFirstSeatOffsetY + i * shortSeatPitch);
+          break;
+        case 'top-right':
+          sx = x + (longW / 2 - shortOffsetFromCenter);
+          sy = y - (shortFirstSeatOffsetY + i * shortSeatPitch);
+          break;
+        case 'top-left':
+          sx = x - (longW / 2 - shortOffsetFromCenter);
+          sy = y - (shortFirstSeatOffsetY + i * shortSeatPitch);
+          break;
+        default:
+          sx = x + (longW / 2 - shortOffsetFromCenter);
+          sy = y + (shortFirstSeatOffsetY + i * shortSeatPitch);
+      }
       const [rx, ry] = rot(sx, sy, x, y, rotation);
       positions.push({ seatKey: `${id}:${longN + i}`, x: rx, y: ry });
     }

@@ -25,7 +25,6 @@ interface Props {
 const CARD_WIDTH = 280;
 const CARD_GAP = 16;
 const CARD_HEIGHT = 200;
-const SEATMAP_MIN_HEIGHT = '70vh';
 const MOBILE_BREAKPOINT = 768;
 
 export default function HomeContent({ screenings, openId }: Props) {
@@ -203,7 +202,6 @@ export default function HomeContent({ screenings, openId }: Props) {
       <section
         style={{
           width: '100%',
-          minHeight: SEATMAP_MIN_HEIGHT,
           background: 'var(--black)',
           border: '2px solid var(--gold)',
           padding: 24,

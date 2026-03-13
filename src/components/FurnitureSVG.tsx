@@ -34,8 +34,13 @@ function bw(p: FurniturePiece): number {
 
 function bh(p: FurniturePiece): number {
   if (p.type === 'sofa') return 56;
-  if (p.type === 'sofa-l')
-    return 56 + lSofaSeatSplit(p.seats)[1] * 52;
+  if (p.type === 'sofa-l') {
+    const shortN = lSofaSeatSplit(p.seats)[1];
+    const shortH = shortN * 52;
+    const longBarH = 56;
+    const shortAboveGap = 6;
+    return p.lOrientation?.includes('top') ? longBarH + shortH + shortAboveGap : longBarH + shortH;
+  }
   if (p.type === 'chair') return 44;
   if (p.type === 'bench') return 30;
   if (p.type === 'floor') return 40;
@@ -133,7 +138,11 @@ function SofaLShape({ piece }: { piece: FurniturePiece }) {
   const top = y - 28;
   const dark = darken(color, 30);
   const light = lighten(color, 15);
-  const shortX = lOrientation.includes('right') ? left + longW - seatW : left;
+  const shortOnRight = lOrientation.includes('right');
+  const shortOnBottom = lOrientation.includes('bottom');
+  const shortX = shortOnRight ? left + longW - seatW : left;
+  // Short bar: below long bar (top+52) for bottom-*, above long bar (top - shortH - 6) for top-*. 6px so first cushion center aligns with seat position y±57.
+  const shortBarY = shortOnBottom ? top + 52 : top - shortH - 6;
 
   return (
     <>
@@ -156,7 +165,7 @@ function SofaLShape({ piece }: { piece: FurniturePiece }) {
       />
       <rect x={left} y={top + 18} width={longW} height={3} fill={dark} />
       <rect
-        x={lOrientation.includes('right') ? left : left + longW - 6}
+        x={shortOnRight ? left : left + longW - 6}
         y={top + 18}
         width={6}
         height={34}
@@ -204,19 +213,15 @@ function SofaLShape({ piece }: { piece: FurniturePiece }) {
         <>
           <rect
             x={shortX + 4}
-            y={top + 52 + 4}
+            y={shortBarY + 4}
             width={seatW}
             height={shortH}
             fill="#00000030"
             rx={2}
           />
           <rect
-            x={
-              lOrientation.includes('right')
-                ? shortX + seatW - 20
-                : shortX
-            }
-            y={top + 52}
+            x={shortOnRight ? shortX + seatW - 20 : shortX}
+            y={shortBarY}
             width={20}
             height={shortH}
             fill={light}
@@ -225,8 +230,8 @@ function SofaLShape({ piece }: { piece: FurniturePiece }) {
           {Array.from({ length: shortN }, (_, i) => (
             <rect
               key={i}
-              x={lOrientation.includes('right') ? shortX : shortX + 20}
-              y={top + 52 + 4 + i * seatW}
+              x={shortOnRight ? shortX : shortX + 20}
+              y={shortBarY + 4 + i * seatW}
               width={seatW - 20}
               height={seatW - 2}
               fill={color}
@@ -235,14 +240,14 @@ function SofaLShape({ piece }: { piece: FurniturePiece }) {
           ))}
           <rect
             x={shortX}
-            y={top + 52 + shortH + 2}
+            y={shortBarY + shortH + 2}
             width={seatW}
             height={3}
             fill={dark}
           />
           <rect
             x={shortX + 6}
-            y={top + 52 + shortH + 4}
+            y={shortBarY + shortH + 4}
             width={8}
             height={6}
             fill={darken(color, 50)}

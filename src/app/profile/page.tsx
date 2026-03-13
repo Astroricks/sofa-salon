@@ -112,7 +112,7 @@ export default async function ProfilePage() {
             {t.profile.bloodBar}
           </span>
           {(profile?.no_show_count ?? 0) >= 3 ? (
-            <PigeonIcon size={56} className="flex-shrink-0" title="Pigeon" />
+            <PigeonIcon size={140} className="flex-shrink-0" title="Pigeon" />
           ) : (
             <AvatarSVG
               config={jsonToConfig(profile?.avatar_config ?? {})}

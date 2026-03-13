@@ -63,6 +63,27 @@ body::before {
   98% { opacity: 0.9; }
 }
 
+@keyframes pigeonBob {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25%       { transform: translateY(-3px) rotate(-2deg); }
+  75%       { transform: translateY(-2px) rotate(2deg); }
+}
+
+.faq-chatbot-window {
+  bottom: 10px;
+  right: 150px;
+  width: 300px;
+  max-height: 440px;
+}
+@media (max-width: 640px) {
+  .faq-chatbot-window {
+    width: calc(100vw - 32px);
+    right: 16px;
+    left: 16px;
+    bottom: 150px;
+  }
+}
+
 /* ── HEADER ── */
 header {
   border-bottom: 3px solid var(--gold);
@@ -269,6 +290,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
 
 /* ── SEAT MAP ── */
 .seat-map-section {
+  min-height: 70vh;
   border: 2px solid var(--gold);
   background: #0d0d0d;
   padding: 24px;
@@ -659,7 +681,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
 /* Responsive */
 @media (max-width: 600px) {
   .logo { font-size: 1.6rem; }
-  .seat-map-section { padding: 14px; }
+  .seat-map-section { padding: 14px; min-height: unset; }
   .sofa-area { float: none; margin-right: 0; margin-bottom: 16px; }
   .side-area { float: none; flex-direction: row; }
   .floor-area { padding-top: 12px; }

@@ -29,7 +29,7 @@ function AvatarAndBadge({
   return (
     <div className="flex items-center gap-1.5">
       {isPigeon ? (
-        <PigeonIcon size={22} className="flex-shrink-0" title="Pigeon" />
+        <PigeonIcon size={44} className="flex-shrink-0" title="Pigeon" />
       ) : profile?.avatar_config ? (
         <AvatarSVG config={jsonToConfig(profile.avatar_config)} size={size} pose="stand" />
       ) : (
