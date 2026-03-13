@@ -87,8 +87,10 @@ export async function GET(
     : null;
 
   type ProfileRow = { display_name: string | null; avatar_config: unknown; wechat_id?: string | null; no_show_count?: number | null; attendance_count?: number | null };
-  const mappedReservations = (reservations ?? []).map((row: { profiles?: ProfileRow | null; [k: string]: unknown }) => {
-    const p = row.profiles as ProfileRow | null | undefined;
+  const reservationList: Array<Record<string, unknown> & { profiles?: ProfileRow | ProfileRow[] | null }> = reservations ?? [];
+  const mappedReservations = reservationList.map((row) => {
+    const rawProfiles = row.profiles;
+    const p = Array.isArray(rawProfiles) ? rawProfiles[0] ?? null : (rawProfiles ?? null);
     const profile = p
       ? {
           display_name: p.display_name ?? null,

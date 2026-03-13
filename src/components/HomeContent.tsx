@@ -59,7 +59,7 @@ export default function HomeContent({ screenings, openId }: Props) {
     if (screenings.length > 0 && !selectedId) {
       setSelectedId(screenings[0].id);
     }
-  }, [screenings.length, selectedId]);
+  }, [screenings, selectedId]);
 
   useEffect(() => {
     updateScrollState();
@@ -72,7 +72,7 @@ export default function HomeContent({ screenings, openId }: Props) {
       el.removeEventListener('scroll', updateScrollState);
       ro.disconnect();
     };
-  }, [updateScrollState, screenings.length]);
+  }, [updateScrollState, screenings]);
 
   const scrollBy = (direction: 'left' | 'right') => {
     const el = carouselRef.current;
