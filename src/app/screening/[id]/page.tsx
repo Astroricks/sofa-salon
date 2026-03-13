@@ -91,7 +91,8 @@ export default async function ScreeningPage({
     waitlist = wl.data ?? [];
     type P = { profiles?: { display_name?: string | null; avatar_config?: unknown; wechat_id?: string | null; no_show_count?: number | null; attendance_count?: number | null } | null; [k: string]: unknown };
     if (!isAdmin) {
-      reservations = reservations.map((row: P) => {
+      const list = reservations as P[];
+      reservations = list.map((row) => {
         const p = row.profiles;
         const safeProfile = p
           ? { display_name: p.display_name ?? null, avatar_config: p.avatar_config, no_show_count: p.no_show_count ?? 0, attendance_count: p.attendance_count ?? 0 }
