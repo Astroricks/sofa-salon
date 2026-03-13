@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import SeatMap from '@/components/SeatMap';
-import type { FurniturePiece, Decoration } from '@/lib/furniture';
 
 interface Reservation {
   id: string;
@@ -24,10 +23,12 @@ interface WaitlistEntry {
   profiles: { display_name: string; avatar_config: unknown };
 }
 
+type SeatMapRoom = Parameters<typeof SeatMap>[0]['room'];
+
 interface Props {
   screeningId: string;
   screeningTitle: string;
-  room: { furniture: FurniturePiece[]; decorations: Decoration[]; canvasW: number; canvasH: number };
+  room: SeatMapRoom;
   squeezeNote: string | null;
   initialReservations: Reservation[];
   initialWaitlist: WaitlistEntry[];
