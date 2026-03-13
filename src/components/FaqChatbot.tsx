@@ -490,12 +490,14 @@ export default function FaqChatbot() {
     if (currentStateId !== 'RESCHEDULE_PICK_FILM' || !open) return;
     setScreeningsLoading(true);
     const supabase = createClient();
-    supabase
-      .from('screenings')
-      .select('id, title, screening_at')
-      .eq('is_active', true)
-      .gte('screening_at', new Date().toISOString())
-      .order('screening_at', { ascending: true })
+    Promise.resolve(
+      supabase
+        .from('screenings')
+        .select('id, title, screening_at')
+        .eq('is_active', true)
+        .gte('screening_at', new Date().toISOString())
+        .order('screening_at', { ascending: true })
+    )
       .then(({ data }) => {
         setScreenings((data as ScreeningOption[]) ?? []);
       })
