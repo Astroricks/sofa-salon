@@ -4,6 +4,7 @@ export type DecorationType =
   | 'lamp'
   | 'table'
   | 'rug'
+  | 'bookshelf'
   | 'tv'
   | 'coffee-table';
 export type LOrientation =
@@ -131,6 +132,7 @@ export const DECORATION_BOUNDS: Record<DecorationType, { w: number; h: number }>
   lamp: { w: 36, h: 24 },
   table: { w: 54, h: 54 },
   rug: { w: 80, h: 50 },
+  bookshelf: { w: 80, h: 50 },
   tv: { w: 160, h: 42 },
   'coffee-table': { w: 144, h: 56 },
 };
@@ -283,7 +285,7 @@ export function getFurnitureFocusBox(
     points.push({ x: aabb.maxX, y: aabb.maxY });
   }
   for (const d of decorations) {
-    const bounds = DECORATION_BOUNDS[d.type] ?? (d.type === 'bookshelf' ? DECORATION_BOUNDS['rug'] : undefined);
+    const bounds = DECORATION_BOUNDS[d.type];
     if (!bounds) continue;
     const scale = d.type === 'coffee-table' ? (d.scale ?? 1) : 1;
     const r = d.rotation ?? 0;
