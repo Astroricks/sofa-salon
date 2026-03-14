@@ -136,15 +136,13 @@ export default function AdminEvents({ screenings }: Props) {
           })()}
         </div>
         <div className="flex gap-2 flex-wrap">
-          {!isPast && (
-            <Link
-              href={`/admin/screenings/${s.id}`}
-              className="font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-2 border border-[#e8c84a] text-[#e8c84a] hover:opacity-85 transition-opacity"
-              style={{ borderRadius: 0 }}
-            >
-              {t.admin.edit}
-            </Link>
-          )}
+          <Link
+            href={`/admin/screenings/${s.id}`}
+            className="font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-2 border border-[#e8c84a] text-[#e8c84a] hover:opacity-85 transition-opacity"
+            style={{ borderRadius: 0 }}
+          >
+            {t.admin.edit}
+          </Link>
           <Link
             href={`/screening/${s.id}`}
             className="font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-2 border border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"

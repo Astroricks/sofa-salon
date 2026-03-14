@@ -30,7 +30,7 @@ export default async function ProfilePage() {
       .single(),
     supabase
       .from('reservations')
-      .select('screening_id, seat_key, is_squeezed, screenings(id, title, screening_at)')
+      .select('screening_id, seat_key, is_squeezed, screenings(id, title, screening_at, duration_minutes)')
       .eq('user_id', user.id),
     supabase
       .from('screening_ratings')
@@ -48,11 +48,11 @@ export default async function ProfilePage() {
     screening_id: string;
     seat_key?: string;
     is_squeezed?: boolean;
-    screenings: { id: string; title: string; screening_at: string }[] | { id: string; title: string; screening_at: string } | null;
+    screenings: { id: string; title: string; screening_at: string; duration_minutes?: number | null }[] | { id: string; title: string; screening_at: string; duration_minutes?: number | null } | null;
   };
   const now = Date.now();
   const upcomingByScreening = new Map<string, { title: string; screeningAt: string; seatCount: number }>();
-  const pastScreenings: { screeningId: string; title: string; screeningAt: string; rating: number | null }[] = [];
+  const pastScreenings: { screeningId: string; title: string; screeningAt: string; rating: number | null; durationMinutes: number | null }[] = [];
   const seenPast = new Set<string>();
 
   for (const r of reservations as ReservationRow[]) {
@@ -79,6 +79,7 @@ export default async function ProfilePage() {
         title: screening.title ?? '',
         screeningAt,
         rating: ratingsMap.get(screening.id) ?? null,
+        durationMinutes: screening.duration_minutes ?? null,
       });
     }
   }

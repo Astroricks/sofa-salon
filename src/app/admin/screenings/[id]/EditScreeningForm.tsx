@@ -27,6 +27,8 @@ interface ScreeningFormData {
 interface Props {
   screening: ScreeningFormData;
   rooms: Room[];
+  /** When true, only film details (director, duration, description, year) are editable; title and screening_at are locked. */
+  isPast?: boolean;
 }
 
 function toLocalDatetimeLocal(iso: string): string {
@@ -40,7 +42,7 @@ function toLocalDatetimeLocal(iso: string): string {
   return `${y}-${m}-${day}T${h}:${min}`;
 }
 
-export default function EditScreeningForm({ screening, rooms }: Props) {
+export default function EditScreeningForm({ screening, rooms, isPast = false }: Props) {
   const router = useRouter();
   const [title, setTitle] = useState(screening.title);
   const [description, setDescription] = useState(screening.description);
@@ -57,23 +59,36 @@ export default function EditScreeningForm({ screening, rooms }: Props) {
   const [error, setError] = useState('');
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !screeningAt) return;
+    if (!isPast && (!title || !screeningAt)) return;
     setLoading(true);
     setError('');
+    const payload = isPast
+      ? {
+          title: screening.title,
+          description,
+          screening_at: screening.screening_at,
+          room_id: screening.room_id || null,
+          waitlist_mode: screening.waitlist_mode,
+          is_active: screening.is_active,
+          year: year ? parseInt(year, 10) : null,
+          director: director || null,
+          duration_minutes: durationMinutes ? parseInt(durationMinutes, 10) : null,
+        }
+      : {
+          title,
+          description,
+          screening_at: new Date(screeningAt).toISOString(),
+          room_id: roomId || null,
+          waitlist_mode: waitlistMode,
+          is_active: isActive,
+          year: year ? parseInt(year, 10) : null,
+          director: director || null,
+          duration_minutes: durationMinutes ? parseInt(durationMinutes, 10) : null,
+        };
     const res = await fetch(`/api/screening/${screening.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title,
-        description,
-        screening_at: new Date(screeningAt).toISOString(),
-        room_id: roomId || null,
-        waitlist_mode: waitlistMode,
-        is_active: isActive,
-        year: year ? parseInt(year, 10) : null,
-        director: director || null,
-        duration_minutes: durationMinutes ? parseInt(durationMinutes, 10) : null,
-      }),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
     setLoading(false);
@@ -95,33 +110,50 @@ export default function EditScreeningForm({ screening, rooms }: Props) {
       {error && (
         <p className="font-mono text-[13px] text-[#f87171] mb-4">{error}</p>
       )}
+      {isPast && (
+        <p className="font-mono text-[11px] text-[#e8c84a] mb-4">
+          {t.admin.pastEventEditHint}
+        </p>
+      )}
       <form onSubmit={submit} className="space-y-6">
         <div>
           <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
             Title
           </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a] placeholder:text-[#444444]"
-            placeholder="e.g. Chungking Express"
-            required
-            style={{ borderRadius: 0 }}
-          />
+          {isPast ? (
+            <p className="w-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#888888] font-mono text-[13px] px-4 py-3 min-h-[44px]" style={{ borderRadius: 0 }}>
+              {screening.title || '—'}
+            </p>
+          ) : (
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a] placeholder:text-[#444444]"
+              placeholder="e.g. Chungking Express"
+              required
+              style={{ borderRadius: 0 }}
+            />
+          )}
         </div>
         <div>
           <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
             Date & time
           </label>
-          <input
-            type="datetime-local"
-            value={screeningAt}
-            onChange={(e) => setScreeningAt(e.target.value)}
-            className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a]"
-            required
-            style={{ borderRadius: 0 }}
-          />
+          {isPast ? (
+            <p className="w-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#888888] font-mono text-[13px] px-4 py-3 min-h-[44px]" style={{ borderRadius: 0 }}>
+              {screeningAt ? new Date(screening.screening_at).toLocaleString() : '—'}
+            </p>
+          ) : (
+            <input
+              type="datetime-local"
+              value={screeningAt}
+              onChange={(e) => setScreeningAt(e.target.value)}
+              className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a]"
+              required
+              style={{ borderRadius: 0 }}
+            />
+          )}
         </div>
         <div>
           <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
@@ -177,73 +209,77 @@ export default function EditScreeningForm({ screening, rooms }: Props) {
             style={{ borderRadius: 0 }}
           />
         </div>
-        <div>
-          <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
-            Room
-          </label>
-          <select
-            value={roomId}
-            onChange={(e) => setRoomId(e.target.value)}
-            className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a]"
-            style={{ borderRadius: 0 }}
-          >
-            <option value="">— Select room —</option>
-            {rooms.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
-            Waitlist mode
-          </label>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => setWaitlistMode('auto')}
-              className={`px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase border min-h-[44px] transition-colors ${
-                waitlistMode === 'auto'
-                  ? 'border-[#e8c84a] text-[#e8c84a] bg-[rgba(232,200,74,0.12)]'
-                  : 'border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a]'
-              }`}
-              style={{ borderRadius: 0 }}
-            >
-              Auto-promote
-            </button>
-            <button
-              type="button"
-              onClick={() => setWaitlistMode('manual')}
-              className={`px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase border min-h-[44px] transition-colors ${
-                waitlistMode === 'manual'
-                  ? 'border-[#e8c84a] text-[#e8c84a] bg-[rgba(232,200,74,0.12)]'
-                  : 'border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a]'
-              }`}
-              style={{ borderRadius: 0 }}
-            >
-              Manual
-            </button>
-          </div>
-          <p className="font-mono text-[13px] text-[#444444] mt-1">
-            {waitlistMode === 'auto'
-              ? "When a seat is cancelled, the first person waiting is moved up automatically."
-              : "You choose who to promote from the admin panel."}
-          </p>
-        </div>
-        <div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={isActive}
-              onChange={(e) => setIsActive(e.target.checked)}
-              className="w-4 h-4 accent-[#e8c84a]"
-            />
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888]">
-              Event is active (shown on homepage)
-            </span>
-          </label>
-        </div>
+        {!isPast && (
+          <>
+            <div>
+              <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
+                Room
+              </label>
+              <select
+                value={roomId}
+                onChange={(e) => setRoomId(e.target.value)}
+                className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a]"
+                style={{ borderRadius: 0 }}
+              >
+                <option value="">— Select room —</option>
+                {rooms.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
+                Waitlist mode
+              </label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setWaitlistMode('auto')}
+                  className={`px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase border min-h-[44px] transition-colors ${
+                    waitlistMode === 'auto'
+                      ? 'border-[#e8c84a] text-[#e8c84a] bg-[rgba(232,200,74,0.12)]'
+                      : 'border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a]'
+                  }`}
+                  style={{ borderRadius: 0 }}
+                >
+                  Auto-promote
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWaitlistMode('manual')}
+                  className={`px-4 py-2 font-mono text-[10px] tracking-[0.2em] uppercase border min-h-[44px] transition-colors ${
+                    waitlistMode === 'manual'
+                      ? 'border-[#e8c84a] text-[#e8c84a] bg-[rgba(232,200,74,0.12)]'
+                      : 'border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a]'
+                  }`}
+                  style={{ borderRadius: 0 }}
+                >
+                  Manual
+                </button>
+              </div>
+              <p className="font-mono text-[13px] text-[#444444] mt-1">
+                {waitlistMode === 'auto'
+                  ? "When a seat is cancelled, the first person waiting is moved up automatically."
+                  : "You choose who to promote from the admin panel."}
+              </p>
+            </div>
+            <div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={(e) => setIsActive(e.target.checked)}
+                  className="w-4 h-4 accent-[#e8c84a]"
+                />
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888]">
+                  Event is active (shown on homepage)
+                </span>
+              </label>
+            </div>
+          </>
+        )}
         <button
           type="submit"
           disabled={loading}

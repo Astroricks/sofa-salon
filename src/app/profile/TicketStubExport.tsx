@@ -82,6 +82,18 @@ export default function TicketStubExport({ items }: Props) {
 
   if (items.length === 0) return null;
 
+  const totalMinutes = items.reduce((acc, i) => acc + (i.durationMinutes ?? 0), 0);
+  const hours = Math.floor(totalMinutes / 60);
+  const mins = totalMinutes % 60;
+  const totalTimeLabel =
+    locale === 'zh'
+      ? hours > 0
+        ? `${hours} 小时 ${mins} 分钟`
+        : `${mins} 分钟`
+      : hours > 0
+        ? `${hours} h ${mins} min`
+        : `${mins} min`;
+
   const appName = APP_NAME_PARTS.join('');
 
   return (
@@ -166,6 +178,16 @@ export default function TicketStubExport({ items }: Props) {
                     );
                   })}
                 </div>
+                {totalMinutes > 0 && (
+                  <div className="p-4 pt-2 border-t border-[#2a2a2a] text-center">
+                    <p className="text-[10px] text-[#666] uppercase tracking-[0.2em]">
+                      {t.profile.timeSpentHere}
+                    </p>
+                    <p className="text-[14px] text-[#e8c84a] mt-1 font-medium tracking-wide">
+                      {totalTimeLabel}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             {isMobile && (

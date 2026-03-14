@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { getT, type Locale } from '@/lib/i18n';
 import EditScreeningForm from './EditScreeningForm';
 
@@ -39,9 +39,7 @@ export default async function EditScreeningPage({
 
   if (!screening) notFound();
 
-  if (new Date(screening.screening_at) < new Date()) {
-    redirect('/admin');
-  }
+  const isPast = new Date(screening.screening_at ?? '') < new Date();
 
   const { data: rooms } = await supabase
     .from('rooms')
@@ -65,6 +63,7 @@ export default async function EditScreeningPage({
           duration_minutes: (screening as { duration_minutes?: number | null }).duration_minutes ?? undefined,
         }}
         rooms={rooms ?? []}
+        isPast={isPast}
       />
     </div>
   );

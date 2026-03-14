@@ -125,6 +125,11 @@ export default async function ScreeningPage({
     month: 'short',
   });
 
+  const isPast = new Date(screening.screening_at).getTime() < Date.now();
+  const userHasReservation =
+    user &&
+    (reservations as { user_id?: string }[]).some((r) => r.user_id === user.id);
+
   return (
     <ScreeningRedirect screeningId={id} isAdmin={isAdmin}>
     <div className="max-w-4xl mx-auto px-4 py-6 pb-24 safe-area-inset-bottom bg-[#0f0f0f]">
@@ -137,6 +142,13 @@ export default async function ScreeningPage({
       <p className="font-pixel-cjk text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-6">
         {room.name} · {dateStr} · {isAdmin ? t.screening.adminViewSeatMapHint : t.screening.tapToClaim}
       </p>
+      {isPast && userHasReservation && (
+        <p className="font-mono text-[10px] text-[#888888] mb-4">
+          <a href="/receipt" className="text-[#e8c84a] hover:underline">
+            {t.screening.exportViewingReceipt}
+          </a>
+        </p>
+      )}
       {isAdmin && (
         <div className="mb-4">
           <GhostSeatManager

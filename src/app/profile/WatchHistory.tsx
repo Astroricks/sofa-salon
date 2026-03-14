@@ -1,14 +1,15 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
-import TicketStubExport from './TicketStubExport';
 
 export interface PastScreening {
   screeningId: string;
   title: string;
   screeningAt: string;
   rating: number | null;
+  durationMinutes?: number | null;
 }
 
 interface Props {
@@ -146,7 +147,18 @@ export default function WatchHistory({ items }: Props) {
           );
         })}
       </ul>
-      <TicketStubExport items={items} />
+      <div className="mt-4">
+        <Link
+          href="/receipt"
+          className="inline-block font-mono text-[10px] tracking-[0.2em] uppercase py-2 px-4 border border-[#e8c84a] text-[#e8c84a] hover:bg-[#e8c84a]/10 transition-colors"
+          style={{ borderRadius: 0 }}
+        >
+          {t.profile.myViewingReceipt}
+        </Link>
+        <p className="font-mono text-[10px] text-[#666] mt-1.5">
+          {t.profile.exportWatchHistoryHint}
+        </p>
+      </div>
     </div>
   );
 }
