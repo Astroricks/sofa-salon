@@ -151,7 +151,7 @@ export default function ReceiptSVG({ data }: { data: ReceiptData }) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox={`0 0 ${viewBoxWidth} ${totalHeight}`}
       width="100%"
-      style={{ maxWidth: viewBoxWidth, background: BG_FILL }}
+      style={{ maxWidth: isMobile ? viewBoxWidth : 960, background: BG_FILL }}
     >
       <rect width={viewBoxWidth} height={totalHeight} fill={BG_FILL} />
       <rect x={paperLeft} y={paperTop} width={PAPER_WIDTH} height={paperHeight} fill={PAPER_FILL} />
@@ -161,7 +161,7 @@ export default function ReceiptSVG({ data }: { data: ReceiptData }) {
 
       <text x={centerX} y={headerY} fontFamily={FONT} fontSize={13} fontWeight="bold" fill="#111" textAnchor="middle" letterSpacing={2}>Ziggygraph</text>
       <text x={centerX} y={headerY + 12} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="middle" letterSpacing={1}>SCREENING ROOM</text>
-      <text x={centerX} y={headerY + 23} fontFamily={FONT} fontSize={7} fill="#bbb" textAnchor="middle">Canal St · Manhattan NY</text>
+      <text x={centerX} y={headerY + 23} fontFamily={FONT} fontSize={7} fill="#bbb" textAnchor="middle">17th St · Manhattan NY</text>
       <text x={centerX} y={headerY + 32} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="middle">{displayName}</text>
 
       <SeparatorDashes paperLeft={paperLeft} y={sep1Y} />

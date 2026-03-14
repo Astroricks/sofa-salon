@@ -135,7 +135,7 @@ export default async function ReceiptPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] px-4 py-8 flex flex-col items-center">
-      <div className="w-full max-w-[680px] flex flex-col items-center">
+      <div className="w-full max-w-[960px] flex flex-col items-center">
         <ReceiptSVG data={data} />
         <ReceiptExportButton />
       </div>
