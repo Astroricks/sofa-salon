@@ -1,5 +1,9 @@
 'use client';
 
+/**
+ * ReceiptSVG — Renders a stylised receipt (paper + pigeon mascot) from ReceiptData.
+ * Responsive: different viewBox for mobile/desktop. Used on /receipt and by ReceiptExportButton for PNG export.
+ */
 import { useState, useEffect } from 'react';
 import type { ReceiptData } from '@/app/receipt/page';
 

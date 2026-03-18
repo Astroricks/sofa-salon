@@ -1,0 +1,130 @@
+---
+description: Mandatory quality gates for all code changes — AI must run lint, verify build, and pass all tests before marking any task complete
+alwaysApply: true
+---
+
+# Development Rules
+
+These rules apply to **every code change**, no matter how small. A task is not done until all gates pass. Read the full file before starting work.
+
+---
+
+## 0. Scope discipline (most important)
+
+- **Only touch files related to the current task.** If you discover a problem in an unrelated file, mention it to the user — do not fix it silently.
+- **Never rename, move, or restructure files** unless the task explicitly asks for it.
+- **Never add, remove, or disable lint rules or ESLint config** without explicit approval.
+- **Never modify git configuration** (`.gitignore`, `.git/`, commit hooks). Do not run `git add`, `git commit`, or `git push`.
+- **Never delete or skip existing tests** to make the suite pass. If a test is genuinely wrong, explain why before changing it.
+- **If the same error persists after two fix attempts**, stop. Report the error message, what you tried, and ask for guidance. Do not keep guessing.
+
+---
+
+## 1. Lint
+
+Run **before finishing every task**:
+
+```bash
+npm run lint
+```
+
+- Must exit with **zero errors**.
+- Fix all reported issues: unused variables, type errors, import order, missing types.
+- Prefer the project's existing style: `@/` path aliases, existing file/folder naming conventions, current formatting patterns.
+- Do not introduce `// eslint-disable` comments or `@ts-ignore` unless you explain the reason in a comment next to it.
+
+---
+
+## 2. Build verification
+
+Run **before finishing every task**:
+
+```bash
+npm run dev
+```
+
+- The command must start without TypeScript compilation errors or runtime crashes.
+- If you changed or added dependencies, run `npm install` first, then `npm run dev` again.
+- If startup fails, check: missing env vars in `.env.local` (compare with `.env.example`), missing imports, circular dependencies.
+
+> **Note for AI agents:** You cannot open a browser. "Passes" here means `npm run dev` starts without error output. The user will do visual smoke-testing.
+
+---
+
+## 3. Tests
+
+### 3a. Unit tests (Jest)
+
+Run **before finishing every task**:
+
+```bash
+npm test
+```
+
+- **All tests must pass.** Zero failures, zero skipped (unless already skipped before your change).
+- **When adding or changing behavior**, add or update tests so that:
+  - The new logic has at least one test that would **fail if the logic were reverted**.
+  - Tests verify **behavior and output**, not just that code "doesn't crash". Bad example: `expect(component).toBeDefined()`. Good example: `expect(getBadgeLevel(5)).toBe('silver')`.
+- **Test file location:** Place tests in `src/lib/__tests__/` next to the module they test, following the existing `*.test.ts` naming pattern.
+- **If a test fails:**
+  1. Read the failure message carefully.
+  2. Determine if the bug is in your new code or in the test expectation.
+  3. Fix the root cause. Do not delete or `.skip()` the test to make the suite green.
+
+### 3b. E2E tests (Playwright)
+
+Run when you change **UI or user-facing flows**:
+
+```bash
+npm run test:e2e
+```
+
+- Requires the dev server running on `localhost:3000` (or the port in `playwright.config.ts`).
+- When you change pages or critical flows (home, profile, screening, reservation, admin), add or update E2E specs in `e2e/*.spec.ts`.
+- If E2E fails, fix the product code or the test. Do not leave E2E red.
+
+---
+
+## 4. Completion checklist
+
+Before reporting a task as done, confirm **all** of the following:
+
+| # | Check | Command |
+|---|-------|---------|
+| 1 | Lint passes | `npm run lint` |
+| 2 | Dev server starts clean | `npm run dev` |
+| 3 | All unit tests pass | `npm test` |
+| 4 | E2E passes (if UI changed) | `npm run test:e2e` |
+| 5 | No unrelated files modified | Review your own diff |
+
+If **any** check fails, fix it before reporting done. Test failures are signals, not noise.
+
+---
+
+## 5. Code style and conventions
+
+These are project-specific conventions. Follow them for consistency:
+
+- **Imports:** Use `@/` aliases (`import { foo } from '@/lib/foo'`), not relative paths climbing more than one level (`../../`).
+- **Naming:** `camelCase` for variables and functions, `PascalCase` for components and types. Use descriptive names: `screeningId` not `sId`.
+- **App name / tagline:** Only from `src/lib/config.ts`. Never hardcode app name strings elsewhere.
+- **i18n:** All user-facing strings go through `src/lib/i18n.ts`. Do not add bare English or Chinese strings in components.
+- **Env vars:** Access via `process.env.*`. Only `NEXT_PUBLIC_*` vars are available client-side.
+- **SQL:** Source of truth is `supabase-sql/`. Do not duplicate SQL in markdown or other files.
+- **Comments:** Comment non-obvious business rules (e.g., cancel windows, badge tiers, RLS policies). Remove commented-out code — don't leave dead code behind.
+
+---
+
+## 6. Dependencies
+
+- **Do not add new npm packages** without stating why in your response. Prefer using what's already in `package.json`.
+- After adding a dependency: `npm install` → `npm run lint` → `npm run dev` → `npm test`.
+- Never install packages globally in the project.
+
+---
+
+## 7. Communication
+
+- When you finish a task, briefly summarize: what you changed, which files, and what tests you added or updated.
+- If you are unsure about a design decision (e.g., where to put a new file, how to name something, whether to split a component), ask before writing code.
+- If a task is ambiguous, clarify first. A wrong implementation that passes lint is still wrong.

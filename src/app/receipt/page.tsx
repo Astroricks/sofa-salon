@@ -1,3 +1,8 @@
+/**
+ * Receipt page: server-rendered viewing receipt for the current user.
+ * Fetches past reservations with screening + rating data, builds ReceiptData,
+ * renders ReceiptSVG and ReceiptExportButton (export as PNG).
+ */
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import ReceiptSVG from '@/components/ReceiptSVG';

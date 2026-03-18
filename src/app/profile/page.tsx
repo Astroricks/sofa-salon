@@ -189,11 +189,20 @@ export default async function ProfilePage() {
             </ul>
           )}
         </section>
-        <section className="mt-8 border border-[#2a2a2a] p-4" style={{ borderRadius: 0 }}>
-          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-3">
+        <section className="mt-8 border border-[#e8c84a]/30 bg-[#141414] p-5 rounded-sm shadow-[0_0_0_1px_rgba(232,200,74,0.1)]">
+          <p className="font-mono text-[11px] tracking-wider uppercase text-[#e8c84a] mb-3 font-medium">
             {t.profile.sendToTicker}
           </p>
-          <TickerUserSubmit />
+          <p className="font-mono text-[11px] text-[#888888] mb-3">
+            {locale === 'zh' ? '你的话会出现在首页顶部弹幕里，大家都能看到。' : 'Your message will appear on the homepage ticker for everyone to see.'}
+          </p>
+          <TickerUserSubmit
+            labels={{
+              placeholder: t.profile.sendToTickerPlaceholder,
+              sendButton: t.profile.sendToTickerButton,
+              sentButton: t.profile.sendToTickerSent,
+            }}
+          />
         </section>
         <WatchHistory items={pastScreenings} />
       </div>

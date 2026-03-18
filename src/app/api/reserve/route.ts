@@ -1,3 +1,8 @@
+/**
+ * POST /api/reserve — Claim one or more seats for a screening.
+ * Requires: auth, wechat_id in profile. Body: screeningId, seatKey or seatKeys[].
+ * On success may send confirmation email (Resend). Enforces RLS and unique (screening_id, seat_key).
+ */
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { sendConfirmation } from '@/lib/email';

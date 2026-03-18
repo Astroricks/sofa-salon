@@ -3,7 +3,20 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
-export default function TickerUserSubmit() {
+export type TickerUserSubmitLabels = {
+  placeholder: string;
+  sendButton: string;
+  sentButton: string;
+};
+
+const DEFAULT_LABELS: TickerUserSubmitLabels = {
+  placeholder: 'Send to ticker...',
+  sendButton: 'Send',
+  sentButton: 'Sent',
+};
+
+export default function TickerUserSubmit({ labels }: { labels?: TickerUserSubmitLabels }) {
+  const { placeholder, sendButton, sentButton } = labels ?? DEFAULT_LABELS;
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [content, setContent] = useState('');
   const [sending, setSending] = useState(false);
@@ -49,23 +62,22 @@ export default function TickerUserSubmit() {
           {error}
         </p>
       )}
-      <div className="flex items-center gap-2 px-4 py-1.5 bg-[#0f0f0f] border-b border-[#2a2a2a]" style={{ borderRadius: 0 }}>
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-[#1a1a1a] border border-[#e8c84a]/40 rounded-sm shadow-[0_0_0_1px_rgba(232,200,74,0.15)]">
         <input
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Send to ticker..."
-          className="flex-1 min-w-0 max-w-[200px] bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[11px] px-2 py-1 outline-none focus:border-[#e8c84a]"
-          style={{ borderRadius: 0 }}
+          placeholder={placeholder}
+          className="flex-1 min-w-0 max-w-[220px] bg-[#0f0f0f] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[12px] px-3 py-1.5 outline-none focus:border-[#e8c84a] rounded"
           onKeyDown={(e) => e.key === 'Enter' && submit()}
         />
         <button
           type="button"
           onClick={submit}
           disabled={sending || !content.trim()}
-          className="font-mono text-[10px] tracking-wider uppercase text-[#e8c84a] hover:underline disabled:opacity-50"
+          className="shrink-0 font-mono text-[12px] font-medium tracking-wider uppercase px-3 py-1.5 rounded text-[#0f0f0f] bg-[#e8c84a] hover:bg-[#f0d050] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {sending ? '…' : sent ? 'Sent' : 'Send'}
+          {sending ? '…' : sent ? sentButton : sendButton}
         </button>
       </div>
     </div>

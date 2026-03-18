@@ -22,6 +22,7 @@ function seatLabelForEmail(seatKey: string): string {
   return 'seat';
 }
 
+/** Sends seat confirmation email after reservation (Resend). No-op if RESEND_API_KEY is unset. */
 export async function sendConfirmation(params: {
   to: string;
   screeningTitle: string;
@@ -107,6 +108,7 @@ export async function sendReminder(params: {
   return data;
 }
 
+/** Notifies user they were promoted from waitlist to a seat. No-op if Resend not configured. */
 export async function sendWaitlistPromotion(params: {
   to: string;
   screeningTitle: string;

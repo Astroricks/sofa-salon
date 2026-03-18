@@ -15,10 +15,13 @@ type ScreeningRow = {
   waitlist_mode: string;
 };
 
+const WEEKDAY_ZH = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
 function formatScreeningDateTime(iso: string): string {
   const d = new Date(iso);
   const month = d.getMonth() + 1;
   const day = d.getDate();
+  const weekday = WEEKDAY_ZH[d.getDay()];
   const hour = d.getHours();
   const minute = d.getMinutes();
   let period: string;
@@ -34,7 +37,7 @@ function formatScreeningDateTime(iso: string): string {
     h = hour === 0 ? 12 : hour;
   }
   const minStr = minute > 0 ? `${minute}分` : '';
-  return `${month}月${day}日 ${period}${h}点${minStr}`;
+  return `${month}月${day}日（${weekday}）${period}${h}点${minStr}`;
 }
 
 function buildGroupAnnouncement(screenings: ScreeningRow[], registrationLink: string): string {

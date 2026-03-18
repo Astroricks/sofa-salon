@@ -1,3 +1,8 @@
+/**
+ * POST /api/cancel — Cancel a reservation.
+ * Policy: if the user cancels within cancel_no_show_hours (default 24) before screening_at,
+ * it counts as a no-show (blood bar segment lost; see ticker_config and admin settings).
+ */
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { sendCancelConfirmation, sendWaitlistPromotion } from '@/lib/email';

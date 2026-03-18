@@ -1,28 +1,56 @@
-# Supabase 额外 SQL（按需运行）
+# Supabase SQL migrations
 
-主建表与策略的完整 SQL 在 **`_plans/BUILD_COMPLETE.md`** 里，需要先跑那一整段。
+All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order (00 → 21).
 
-本文件夹里是**之后新增的、单独要跑的内容**：每出现一个新需求或修复，就**新增一个文件**，不会改旧文件。  
-这样你可以清楚知道：**这次只要新跑哪个文件**。
+## Migration safety
 
-## 文件列表
+- **Always back up your database before running migrations on production.** Use Supabase Dashboard → Database → Backups, or `pg_dump`, before applying new scripts.
+- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then 01 through 21.
+- **If a migration fails halfway**, the database may be in an inconsistent state. Read the failed SQL file to understand what it was doing; fix data or schema manually if needed, then re-run only the failed file (or the remainder) after fixing.
 
-| 文件 | 用途 | 何时跑 |
+## Order of execution
+
+| Step | File | Purpose |
 |------|------|--------|
-| `01-profiles-rls-allow-insert.sql` | 允许用户插入自己的 profile 行（修复 “new row violates row-level security policy”） | 出现该 RLS 报错时跑一次 |
-| `02-screenings-year-director-duration.sql` | screenings 表增加 year, director, duration_minutes（卡片显示 “1994 · Wong Kar-wai · 98 min”） | 需要卡片显示年份/导演/时长时跑一次 |
-| `03-profiles-admin-read-wechat.sql` | 管理员可读所有 profiles 的 wechat_id（座位图点击观众详情） | 需要管理员查看观众微信号时跑一次 |
-| `04-ratings-and-ticker.sql` | screening_ratings（用户对影片质量 1–5 星）、ticker_custom、ticker_config（跑马灯管理） | 需要观看历史评分与跑马灯管理时跑一次 |
-| `05-reservations-allow-ghost-multi.sql` | 允许同一场次多个幽灵座（同一 admin user_id）；部分唯一索引仅限制非幽灵 | 幽灵座“duplicate key”报错时跑一次 |
-| `06-reservations-multi-seat-per-user.sql` | 允许同一用户同一场次多座（带朋友占座）；唯一改为 (screening_id, seat_key) | 需要多座选座功能时跑一次（在 05 之后） |
-| `07-reservations-attended.sql` | reservations 增加 attended（出席/鸽了），用于管理员标记与鸽子恢复 | 需要出席记录与放鸽子机制时跑一次 |
-| `08-profiles-no-show-badge.sql` | profiles 增加 no_show_count、consecutive_attendances、attendance_count（血条/鸽子/徽章） | 需要血条与徽章时跑一次 |
-| `09-ticker-user-messages.sql` | 用户弹幕表 ticker_user_messages（3:1 与管理员内容穿插） | 需要用户弹幕时跑一次 |
-| `10-config-cancel-no-show-hours.sql` | ticker_config 默认 cancel_no_show_hours=24（开演前多少小时内取消算鸽了） | 可选，后台设置页可覆盖 |
-| `11-reservations-drop-screening-user-unique.sql` | 删除 (screening_id, user_id) 唯一约束的正确名称，修复 Add ghost 报 duplicate key | 出现该报错时跑一次 |
-| `12-reservations-friend-avatar.sql` | reservations 增加 friend_avatar（朋友座随机样子，本人座无血条） | 需要“再占一座”显示朋友样式时跑一次 |
-| `15-ticker-custom-created-by.sql` | ticker_custom 增加 created_by（管理员发的跑马灯显示「放映人 名字：内容」） | 需要跑马灯显示管理员署名时跑一次 |
-| `16-ticker-system-events.sql` | ticker_system_events（活动取消/改期系统通知，约 3 天有效）+ ticker_config 默认 show_reschedule_cancel_ticker | 需要管理员删除/改期活动并显示跑马灯通知时跑一次 |
-| `17-waitlist-manual-promote-one.sql` | 查询 + 模板：手动把「已 promoted 但未写入 reservations」的候补补进预约表 | 仅当历史数据需修复时按说明执行（非建表） |
+| **00** | `00-base-schema.sql` | Base schema: `profiles`, `rooms`, `screenings`, `reservations`, `waitlist`, RLS, trigger `handle_new_user`, function `reorder_waitlist`, realtime for reservations/waitlist. **Run this first.** |
+| 01 | `01-profiles-rls-allow-insert.sql` | Ensures users can insert their own profile row (fixes RLS "new row violates" on sign-up). |
+| 02 | `02-screenings-year-director-duration.sql` | Adds `year`, `director`, `duration_minutes` to `screenings` (for film cards and receipt). |
+| 03 | `03-profiles-admin-read-wechat.sql` | Lets admins read all `wechat_id` (seat map viewer details). |
+| 04 | `04-ratings-and-ticker.sql` | `screening_ratings` (1–5 stars), `ticker_custom`, `ticker_config` (ticker management). |
+| 05 | `05-reservations-allow-ghost-multi.sql` | Allows multiple ghost seats per screening; relaxes unique constraints for ghosts. |
+| 06 | `06-reservations-multi-seat-per-user.sql` | Allows one user to hold multiple seats per screening (e.g. for friends); unique on `(screening_id, seat_key)`. Run after 05. |
+| 07 | `07-reservations-attended.sql` | Adds `attended` to `reservations` (admin marks attendance / no-show). |
+| 08 | `08-profiles-no-show-badge.sql` | Adds `no_show_count`, `consecutive_attendances`, `attendance_count` (blood bar, pigeon, badges). |
+| 09 | `09-ticker-user-messages.sql` | Table `ticker_user_messages` for user-submitted ticker lines. |
+| 10 | `10-config-cancel-no-show-hours.sql` | Config key `cancel_no_show_hours` (default 24) for “no-show” cutoff. |
+| 11 | `11-reservations-drop-screening-user-unique.sql` | Drops `(screening_id, user_id)` unique on reservations (required after multi-seat). |
+| 12 | `12-reservations-friend-avatar.sql` | Adds `friend_avatar` to reservations (friend-seat display). |
+| 13 | `13-profiles-email-preferences.sql` | Adds email preference columns: `email_event_reminder`, `email_waitlist_promotion`, `email_post_event_rating`. |
+| 14 | `14-profiles-welcome-email-sent.sql` | Adds `welcome_email_sent_at` to profiles (one-time welcome email). |
+| 15 | `15-ticker-custom-created-by.sql` | Adds `created_by` to `ticker_custom` (admin attribution on ticker). |
+| 16 | `16-ticker-system-events.sql` | Table `ticker_system_events` (cancel/reschedule notices) and config for showing them. |
+| 17 | `17-waitlist-manual-promote-one.sql` | **Query + template only.** Use to fix historical “promoted but no reservation” cases; not a schema change. |
+| 18 | `18-support-log-reschedule.sql` | `support_logs`, reschedule proposals/options/votes (feedback and reschedule flow). |
+| 19 | `19-reschedule-options-any-user.sql` | Allows any authenticated user to insert reschedule options. Run after 18. |
+| 20 | `20-support-logs-status.sql` | Adds `status` (open/fixed/dismissed), `resolved_at`, `resolved_by` to `support_logs`. Run after 18. |
+| 21 | `21-rooms-background.sql` | Adds `room_background_id` to `rooms` (default `'warm'`). |
 
-在 Supabase 控制台 → **SQL Editor** 里打开对应文件，复制内容执行即可。
+## New environment setup
+
+1. Create a Supabase project and note **Project URL** and **anon** / **service_role** keys.
+2. Run **00** first. If `ALTER PUBLICATION supabase_realtime` fails (e.g. already added), skip those two lines.
+3. Run **01** through **21** in order. Skip **17** unless you need the one-off repair query.
+4. Set an admin: `UPDATE profiles SET is_admin = TRUE WHERE id = '<your-auth-user-uuid>';`
+
+## Notes
+
+- **00** creates the minimum needed for the app (auth, profiles, rooms, screenings, reservations, waitlist).
+- Later files use `IF NOT EXISTS` / `DROP POLICY IF EXISTS` where possible so re-running is safe.
+- **17** is documentation + a manual query/template; run the `SELECT` to find rows, then fill and run the `INSERT`/`UPDATE` block if needed.
+
+## Adding a new migration
+
+1. Add a new file with the next number (e.g. `22-my-feature.sql`).
+2. Write the SQL (prefer `IF NOT EXISTS` / `DROP ... IF EXISTS` so re-running is safe).
+3. Update this README: add a row to the table above and describe the purpose in one line.
+4. Run the new file in Supabase SQL Editor after all previous migrations have been applied.

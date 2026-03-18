@@ -1,4 +1,4 @@
-/** Tier thresholds: 0 → 新芽, 3 → 青铜, 5 → 白银, 10 → 黄金, 20 → 钻石. Everyone has at least entry level. */
+/** Badge tier breakpoints: 0 = Sprout, 3 = Bronze, 5 = Silver, 10 = Gold, 20 = Diamond. */
 const TIERS = [
   { min: 20, level: 4, label: '钻石', labelEn: 'Diamond', emoji: '💎' },
   { min: 10, level: 3, label: '黄金', labelEn: 'Gold', emoji: '🥇' },
@@ -7,6 +7,7 @@ const TIERS = [
   { min: 0, level: 0, label: '新芽', labelEn: 'Sprout', emoji: '🌱' },
 ] as const;
 
+/** Returns the badge tier (level, label, labelEn, emoji) for a given attendance count. Negative counts clamp to Sprout. */
 export function getBadgeLevel(attendanceCount: number): {
   level: number;
   label: string;

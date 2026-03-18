@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
+/** Default hours before screening: cancel within this window counts as no-show (blood bar). Admin can change in Settings. */
 const DEFAULT_CANCEL_NO_SHOW_HOURS = 24;
 const CONFIG_KEY = 'cancel_no_show_hours';
 

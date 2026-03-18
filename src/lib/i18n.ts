@@ -5,12 +5,14 @@ export type Locale = 'en' | 'zh';
 const STORAGE_KEY = 'sofa-salon-locale';
 const COOKIE_NAME = 'sofa-salon-locale';
 
+/** Reads current locale from localStorage (client only); returns 'en' on server. */
 export function getStoredLocale(): Locale {
   if (typeof window === 'undefined') return 'en';
   const stored = localStorage.getItem(STORAGE_KEY);
   return stored === 'zh' ? 'zh' : 'en';
 }
 
+/** Writes locale to localStorage and cookie so server-rendered pages can read it. */
 export function setStoredLocale(locale: Locale): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem(STORAGE_KEY, locale);
@@ -64,6 +66,9 @@ export const tEn = {
     myViewingReceipt: 'My Viewing Receipt ↓',
     seatCount: '{n} seat(s)',
     sendToTicker: 'Send to ticker',
+    sendToTickerPlaceholder: 'Send to ticker...',
+    sendToTickerButton: 'Send',
+    sendToTickerSent: 'Sent',
     bloodBar: 'Blood bar',
     bloodBarExplanation: 'When full, you have three segments. Each no-show (cancelling too close to the screening or being marked absent) costs one segment. After three no-shows you become a pigeon—attend two screenings in a row (marked by admin) to recover.',
     bloodBarExplanationBefore: 'When full, you have three segments. Each no-show (cancelling too close to the screening or being marked absent) costs one segment. After three no-shows you become a ',
@@ -329,6 +334,9 @@ export const tZh = {
     myViewingReceipt: '我的观影票根 ↓',
     seatCount: '{n} 个座位',
     sendToTicker: '发弹幕',
+    sendToTickerPlaceholder: '发弹幕…',
+    sendToTickerButton: '发送',
+    sendToTickerSent: '已发送',
     bloodBar: '血条',
     bloodBarExplanation: '血条满格为三格。每次「鸽了」（临开场前取消、或被管理员标记为未出席）会掉一格。鸽满三次会变成鸽子，需连续两次正常参加（由管理员标记出席）才能恢复。',
     bloodBarExplanationBefore: '血条满格为三格。每次「鸽了」（临开场前取消、或被管理员标记为未出席）会掉一格。鸽满三次会变成',
@@ -550,6 +558,7 @@ export const tZh = {
 export type TEn = typeof tEn;
 export type TZh = typeof tZh;
 
+/** Returns the translation object for the given locale. Type is TEn so callers can use one type; zh content is structurally identical. */
 export function getT(locale: Locale): TEn {
   return locale === 'zh' ? (tZh as unknown as TEn) : tEn;
 }

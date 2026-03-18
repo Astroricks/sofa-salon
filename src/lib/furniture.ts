@@ -118,10 +118,12 @@ export const SEAT_RULES: Record<
   },
 };
 
+/** Whether this piece type allows an extra "squeeze" seat when the room is full (sofa, sofa-l only). */
 export function canSqueeze(piece: FurniturePiece): boolean {
   return SEAT_RULES[piece.type].canSqueeze;
 }
 
+/** Splits L-sofa seats: 60% on long side, rest on short. Returns [longCount, shortCount]. */
 export function lSofaSeatSplit(totalSeats: number): [number, number] {
   const longSide = Math.ceil(totalSeats * 0.6);
   return [longSide, totalSeats - longSide];
@@ -381,6 +383,7 @@ function defaultColor(type: FurnitureType): string {
   return defaults[type];
 }
 
+/** Creates a new furniture piece with defaults (id from timestamp, minSeats+1 or 1, defaultSqueezeExtra). */
 export function newFurniturePiece(
   type: FurnitureType,
   x = 300,

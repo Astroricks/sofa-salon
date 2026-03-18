@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { APP_NAME_PARTS } from '@/lib/config';
+import { RECENT_RATINGS_SCREENING_LIMIT, starsFromAvg } from '@/lib/ticker-utils';
 import type { Locale } from '@/lib/i18n';
 import TickerStrip, { type TickerSegmentItem } from '@/components/TickerStrip';
 
@@ -36,12 +37,6 @@ function buildPastThankYouSegment(pastScreening: { title: string } | null, local
   return [isZh ? `谢谢大家观看《${pastScreening.title}》` : `Thank you for watching ${pastScreening.title}`];
 }
 
-function starsFromAvg(avg: number): string {
-  const full = Math.round(avg);
-  const empty = 5 - full;
-  return '★'.repeat(full) + '☆'.repeat(empty);
-}
-
 export default async function Ticker() {
   const cookieStore = await cookies();
   const locale: Locale = cookieStore.get(COOKIE_NAME)?.value === 'zh' ? 'zh' : 'en';
@@ -55,7 +50,7 @@ export default async function Ticker() {
     supabase.from('ticker_config').select('key, value'),
     supabase.from('ticker_custom').select('content, created_by').eq('is_active', true).order('sort_order', { ascending: true }),
     supabase.from('screenings').select('title, screening_at').eq('is_active', true).gte('screening_at', nowIso).order('screening_at', { ascending: true }).limit(5),
-    supabase.from('screenings').select('id, title').lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(10),
+    supabase.from('screenings').select('id, title').lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(RECENT_RATINGS_SCREENING_LIMIT),
     supabase.from('ticker_user_messages').select('content, user_id').eq('is_active', true).order('created_at', { ascending: true }),
     supabase.from('screenings').select('title').eq('is_active', true).lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(1).maybeSingle(),
     supabase.from('ticker_system_events').select('type, title').gt('expires_at', nowIso).order('created_at', { ascending: false }),
