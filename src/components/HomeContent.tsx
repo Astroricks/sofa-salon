@@ -3,10 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 import ScreeningCard from '@/components/ScreeningCard';
-import ScreeningExternalLinksRow from '@/components/ScreeningExternalLinksRow';
 import SeatMapInline from '@/components/SeatMapInline';
-import { safeHttpUrl } from '@/lib/safe-http-url';
-
 interface Screening {
   id: string;
   title: string;
@@ -31,7 +28,8 @@ interface Props {
 
 const CARD_WIDTH = 280;
 const CARD_GAP = 16;
-const CARD_HEIGHT = 200;
+/** Taller than before to fit optional Douban / Letterboxd icon row under credits. */
+const CARD_HEIGHT = 218;
 const MOBILE_BREAKPOINT = 768;
 
 export default function HomeContent({ screenings, openId }: Props) {
@@ -91,10 +89,6 @@ export default function HomeContent({ screenings, openId }: Props) {
   const selectedScreening = screenings.find((s) => s.id === selectedId);
   const showNavButtons = isMobile && screenings.length > 1;
   const selectedHasFilmNotes = Boolean(selectedScreening?.description?.trim());
-  const selectedHasExternalLinks = Boolean(
-    selectedScreening &&
-      (safeHttpUrl(selectedScreening.douban_url) || safeHttpUrl(selectedScreening.letterboxd_url))
-  );
 
   return (
     <div style={{ width: '90vw', maxWidth: 1100, margin: '0 auto' }}>
@@ -138,6 +132,8 @@ export default function HomeContent({ screenings, openId }: Props) {
                   director: s.director,
                   director_en: s.director_en,
                   duration_minutes: s.duration_minutes,
+                  douban_url: s.douban_url,
+                  letterboxd_url: s.letterboxd_url,
                 }}
                 reservedCount={s.reservedCount}
                 totalSeats={s.totalSeats}
@@ -213,7 +209,7 @@ export default function HomeContent({ screenings, openId }: Props) {
         )}
       </div>
 
-      {selectedScreening && (selectedHasFilmNotes || selectedHasExternalLinks) ? (
+      {selectedScreening && selectedHasFilmNotes ? (
         <section
           style={{
             width: '100%',
@@ -223,41 +219,29 @@ export default function HomeContent({ screenings, openId }: Props) {
             boxSizing: 'border-box',
           }}
         >
-          {selectedHasFilmNotes ? (
-            <>
-              <h2
-                className="font-mono"
-                style={{
-                  fontSize: 10,
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: '#888',
-                  marginBottom: 10,
-                }}
-              >
-                {t.screening.filmNotes}
-              </h2>
-              <p
-                className="font-mono whitespace-pre-wrap"
-                style={{
-                  fontSize: 13,
-                  lineHeight: 1.55,
-                  color: '#c8c4bc',
-                  margin: 0,
-                }}
-              >
-                {(selectedScreening.description ?? '').trim()}
-              </p>
-            </>
-          ) : null}
-          {selectedHasExternalLinks ? (
-            <ScreeningExternalLinksRow
-              doubanUrl={selectedScreening.douban_url}
-              letterboxdUrl={selectedScreening.letterboxd_url}
-              labels={{ linkDouban: t.screening.linkDouban, linkLetterboxd: t.screening.linkLetterboxd }}
-              className={selectedHasFilmNotes ? 'mt-3' : ''}
-            />
-          ) : null}
+          <h2
+            className="font-mono"
+            style={{
+              fontSize: 10,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: '#888',
+              marginBottom: 10,
+            }}
+          >
+            {t.screening.filmNotes}
+          </h2>
+          <p
+            className="font-mono whitespace-pre-wrap"
+            style={{
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: '#c8c4bc',
+              margin: 0,
+            }}
+          >
+            {(selectedScreening.description ?? '').trim()}
+          </p>
         </section>
       ) : null}
 

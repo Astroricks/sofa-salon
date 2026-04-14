@@ -1,7 +1,9 @@
 'use client';
 
+import { DoubanMark, LetterboxdMark } from '@/components/ScreeningLinkIcons';
 import { useLocale } from '@/components/LocaleProvider';
 import { screeningDisplayDirector, screeningDisplayTitle } from '@/lib/screening-display';
+import { safeHttpUrl } from '@/lib/safe-http-url';
 
 interface Screening {
   id: string;
@@ -14,6 +16,8 @@ interface Screening {
   director?: string;
   director_en?: string;
   duration_minutes?: number;
+  douban_url?: string | null;
+  letterboxd_url?: string | null;
 }
 
 interface Props {
@@ -57,6 +61,11 @@ export default function ScreeningCard({
     displayDirector || null,
     screening.duration_minutes ? `${screening.duration_minutes} min` : null,
   ].filter(Boolean);
+
+  const doubanHref = safeHttpUrl(screening.douban_url);
+  const letterboxdHref = safeHttpUrl(screening.letterboxd_url);
+  const linkIconClass =
+    'flex shrink-0 items-center justify-center opacity-90 ring-1 ring-transparent transition hover:opacity-100 hover:ring-[#e8c84a]/35 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#e8c84a]/60';
 
   return (
     <div
@@ -125,6 +134,39 @@ export default function ScreeningCard({
         {metaParts.length > 0 && (
           <div className="film-meta truncate" title={metaParts.join(' · ')}>
             {metaParts.join(' · ').toUpperCase()}
+          </div>
+        )}
+        {(doubanHref || letterboxdHref) && (
+          <div
+            className="mt-0.5 mb-3 flex flex-wrap items-center gap-1"
+            data-testid="screening-card-external-icons"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            {doubanHref ? (
+              <a
+                href={doubanHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${linkIconClass} overflow-hidden rounded-[4px]`}
+                aria-label={t.screening.linkDouban}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DoubanMark size="sm" />
+              </a>
+            ) : null}
+            {letterboxdHref ? (
+              <a
+                href={letterboxdHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${linkIconClass} h-5 w-5 overflow-hidden rounded-full bg-inherit`}
+                aria-label={t.screening.linkLetterboxd}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <LetterboxdMark size="sm" />
+              </a>
+            ) : null}
           </div>
         )}
         <div
