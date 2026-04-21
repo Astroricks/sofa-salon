@@ -32,6 +32,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const { data: existing } = await supabase
+    .from('waitlist')
+    .select('id')
+    .eq('screening_id', screeningId)
+    .eq('user_id', user.id)
+    .eq('status', 'waiting')
+    .maybeSingle();
+  if (existing) {
+    return NextResponse.json({ error: 'Already on waitlist' }, { status: 400 });
+  }
+
   const { count } = await supabase
     .from('waitlist')
     .select('*', { count: 'exact', head: true })
