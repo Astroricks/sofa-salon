@@ -47,6 +47,10 @@ describe('getT', () => {
   it('returns nav keys for both locales', () => {
     expect(getT('en').nav.home).toBe('Home');
     expect(getT('zh').nav.home).toBe('首页');
+    expect(getT('en').nav.pastScreenings).toBe('Past Screenings');
+    expect(getT('zh').nav.pastScreenings).toBe('往期放映');
+    expect(getT('en').nav.pastScreeningsHref).toContain('letterboxd.com');
+    expect(getT('zh').nav.pastScreeningsHref).toContain('docs.google.com');
   });
 
   it('returns admin ticker keys for both locales', () => {

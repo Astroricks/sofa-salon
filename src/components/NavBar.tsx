@@ -147,6 +147,14 @@ export default function NavBar() {
               <Link href="/" className={linkClass(pathname === '/')}>
                 {t.nav.home}
               </Link>
+              <a
+                href={t.nav.pastScreeningsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass(false)}
+              >
+                {t.nav.pastScreenings}
+              </a>
               <Link href="/profile" className={linkClass(!!pathname?.startsWith('/profile'))}>
                 {t.nav.profile}
               </Link>
@@ -195,6 +203,15 @@ export default function NavBar() {
                     >
                       {t.nav.home}
                     </Link>
+                    <a
+                      href={t.nav.pastScreeningsHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={linkClass(false) + ' px-4'}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.nav.pastScreenings}
+                    </a>
                     <Link
                       href="/profile"
                       className={linkClass(!!pathname?.startsWith('/profile')) + ' px-4'}
@@ -224,13 +241,24 @@ export default function NavBar() {
             </div>
           </>
         ) : (
-          <Link
-            href="/auth/login"
-            className="bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-8 min-h-[44px] flex items-center hover:opacity-85 active:scale-[0.97] transition-all"
-            style={{ borderRadius: 0 }}
-          >
-            {t.nav.signIn}
-          </Link>
+          <>
+            <a
+              href={t.nav.pastScreeningsHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${linkClass(false)} max-w-[min(140px,28vw)] sm:max-w-[180px] truncate`}
+              title={t.nav.pastScreenings}
+            >
+              {t.nav.pastScreenings}
+            </a>
+            <Link
+              href="/auth/login"
+              className="bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-8 min-h-[44px] flex items-center hover:opacity-85 active:scale-[0.97] transition-all"
+              style={{ borderRadius: 0 }}
+            >
+              {t.nav.signIn}
+            </Link>
+          </>
         )}
       </div>
     </header>

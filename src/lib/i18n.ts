@@ -26,6 +26,8 @@ export const tEn = {
     admin: 'Admin',
     signIn: 'Sign in',
     logOut: 'Log out',
+    pastScreenings: 'Past Screenings',
+    pastScreeningsHref: 'https://letterboxd.com/ziggyzaggy/list/ziggygraph-screened/',
   },
   home: {
     sectionLabel: 'UPCOMING SCREENINGS',
@@ -314,6 +316,9 @@ export const tZh = {
     admin: '管理',
     signIn: '登录',
     logOut: '退出',
+    pastScreenings: '往期放映',
+    pastScreeningsHref:
+      'https://docs.google.com/spreadsheets/d/1lrEE5G72IrhtxurPoYcLOJP2YKwGXGduKA44nYsjQ-M/edit?gid=0#gid=0',
   },
   home: {
     sectionLabel: '即将放映',
