@@ -107,6 +107,7 @@ export default function SeatMap({
     setPendingSeatKeys([]);
     setCancelSelection(new Set());
     setConfirmMultiOpen(false);
+    setWaitlistJoinModalOpen(false);
     setCancelModalReservations(null);
     setPendingSqueeze(null);
     setAdminDetailReservation(null);
@@ -117,6 +118,7 @@ export default function SeatMap({
   const MAX_PENDING_SEATS = 10;
   const [pendingSeatKeys, setPendingSeatKeys] = useState<string[]>([]);
   const [confirmMultiOpen, setConfirmMultiOpen] = useState(false);
+  const [waitlistJoinModalOpen, setWaitlistJoinModalOpen] = useState(false);
   const [pendingSqueeze, setPendingSqueeze] = useState<string | null>(null);
   const [adminDetailReservation, setAdminDetailReservation] = useState<Reservation | null>(null);
   const [guestPeekReservation, setGuestPeekReservation] = useState<Reservation | null>(null);
@@ -392,6 +394,11 @@ export default function SeatMap({
   const myWaitlistEntry = waitlistEntries.find(
     (e) => e.user_id === currentUser?.id
   );
+  /** Guests may not join waitlist with a seat; admin + ?testSqueeze=1 can (solo testing). */
+  const canShowJoinWaitlistButton =
+    allFull &&
+    !myWaitlistEntry &&
+    (myReservations.length === 0 || (isAdmin && testSqueeze));
   const wechatFilled =
     currentUserProfile?.wechat_id != null &&
     String(currentUserProfile.wechat_id).trim() !== '';
@@ -462,26 +469,70 @@ export default function SeatMap({
     }
   };
 
-  const joinWaitlist = async () => {
+  const openWaitlistJoinModal = () => {
+    if (!currentUser) {
+      router.push(`/auth/login?redirect=${encodeURIComponent(`/screening/${screeningId}`)}`);
+      return;
+    }
+    if (!wechatFilled) {
+      router.push('/profile/setup');
+      return;
+    }
+    if (myWaitlistEntry || loading) return;
+    setWaitlistJoinModalOpen(true);
+  };
+
+  const performJoinWaitlist = async () => {
     if (!currentUser || myWaitlistEntry || loading) return;
     if (!wechatFilled) {
       router.push('/profile/setup');
       return;
     }
+    setWaitlistJoinModalOpen(false);
     setLoading(true);
-    await fetch('/api/waitlist/join', {
+    const res = await fetch('/api/waitlist/join', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ screeningId }),
     });
     setLoading(false);
-    const { data } = await createClient()
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const err = data?.error;
+      setSeatError(typeof err === 'string' ? err : t.screening.waitlistJoinFailed);
+      setTimeout(() => setSeatError(null), 8000);
+      return;
+    }
+    const { data: wl } = await createClient()
       .from('waitlist')
       .select('id, position, user_id, profiles(display_name, avatar_config)')
       .eq('screening_id', screeningId)
       .eq('status', 'waiting')
       .order('position', { ascending: true });
-    setWaitlistEntries((data as unknown as WaitlistEntry[]) ?? []);
+    setWaitlistEntries((wl as unknown as WaitlistEntry[]) ?? []);
+    router.refresh();
+    await onReservationsChange?.();
+  };
+
+  const leaveWaitlist = async () => {
+    if (!myWaitlistEntry || loading) return;
+    setLoading(true);
+    const res = await fetch('/api/waitlist/leave', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ screeningId }),
+    });
+    setLoading(false);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      const msg = typeof body?.error === 'string' ? body.error : t.screening.waitlistLeaveFailed;
+      setSeatError(msg);
+      setTimeout(() => setSeatError(null), 8000);
+      return;
+    }
+    await fetchWaitlist();
+    router.refresh();
+    await onReservationsChange?.();
   };
 
   const allSeats = room.furniture.flatMap((p) => getSeatPositions(p));
@@ -939,10 +990,10 @@ export default function SeatMap({
                       <span className="font-mono text-[10px] text-[#444444]">#{entry.position}</span>
                     </div>
                   ))}
-                  {allFull && !myWaitlistEntry && myReservations.length === 0 && (
+                  {canShowJoinWaitlistButton && (
                     <button
                       type="button"
-                      onClick={joinWaitlist}
+                      onClick={openWaitlistJoinModal}
                       className="border-2 border-dashed border-[#c8b0e8] bg-transparent hover:border-[#c084fc] hover:text-[#c084fc] hover:opacity-95 w-12 h-14 flex items-center justify-center text-[#c8b0e8] transition-colors font-mono text-xl min-w-[44px] min-h-[44px]"
                       style={{ borderRadius: 0 }}
                     >
@@ -950,6 +1001,17 @@ export default function SeatMap({
                     </button>
                   )}
                 </div>
+                {myWaitlistEntry && (
+                  <button
+                    type="button"
+                    onClick={leaveWaitlist}
+                    disabled={loading}
+                    className="mt-3 w-full font-mono text-[10px] tracking-[0.2em] uppercase py-2 px-3 min-h-[44px] border border-[#f87171] text-[#f87171] hover:bg-[#f87171]/10 transition-colors disabled:opacity-50"
+                    style={{ borderRadius: 0 }}
+                  >
+                    {loading ? t.common.loading : t.screening.leaveWaitlist}
+                  </button>
+                )}
                 {waitlistMode === 'auto' && (
                   <p className="font-mono text-[13px] text-[#444444]">
                     {t.screening.ifSomeoneCancels}
@@ -1069,6 +1131,51 @@ export default function SeatMap({
         loading={loading}
         isMobile={isMobile}
       />
+
+      {waitlistJoinModalOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70"
+          onClick={() => !loading && setWaitlistJoinModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="waitlist-join-title"
+        >
+          <div
+            className="bg-[#0f0f0f] border border-[#e8c84a] p-6 w-full max-w-sm relative"
+            style={{ borderRadius: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2
+              id="waitlist-join-title"
+              className="font-serif text-lg italic text-[#e8c84a] mb-2"
+            >
+              {t.screening.waitlistJoinTitle}
+            </h2>
+            <p className="font-mono text-[12px] text-[#888888] mb-6 leading-relaxed">
+              {t.screening.waitlistJoinBody}
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => !loading && setWaitlistJoinModalOpen(false)}
+                className="flex-1 border border-[#2a2a2a] text-[#888888] font-mono text-[10px] tracking-[0.2em] uppercase py-3 min-h-[44px] hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"
+                style={{ borderRadius: 0 }}
+              >
+                {t.screening.cancel}
+              </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => void performJoinWaitlist()}
+                className="flex-1 bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase py-3 min-h-[44px] hover:opacity-85 active:scale-[0.97] disabled:opacity-60 transition-all"
+                style={{ borderRadius: 0 }}
+              >
+                {loading ? t.common.loading : t.screening.waitlistJoinConfirm}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Easter egg: video + single yellow Confirm; after Confirm, user sees the real cancel modal where they can cancel or not */}
       {showCancelEasterEgg && pendingCancelListEasterEgg.length > 0 && (

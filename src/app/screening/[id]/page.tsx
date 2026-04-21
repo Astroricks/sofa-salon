@@ -25,6 +25,17 @@ export default async function ScreeningPage({
 }) {
   const { id } = await params;
   const sp = await searchParams;
+  const squeezeTestParam = (() => {
+    if (!sp) return undefined;
+    const o = sp as Record<string, string | string[] | undefined>;
+    const pick = (key: string) => {
+      const v = o[key];
+      if (typeof v === 'string') return v;
+      if (Array.isArray(v) && typeof v[0] === 'string') return v[0];
+      return undefined;
+    };
+    return pick('testSqueeze') ?? pick('testsqueeze');
+  })();
   const supabase = await createClient();
   const cookieStore = await cookies();
   const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
@@ -60,7 +71,7 @@ export default async function ScreeningPage({
     ? await supabase.from('profiles').select('wechat_id, is_admin, no_show_count').eq('id', user.id).single()
     : { data: null };
   const isAdmin = userProfile?.is_admin === true;
-  const testSqueeze = isAdmin && sp?.testSqueeze === '1';
+  const testSqueeze = isAdmin && squeezeTestParam === '1';
 
   const admin = createAdminClient();
   let reservations: unknown[] | null = null;
