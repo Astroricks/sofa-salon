@@ -158,6 +158,14 @@ export default function NavBar() {
               >
                 {t.nav.pastScreenings}
               </a>
+              <a
+                href={t.nav.developedByHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass(false)}
+              >
+                {t.nav.developedBy}
+              </a>
               <Link href="/profile" className={linkClass(!!pathname?.startsWith('/profile'))}>
                 {t.nav.profile}
               </Link>
@@ -215,6 +223,15 @@ export default function NavBar() {
                     >
                       {t.nav.pastScreenings}
                     </a>
+                    <a
+                      href={t.nav.developedByHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={linkClass(false) + ' px-4'}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.nav.developedBy}
+                    </a>
                     <Link
                       href="/profile"
                       className={linkClass(!!pathname?.startsWith('/profile')) + ' px-4'}
@@ -253,6 +270,15 @@ export default function NavBar() {
               title={t.nav.pastScreenings}
             >
               {t.nav.pastScreenings}
+            </a>
+            <a
+              href={t.nav.developedByHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${linkClass(false)} max-w-[min(160px,32vw)] sm:max-w-[220px] truncate`}
+              title={t.nav.developedBy}
+            >
+              {t.nav.developedBy}
             </a>
             <Link
               href="/auth/login"

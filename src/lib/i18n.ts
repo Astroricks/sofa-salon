@@ -28,6 +28,8 @@ export const tEn = {
     logOut: 'Log out',
     pastScreenings: 'Past Screenings',
     pastScreeningsHref: 'https://letterboxd.com/ziggyzaggy/list/ziggygraph-screened/',
+    developedBy: 'Developed by: Eve',
+    developedByHref: 'https://eveshi.vercel.app/',
   },
   home: {
     sectionLabel: 'UPCOMING SCREENINGS',
@@ -330,6 +332,8 @@ export const tZh = {
     pastScreenings: '往期放映',
     pastScreeningsHref:
       'https://docs.google.com/spreadsheets/d/1lrEE5G72IrhtxurPoYcLOJP2YKwGXGduKA44nYsjQ-M/edit?gid=0#gid=0',
+    developedBy: '开发者：471',
+    developedByHref: 'https://eveshi.vercel.app/',
   },
   home: {
     sectionLabel: '即将放映',
