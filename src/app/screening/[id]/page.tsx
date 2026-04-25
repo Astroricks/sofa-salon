@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { getT, type Locale } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import { fetchScreeningDetailRow } from '@/lib/fetch-screening-detail-row';
+import { fetchAttendanceCounts } from '@/lib/attendance';
 import BackButton from '@/components/BackButton';
 import SeatMap from '@/components/SeatMap';
 import GhostSeatManager from '@/components/GhostSeatManager';
@@ -77,11 +78,24 @@ export default async function ScreeningPage({
   let reservations: unknown[] | null = null;
   let waitlist: unknown[] | null = null;
 
+  type ReservationRow = {
+    user_id?: string | null;
+    profiles?: {
+      display_name?: string | null;
+      avatar_config?: unknown;
+      wechat_id?: string | null;
+      no_show_count?: number | null;
+    } | null;
+    [k: string]: unknown;
+  };
+  const RESERVATION_SELECT =
+    'id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count)';
+
   if (admin) {
     const [res, wl] = await Promise.all([
       admin
         .from('reservations')
-        .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count, attendance_count)')
+        .select(RESERVATION_SELECT)
         .eq('screening_id', id),
       admin
         .from('waitlist')
@@ -92,13 +106,12 @@ export default async function ScreeningPage({
     ]);
     reservations = res.data ?? [];
     waitlist = wl.data ?? [];
-    type P = { profiles?: { display_name?: string | null; avatar_config?: unknown; wechat_id?: string | null; no_show_count?: number | null; attendance_count?: number | null } | null; [k: string]: unknown };
     if (!isAdmin) {
-      const list = reservations as P[];
+      const list = reservations as ReservationRow[];
       reservations = list.map((row) => {
         const p = row.profiles;
         const safeProfile = p
-          ? { display_name: p.display_name ?? null, avatar_config: p.avatar_config, no_show_count: p.no_show_count ?? 0, attendance_count: p.attendance_count ?? 0 }
+          ? { display_name: p.display_name ?? null, avatar_config: p.avatar_config, no_show_count: p.no_show_count ?? 0 }
           : null;
         return { ...row, profiles: safeProfile };
       });
@@ -107,7 +120,7 @@ export default async function ScreeningPage({
     const [res, wl] = await Promise.all([
       supabase
         .from('reservations')
-        .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count, attendance_count)')
+        .select(RESERVATION_SELECT)
         .eq('screening_id', id),
       supabase
         .from('waitlist')
@@ -119,6 +132,21 @@ export default async function ScreeningPage({
     reservations = res.data ?? [];
     waitlist = wl.data ?? [];
   }
+
+  // Merge badge attendance_count from SECURITY DEFINER RPC (migration 27).
+  const userIds = Array.from(
+    new Set(((reservations ?? []) as ReservationRow[]).map((r) => r.user_id).filter((x): x is string => typeof x === 'string' && x.length > 0))
+  );
+  const attendanceMap =
+    userIds.length > 0 ? await fetchAttendanceCounts(supabase, userIds) : new Map<string, number>();
+  reservations = ((reservations ?? []) as ReservationRow[]).map((row) => {
+    const uid = typeof row.user_id === 'string' ? row.user_id : '';
+    const p = row.profiles;
+    const nextProfile = p
+      ? { ...p, attendance_count: attendanceMap.get(uid) ?? 0 }
+      : p ?? null;
+    return { ...row, profiles: nextProfile };
+  });
 
   const dateStr = new Date(screening.screening_at).toLocaleDateString('en-GB', {
     weekday: 'short',

@@ -25,6 +25,7 @@ import SqueezeModal from '@/components/SqueezeModal';
 import { useLocale } from '@/components/LocaleProvider';
 import { useRouter } from 'next/navigation';
 import { getBadgeLevel } from '@/lib/badges';
+import { fetchAttendanceCounts } from '@/lib/attendance';
 
 interface Reservation {
   id: string;
@@ -122,6 +123,7 @@ export default function SeatMap({
   const [pendingSqueeze, setPendingSqueeze] = useState<string | null>(null);
   const [adminDetailReservation, setAdminDetailReservation] = useState<Reservation | null>(null);
   const [guestPeekReservation, setGuestPeekReservation] = useState<Reservation | null>(null);
+
   const [cancelSelection, setCancelSelection] = useState<Set<string>>(new Set());
   const cancelSelectionRef = useRef<Set<string>>(cancelSelection);
   cancelSelectionRef.current = cancelSelection;
@@ -202,14 +204,27 @@ export default function SeatMap({
 
     async function fetchReservations() {
       const select = isAdmin
-        ? 'id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count, attendance_count)'
-        : 'id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, created_at, profiles(display_name, avatar_config, no_show_count, attendance_count)';
+        ? 'id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count)'
+        : 'id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, created_at, profiles(display_name, avatar_config, no_show_count)';
       const { data } = await supabase
         .from('reservations')
         .select(select)
         .eq('screening_id', screeningId);
-      setReservations((data as unknown as Reservation[]) ?? []);
+      const rows = (data as unknown as Reservation[]) ?? [];
+      const userIds = Array.from(new Set(rows.map((r) => r.user_id).filter((u): u is string => typeof u === 'string' && u.length > 0)));
+      const counts = userIds.length > 0 ? await fetchAttendanceCounts(supabase, userIds) : new Map<string, number>();
+      const withCounts: Reservation[] = rows.map((r) => ({
+        ...r,
+        profiles: r.profiles
+          ? { ...r.profiles, attendance_count: counts.get(r.user_id) ?? 0 }
+          : r.profiles,
+      }));
+      setReservations(withCounts);
     }
+
+    // Always refresh once on mount: SSR payload can be stale relative to RPC,
+    // and when onReservationsChange is set we never refetched until a realtime event.
+    void fetchReservations();
 
     const ch1 = supabase
       .channel(`reservations:${screeningId}`)

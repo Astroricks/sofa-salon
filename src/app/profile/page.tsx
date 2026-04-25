@@ -12,6 +12,7 @@ import ProfileForm from './ProfileForm';
 import BadgeWithPopup from './BadgeWithPopup';
 import TickerUserSubmit from '@/components/TickerUserSubmit';
 import WatchHistory from './WatchHistory';
+import { fetchAttendanceCountForUser } from '@/lib/attendance';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -25,12 +26,12 @@ export default async function ProfilePage() {
   const [profileRes, pastReservationsRes, ratingsRes] = await Promise.all([
     supabase
       .from('profiles')
-      .select('display_name, wechat_id, avatar_config, no_show_count, attendance_count')
+      .select('display_name, wechat_id, avatar_config, no_show_count')
       .eq('id', user.id)
       .single(),
     supabase
       .from('reservations')
-      .select('screening_id, seat_key, is_squeezed, screenings(id, title, screening_at, duration_minutes)')
+      .select('screening_id, seat_key, is_squeezed, attended, is_ghost, screenings(id, title, screening_at, duration_minutes)')
       .eq('user_id', user.id),
     supabase
       .from('screening_ratings')
@@ -48,6 +49,8 @@ export default async function ProfilePage() {
     screening_id: string;
     seat_key?: string;
     is_squeezed?: boolean;
+    attended?: boolean | null;
+    is_ghost?: boolean | null;
     screenings: { id: string; title: string; screening_at: string; duration_minutes?: number | null }[] | { id: string; title: string; screening_at: string; duration_minutes?: number | null } | null;
   };
   const now = Date.now();
@@ -83,6 +86,7 @@ export default async function ProfilePage() {
       });
     }
   }
+  const badgeAttendanceCount = await fetchAttendanceCountForUser(supabase, user.id);
   pastScreenings.sort((a, b) => new Date(b.screeningAt).getTime() - new Date(a.screeningAt).getTime());
   const upcomingReservations = Array.from(upcomingByScreening.entries())
     .map(([screeningId, { title, screeningAt, seatCount }]) => ({ screeningId, title, screeningAt, seatCount }))
@@ -123,7 +127,7 @@ export default async function ProfilePage() {
           )}
           <div className="flex items-center gap-2 mt-1.5 font-mono text-[12px] text-[#888888]">
             {(() => {
-              const badge = getBadgeLevel(profile?.attendance_count ?? 0);
+              const badge = getBadgeLevel(badgeAttendanceCount);
               return (
                 <BadgeWithPopup
                   badge={{ emoji: badge.emoji, label: badge.label, labelEn: badge.labelEn }}

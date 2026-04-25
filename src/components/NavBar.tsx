@@ -11,6 +11,7 @@ import AvatarSVG from '@/components/AvatarSVG';
 import PigeonIcon from '@/components/PigeonIcon';
 import { jsonToConfig } from '@/lib/avatar';
 import { getBadgeLevel } from '@/lib/badges';
+import { fetchAttendanceCountForUser } from '@/lib/attendance';
 
 function AvatarAndBadge({
   noShowCount,
@@ -53,8 +54,8 @@ export default function NavBar() {
     avatar_config: unknown;
     is_admin?: boolean;
     no_show_count?: number | null;
-    attendance_count?: number | null;
   } | null>(null);
+  const [attendanceCount, setAttendanceCount] = useState(0);
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -67,15 +68,17 @@ export default function NavBar() {
   useEffect(() => {
     if (!user) {
       setProfile(null);
+      setAttendanceCount(0);
       return;
     }
     const supabase = createClient();
     supabase
       .from('profiles')
-      .select('display_name, avatar_config, is_admin, no_show_count, attendance_count')
+      .select('display_name, avatar_config, is_admin, no_show_count')
       .eq('id', user.id)
       .single()
       .then(({ data }) => setProfile(data ?? null));
+    fetchAttendanceCountForUser(supabase, user.id).then((n) => setAttendanceCount(n));
   }, [user, pathname]);
 
   const signOut = async () => {
@@ -138,7 +141,7 @@ export default function NavBar() {
             >
               <AvatarAndBadge
                 noShowCount={profile?.no_show_count ?? 0}
-                attendanceCount={profile?.attendance_count ?? 0}
+                attendanceCount={attendanceCount}
                 profile={profile}
                 size={32}
               />

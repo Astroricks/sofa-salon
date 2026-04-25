@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
+import { fetchAttendanceCounts } from '@/lib/attendance';
 
 /**
  * Returns seatmap data (room, reservations with profiles, waitlist).
@@ -51,7 +52,7 @@ export async function GET(
       .single(),
     admin
       .from('reservations')
-      .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count, attendance_count)')
+      .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count)')
       .eq('screening_id', screeningId),
     admin
       .from('waitlist')
@@ -91,17 +92,26 @@ export async function GET(
       }
     : null;
 
-  type ProfileRow = { display_name: string | null; avatar_config: unknown; wechat_id?: string | null; no_show_count?: number | null; attendance_count?: number | null };
-  const reservationList: Array<Record<string, unknown> & { profiles?: ProfileRow | ProfileRow[] | null }> = reservations ?? [];
+  type ProfileRow = { display_name: string | null; avatar_config: unknown; wechat_id?: string | null; no_show_count?: number | null };
+  const reservationList: Array<Record<string, unknown> & { user_id?: string | null; profiles?: ProfileRow | ProfileRow[] | null }> = reservations ?? [];
+  const userIds = Array.from(
+    new Set(
+      reservationList
+        .map((row) => row.user_id)
+        .filter((x): x is string => typeof x === 'string' && x.length > 0)
+    )
+  );
+  const attendanceMap = userIds.length > 0 ? await fetchAttendanceCounts(admin, userIds) : new Map<string, number>();
   const mappedReservations = reservationList.map((row) => {
     const rawProfiles = row.profiles;
     const p = Array.isArray(rawProfiles) ? rawProfiles[0] ?? null : (rawProfiles ?? null);
+    const uid = typeof row.user_id === 'string' ? row.user_id : '';
     const profile = p
       ? {
           display_name: p.display_name ?? null,
           avatar_config: p.avatar_config,
           no_show_count: p.no_show_count ?? 0,
-          attendance_count: p.attendance_count ?? 0,
+          attendance_count: attendanceMap.get(uid) ?? 0,
           ...(isAdmin && { wechat_id: p.wechat_id ?? null }),
         }
       : null;

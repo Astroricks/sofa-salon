@@ -10,7 +10,7 @@ type EmailTestType = 'welcome' | 'reminder' | 'waitlist_promotion' | 'post_event
 export default function AdminTestPage() {
   const { t, locale } = useLocale();
   const [noShowCount, setNoShowCount] = useState(0);
-  const [attendanceCount, setAttendanceCount] = useState(0);
+  const [badgeFromHistory, setBadgeFromHistory] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function AdminTestPage() {
       })
       .then((data) => {
         setNoShowCount(data.no_show_count ?? 0);
-        setAttendanceCount(data.attendance_count ?? 0);
+        setBadgeFromHistory(data.badge_attendance_count ?? 0);
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoaded(true));
@@ -37,7 +37,7 @@ export default function AdminTestPage() {
     const res = await fetch('/api/admin/test-profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ no_show_count: noShowCount, attendance_count: attendanceCount }),
+      body: JSON.stringify({ no_show_count: noShowCount }),
     });
     setSaving(false);
     if (!res.ok) {
@@ -45,9 +45,14 @@ export default function AdminTestPage() {
       setError((data as { error?: string }).error ?? 'Failed');
       return;
     }
+    const r2 = await fetch('/api/admin/test-profile');
+    if (r2.ok) {
+      const d2 = await r2.json();
+      setBadgeFromHistory(d2.badge_attendance_count ?? 0);
+    }
   };
 
-  const badge = getBadgeLevel(attendanceCount);
+  const badge = getBadgeLevel(badgeFromHistory);
 
   const sendTestEmail = async (type: EmailTestType) => {
     setEmailResult(null);
@@ -130,17 +135,12 @@ export default function AdminTestPage() {
           {t.admin.testNoShowCountHelp}
         </p>
 
-        <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] mb-2">
+        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] mb-1">
           {t.admin.testAttendanceCount}
-        </label>
-        <input
-          type="number"
-          min={0}
-          value={loaded ? attendanceCount : ''}
-          onChange={(e) => setAttendanceCount(Math.max(0, parseInt(e.target.value, 10) || 0))}
-          className="w-20 bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-3 py-2 outline-none focus:border-[#e8c84a] mb-4"
-          style={{ borderRadius: 0 }}
-        />
+        </p>
+        <p className="font-mono text-[13px] text-[#e8e4dc] mb-2 tabular-nums">
+          {loaded ? badgeFromHistory : '—'}
+        </p>
         <p className="font-mono text-[11px] text-[#666] mb-4">
           {t.admin.testAttendanceCountHelp}
         </p>

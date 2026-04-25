@@ -1,11 +1,11 @@
 # Supabase SQL migrations
 
-All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order (00 → 21).
+All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order (00 → 21, then 25 → 28 as needed).
 
 ## Migration safety
 
 - **Always back up your database before running migrations on production.** Use Supabase Dashboard → Database → Backups, or `pg_dump`, before applying new scripts.
-- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then 01 through 21.
+- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then 01 through 21, then 25 through 28 as applicable.
 - **If a migration fails halfway**, the database may be in an inconsistent state. Read the failed SQL file to understand what it was doing; fix data or schema manually if needed, then re-run only the failed file (or the remainder) after fixing.
 
 ## Order of execution
@@ -20,7 +20,7 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 05 | `05-reservations-allow-ghost-multi.sql` | Allows multiple ghost seats per screening; relaxes unique constraints for ghosts. |
 | 06 | `06-reservations-multi-seat-per-user.sql` | Allows one user to hold multiple seats per screening (e.g. for friends); unique on `(screening_id, seat_key)`. Run after 05. |
 | 07 | `07-reservations-attended.sql` | Adds `attended` to `reservations` (admin marks attendance / no-show). |
-| 08 | `08-profiles-no-show-badge.sql` | Adds `no_show_count`, `consecutive_attendances`, `attendance_count` (blood bar, pigeon, badges). |
+| 08 | `08-profiles-no-show-badge.sql` | Adds `no_show_count`, `consecutive_attendances` (blood bar / pigeon). Badges: **27** RPCs. |
 | 09 | `09-ticker-user-messages.sql` | Table `ticker_user_messages` for user-submitted ticker lines. |
 | 10 | `10-config-cancel-no-show-hours.sql` | Config key `cancel_no_show_hours` (default 24) for “no-show” cutoff. |
 | 11 | `11-reservations-drop-screening-user-unique.sql` | Drops `(screening_id, user_id)` unique on reservations (required after multi-seat). |
@@ -34,12 +34,16 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 19 | `19-reschedule-options-any-user.sql` | Allows any authenticated user to insert reschedule options. Run after 18. |
 | 20 | `20-support-logs-status.sql` | Adds `status` (open/fixed/dismissed), `resolved_at`, `resolved_by` to `support_logs`. Run after 18. |
 | 21 | `21-rooms-background.sql` | Adds `room_background_id` to `rooms` (default `'warm'`). |
+| 25 | `25-profiles-admin-update-rls.sql` | RLS: admins may `UPDATE` any `profiles` row (guest pigeon / consecutive fields). Requires **03** (`current_user_is_admin`). |
+| 26 | `26-user-attendance-counts-view.sql` | Optional view `user_attendance_counts` + indexes (ad-hoc SQL). App uses **27** RPCs. |
+| 27 | `27-user-attendance-counts-functions.sql` | `SECURITY DEFINER` RPCs for badge counts. `EXECUTE` for `anon`, `authenticated`, `service_role`. |
+| 28 | `28-drop-profiles-attendance-count.sql` | Drops legacy `profiles.attendance_count` if present (fresh **08** no longer adds it). |
 
 ## New environment setup
 
 1. Create a Supabase project and note **Project URL** and **anon** / **service_role** keys.
 2. Run **00** first. If `ALTER PUBLICATION supabase_realtime` fails (e.g. already added), skip those two lines.
-3. Run **01** through **21** in order. Skip **17** unless you need the one-off repair query.
+3. Run **01** through **21**, then **25**–**28** in order. Skip **17** unless you need the one-off repair query. **28** is harmless if `attendance_count` was never on `profiles`.
 4. Set an admin: `UPDATE profiles SET is_admin = TRUE WHERE id = '<your-auth-user-uuid>';`
 
 ## Notes

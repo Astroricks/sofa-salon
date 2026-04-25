@@ -6,6 +6,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { sendCancelConfirmation, sendWaitlistPromotion } from '@/lib/email';
+import { fetchAttendanceCounts } from '@/lib/attendance';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -169,15 +170,31 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Return updated reservations so the client can show the promoted person (and current state) immediately
+  // Return updated reservations so the client can show the promoted person (and current state) immediately.
+  // Payload shape: merge RPC badge count into profiles for seat map clients.
   const adminClient = (await import('@/lib/supabase/admin')).createAdminClient();
   let updatedReservations: unknown[] | null = null;
   if (adminClient) {
     const { data: rows } = await adminClient
       .from('reservations')
-      .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count, attendance_count)')
+      .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, attended, created_at, profiles(display_name, avatar_config, wechat_id, no_show_count)')
       .eq('screening_id', screeningId);
-    updatedReservations = rows ?? [];
+    type ResRow = { user_id?: string | null; profiles?: Record<string, unknown> | null; [k: string]: unknown };
+    const list = (rows ?? []) as unknown as ResRow[];
+    const userIds = Array.from(
+      new Set(
+        list
+          .map((r) => r.user_id)
+          .filter((u): u is string => typeof u === 'string' && u.length > 0)
+      )
+    );
+    const counts = userIds.length > 0 ? await fetchAttendanceCounts(adminClient, userIds) : new Map<string, number>();
+    updatedReservations = list.map((r) => ({
+      ...r,
+      profiles: r.profiles
+        ? { ...r.profiles, attendance_count: counts.get(typeof r.user_id === 'string' ? r.user_id : '') ?? 0 }
+        : r.profiles,
+    }));
   }
 
   return NextResponse.json({

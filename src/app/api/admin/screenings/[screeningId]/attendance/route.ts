@@ -38,6 +38,13 @@ export async function PATCH(
     );
   }
 
+  const { data: priorRows } = await supabase
+    .from('reservations')
+    .select('attended')
+    .eq('screening_id', screeningId)
+    .eq('user_id', targetUserId);
+  const hadAnyAttendedTrue = priorRows?.some((r) => r.attended === true) ?? false;
+
   const { error: updateError } = await supabase
     .from('reservations')
     .update({ attended: attended ?? null })
@@ -54,34 +61,45 @@ export async function PATCH(
     .eq('id', targetUserId)
     .single();
 
+  const noShow = Number(profile?.no_show_count ?? 0);
+  const consecutive = Number(profile?.consecutive_attendances ?? 0);
+
   if (attended === true) {
-    const nextConsecutive = (Number(profile?.consecutive_attendances ?? 0) + 1);
-    const noShow = Number(profile?.no_show_count ?? 0);
+    if (hadAnyAttendedTrue) {
+      return NextResponse.json({ ok: true });
+    }
+    const nextConsecutive = consecutive + 1;
     const isPigeon = noShow >= 3;
     const updates: {
       consecutive_attendances: number;
       no_show_count?: number;
-      attendance_count?: number;
     } = {
       consecutive_attendances: isPigeon && nextConsecutive >= 2 ? 0 : nextConsecutive,
     };
     if (isPigeon && nextConsecutive >= 2) {
       updates.no_show_count = 0;
     }
-    const { data: p } = await supabase
+    const { error: profileErr } = await supabase
       .from('profiles')
-      .select('attendance_count')
-      .eq('id', targetUserId)
-      .single();
-    updates.attendance_count = Math.max(0, Number(p?.attendance_count ?? 0) + 1);
-    await supabase.from('profiles').update(updates).eq('id', targetUserId);
-  } else if (attended === false) {
-    const current = Math.min(Number(profile?.no_show_count ?? 0), 3);
-    const next = Math.min(current + 1, 3);
-    await supabase
-      .from('profiles')
-      .update({ consecutive_attendances: 0, no_show_count: next })
+      .update(updates)
       .eq('id', targetUserId);
+    if (profileErr) {
+      return NextResponse.json({ error: profileErr.message }, { status: 500 });
+    }
+  } else if (attended === false) {
+    const current = Math.min(noShow, 3);
+    const next = Math.min(current + 1, 3);
+    const updates = {
+      consecutive_attendances: 0,
+      no_show_count: next,
+    };
+    const { error: profileErr } = await supabase
+      .from('profiles')
+      .update(updates)
+      .eq('id', targetUserId);
+    if (profileErr) {
+      return NextResponse.json({ error: profileErr.message }, { status: 500 });
+    }
   }
 
   return NextResponse.json({ ok: true });
