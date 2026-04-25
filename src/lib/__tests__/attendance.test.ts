@@ -1,5 +1,9 @@
 /** Unit tests for buildAttendanceMap and badge tiers (getBadgeLevel). */
-import { buildAttendanceMap } from '../attendance';
+import {
+  buildAttendanceMap,
+  shouldApplyNoShowForReservationRow,
+  shouldApplyNoShowForScreeningUser,
+} from '../attendance';
 import { getBadgeLevel } from '../badges';
 
 describe('buildAttendanceMap', () => {
@@ -52,5 +56,39 @@ describe('buildAttendanceMap', () => {
     expect(getBadgeLevel(map.get('gold') ?? 0).labelEn).toBe('Gold');
     expect(getBadgeLevel(map.get('diamond') ?? 0).labelEn).toBe('Diamond');
     expect(getBadgeLevel(map.get('unseen-user') ?? 0).labelEn).toBe('Sprout');
+  });
+});
+
+describe('shouldApplyNoShowForReservationRow', () => {
+  it('returns false when row was already no-show (idempotent)', () => {
+    expect(shouldApplyNoShowForReservationRow(false, false)).toBe(false);
+  });
+
+  it('returns false when another seat in the screening is already no-show', () => {
+    expect(shouldApplyNoShowForReservationRow(null, true)).toBe(false);
+    expect(shouldApplyNoShowForReservationRow(true, true)).toBe(false);
+  });
+
+  it('returns true when first no-show mark for this screening (this row, no sibling false)', () => {
+    expect(shouldApplyNoShowForReservationRow(null, false)).toBe(true);
+    expect(shouldApplyNoShowForReservationRow(true, false)).toBe(true);
+    expect(shouldApplyNoShowForReservationRow(undefined, false)).toBe(true);
+  });
+});
+
+describe('shouldApplyNoShowForScreeningUser', () => {
+  it('returns false when every prior row was already false (bulk idempotent)', () => {
+    expect(shouldApplyNoShowForScreeningUser([false])).toBe(false);
+    expect(shouldApplyNoShowForScreeningUser([false, false])).toBe(false);
+  });
+
+  it('returns true when any prior row was not yet false', () => {
+    expect(shouldApplyNoShowForScreeningUser([null])).toBe(true);
+    expect(shouldApplyNoShowForScreeningUser([true])).toBe(true);
+    expect(shouldApplyNoShowForScreeningUser([false, null])).toBe(true);
+  });
+
+  it('returns false for empty prior list', () => {
+    expect(shouldApplyNoShowForScreeningUser([])).toBe(false);
   });
 });

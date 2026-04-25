@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { shouldApplyNoShowForScreeningUser } from '@/lib/attendance';
 import { NextRequest, NextResponse } from 'next/server';
 
 /** Set attended for all reservations of one user in this screening. One row per user in admin UI. */
@@ -87,6 +88,10 @@ export async function PATCH(
       return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }
   } else if (attended === false) {
+    const priorValues = (priorRows ?? []).map((r) => r.attended);
+    if (!shouldApplyNoShowForScreeningUser(priorValues)) {
+      return NextResponse.json({ ok: true });
+    }
     const current = Math.min(noShow, 3);
     const next = Math.min(current + 1, 3);
     const updates = {

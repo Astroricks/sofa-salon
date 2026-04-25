@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { shouldApplyNoShowForReservationRow } from '@/lib/attendance';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(
@@ -56,6 +57,9 @@ export async function PATCH(
   const thisWasAttendedTrue = before.attended === true;
   const hadScreeningAttendedCounted = thisWasAttendedTrue || otherSeatHadAttendedTrue;
 
+  const otherSeatHadAttendedFalse =
+    siblings?.some((r) => r.id !== before.id && r.attended === false) ?? false;
+
   const { data: reservation, error } = await supabase
     .from('reservations')
     .update({ attended: attended ?? null })
@@ -102,6 +106,9 @@ export async function PATCH(
       return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }
   } else if (attended === false) {
+    if (!shouldApplyNoShowForReservationRow(before.attended, otherSeatHadAttendedFalse)) {
+      return NextResponse.json(reservation);
+    }
     const current = Math.min(noShow, 3);
     const next = Math.min(current + 1, 3);
     const updates = {

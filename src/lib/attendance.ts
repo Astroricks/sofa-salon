@@ -65,3 +65,28 @@ export async function fetchAttendanceCountForUser(
   const n = Number(data ?? 0);
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
 }
+
+/**
+ * Admin marks one reservation `attended=false`. Bump `no_show_count` at most once per user per
+ * screening: skip if this row was already false (retries), or another seat for the same screening
+ * was already marked no-show (multi-seat bookings).
+ */
+export function shouldApplyNoShowForReservationRow(
+  previousThisRow: boolean | null | undefined,
+  otherSiblingSeatAlreadyFalse: boolean
+): boolean {
+  if (previousThisRow === false) return false;
+  if (otherSiblingSeatAlreadyFalse) return false;
+  return true;
+}
+
+/**
+ * Admin bulk-sets all reservations for (screening, user) to `attended=false`. Bump at most once per
+ * screening: if every row was already false, skip (idempotent replays / retries).
+ */
+export function shouldApplyNoShowForScreeningUser(
+  priorAttendedValues: ReadonlyArray<boolean | null | undefined>
+): boolean {
+  if (priorAttendedValues.length === 0) return false;
+  return !priorAttendedValues.every((a) => a === false);
+}
