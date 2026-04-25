@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { FurniturePiece, Decoration } from '@/lib/furniture';
 import SeatMap from '@/components/SeatMap';
+import { fetchAttendanceCounts } from '@/lib/attendance';
 
 interface Props {
   screening: {
@@ -60,7 +61,7 @@ export default function SeatDrawer({ screening, onClose }: Props) {
           .single(),
         supabase
           .from('reservations')
-          .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, profiles(display_name, avatar_config, no_show_count, attendance_count)')
+          .select('id, seat_key, user_id, is_squeezed, is_ghost, ghost_name, ghost_avatar, friend_avatar, profiles(display_name, avatar_config, no_show_count)')
           .eq('screening_id', screening.id),
         supabase
           .from('waitlist')
@@ -71,7 +72,27 @@ export default function SeatDrawer({ screening, onClose }: Props) {
       ]);
 
       setCurrentUser(user ? { id: user.id } : null);
-      setReservations(reservationsData ?? []);
+      type ReservationWithProfile = {
+        user_id?: string | null;
+        profiles?: { attendance_count?: number; [k: string]: unknown } | null;
+        [k: string]: unknown;
+      };
+      const resRows = (reservationsData ?? []) as unknown as ReservationWithProfile[];
+      const userIds = Array.from(
+        new Set(
+          resRows
+            .map((r) => r.user_id)
+            .filter((u): u is string => typeof u === 'string' && u.length > 0)
+        )
+      );
+      const counts = userIds.length > 0 ? await fetchAttendanceCounts(supabase, userIds) : new Map<string, number>();
+      const resWithCounts = resRows.map((r) => ({
+        ...r,
+        profiles: r.profiles
+          ? { ...r.profiles, attendance_count: counts.get(typeof r.user_id === 'string' ? r.user_id : '') ?? 0 }
+          : r.profiles,
+      }));
+      setReservations(resWithCounts);
       setWaitlist(waitlistData ?? []);
 
       const s = screeningData as {

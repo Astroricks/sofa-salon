@@ -35,6 +35,27 @@ export async function PATCH(
     );
   }
 
+  const { data: before } = await supabase
+    .from('reservations')
+    .select('id, screening_id, user_id, attended')
+    .eq('id', id)
+    .single();
+
+  if (!before?.user_id || !before.screening_id) {
+    return NextResponse.json({ error: 'Reservation not found' }, { status: 404 });
+  }
+
+  const { data: siblings } = await supabase
+    .from('reservations')
+    .select('id, attended')
+    .eq('screening_id', before.screening_id)
+    .eq('user_id', before.user_id);
+
+  const otherSeatHadAttendedTrue =
+    siblings?.some((r) => r.id !== before.id && r.attended === true) ?? false;
+  const thisWasAttendedTrue = before.attended === true;
+  const hadScreeningAttendedCounted = thisWasAttendedTrue || otherSeatHadAttendedTrue;
+
   const { data: reservation, error } = await supabase
     .from('reservations')
     .update({ attended: attended ?? null })
@@ -47,33 +68,49 @@ export async function PATCH(
   }
 
   const userId = reservation?.user_id;
-  if (userId) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('no_show_count, consecutive_attendances')
-      .eq('id', userId)
-      .single();
+  if (!userId) {
+    return NextResponse.json(reservation);
+  }
 
-    if (attended === true) {
-      const nextConsecutive = (Number(profile?.consecutive_attendances ?? 0) + 1);
-      const noShow = Number(profile?.no_show_count ?? 0);
-      const isPigeon = noShow >= 3;
-      const updates: { consecutive_attendances: number; no_show_count?: number; attendance_count?: number } = {
-        consecutive_attendances: isPigeon && nextConsecutive >= 2 ? 0 : nextConsecutive,
-      };
-      if (isPigeon && nextConsecutive >= 2) {
-        updates.no_show_count = 0;
-      }
-      const { data: p } = await supabase.from('profiles').select('attendance_count').eq('id', userId).single();
-      updates.attendance_count = Math.max(0, Number(p?.attendance_count ?? 0) + 1);
-      await supabase.from('profiles').update(updates).eq('id', userId);
-    } else if (attended === false) {
-      const current = Math.min(Number(profile?.no_show_count ?? 0), 3);
-      const next = Math.min(current + 1, 3);
-      await supabase
-        .from('profiles')
-        .update({ consecutive_attendances: 0, no_show_count: next })
-        .eq('id', userId);
+  const { data: guestProfile } = await supabase
+    .from('profiles')
+    .select('no_show_count, consecutive_attendances')
+    .eq('id', userId)
+    .single();
+
+  const noShow = Number(guestProfile?.no_show_count ?? 0);
+  const consecutive = Number(guestProfile?.consecutive_attendances ?? 0);
+
+  if (attended === true) {
+    const firstTimeCountedForScreening = !hadScreeningAttendedCounted;
+    if (!firstTimeCountedForScreening) {
+      return NextResponse.json(reservation);
+    }
+    const nextConsecutive = consecutive + 1;
+    const isPigeon = noShow >= 3;
+    const updates: {
+      consecutive_attendances: number;
+      no_show_count?: number;
+    } = {
+      consecutive_attendances: isPigeon && nextConsecutive >= 2 ? 0 : nextConsecutive,
+    };
+    if (isPigeon && nextConsecutive >= 2) {
+      updates.no_show_count = 0;
+    }
+    const { error: profileErr } = await supabase.from('profiles').update(updates).eq('id', userId);
+    if (profileErr) {
+      return NextResponse.json({ error: profileErr.message }, { status: 500 });
+    }
+  } else if (attended === false) {
+    const current = Math.min(noShow, 3);
+    const next = Math.min(current + 1, 3);
+    const updates = {
+      consecutive_attendances: 0,
+      no_show_count: next,
+    };
+    const { error: profileErr } = await supabase.from('profiles').update(updates).eq('id', userId);
+    if (profileErr) {
+      return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }
   }
 
