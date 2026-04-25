@@ -11,6 +11,7 @@ interface Screening {
   description?: string;
   douban_url?: string;
   letterboxd_url?: string;
+  trailer_url?: string;
   room_id?: string;
   year?: number;
   director?: string;

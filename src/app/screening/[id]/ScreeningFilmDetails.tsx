@@ -5,16 +5,26 @@ interface Props {
   description: string;
   doubanUrl?: string | null;
   letterboxdUrl?: string | null;
+  trailerUrl?: string | null;
   labels: {
     filmNotes: string;
     linkDouban: string;
     linkLetterboxd: string;
+    linkTrailer: string;
   };
 }
 
-export default function ScreeningFilmDetails({ description, doubanUrl, letterboxdUrl, labels }: Props) {
+export default function ScreeningFilmDetails({
+  description,
+  doubanUrl,
+  letterboxdUrl,
+  trailerUrl,
+  labels,
+}: Props) {
   const hasDesc = description.trim().length > 0;
-  const hasLinks = Boolean(safeHttpUrl(doubanUrl) || safeHttpUrl(letterboxdUrl));
+  const hasLinks = Boolean(
+    safeHttpUrl(doubanUrl) || safeHttpUrl(letterboxdUrl) || safeHttpUrl(trailerUrl)
+  );
   if (!hasDesc && !hasLinks) return null;
 
   return (
@@ -33,7 +43,12 @@ export default function ScreeningFilmDetails({ description, doubanUrl, letterbox
         <ScreeningExternalLinksRow
           doubanUrl={doubanUrl}
           letterboxdUrl={letterboxdUrl}
-          labels={{ linkDouban: labels.linkDouban, linkLetterboxd: labels.linkLetterboxd }}
+          trailerUrl={trailerUrl}
+          labels={{
+            linkDouban: labels.linkDouban,
+            linkLetterboxd: labels.linkLetterboxd,
+            linkTrailer: labels.linkTrailer,
+          }}
           className={hasDesc ? 'mt-4' : ''}
         />
       )}

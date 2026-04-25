@@ -22,6 +22,7 @@ const SELECT_DETAIL = `
         room_id,
         douban_url,
         letterboxd_url,
+        trailer_url,
         ${ROOMS_EMBED}
       `;
 

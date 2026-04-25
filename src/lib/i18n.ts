@@ -89,7 +89,7 @@ export const tEn = {
     adminOnly: 'Admin only.',
     backToAdmin: '← Admin',
     pastEventEditHint:
-      'Past event: only film details (director, duration, description, English title/director, Douban / Letterboxd links) can be edited. Main title and screening time are locked.',
+      'Past event: only film details (director, duration, description, English title/director, Douban / Letterboxd / trailer links) can be edited. Main title and screening time are locked.',
     altLanguageTitle: 'Alternative language title (English)',
     altLanguageTitleHint:
       'Shown on the homepage, ticker, and screening page when the site language is English. Leave blank to use the main title.',
@@ -107,6 +107,8 @@ export const tEn = {
     screeningDoubanUrlHint: 'Paste the film’s Douban URL, or just the host and path (https:// is added if missing).',
     screeningLetterboxdUrl: 'Letterboxd — page link (optional)',
     screeningLetterboxdUrlHint: 'Paste the film’s Letterboxd URL.',
+    screeningTrailerUrl: 'Trailer — video link (optional)',
+    screeningTrailerUrlHint: 'YouTube or any https:// link to a trailer or clip.',
     groupAnnouncementTitle: 'Group announcement',
     generateGroupAnnouncement: 'Generate group announcement',
     generateWithSignup: 'Generate with signup status',
@@ -307,6 +309,7 @@ export const tEn = {
     filmNotes: 'About this screening',
     linkDouban: 'Douban',
     linkLetterboxd: 'Letterboxd',
+    linkTrailer: 'Trailer',
   },
   seatMap: {
     loadingSeats: 'Loading seats...',
@@ -388,7 +391,7 @@ export const tZh = {
     adminOnly: '仅管理员。',
     backToAdmin: '← 返回管理',
     pastEventEditHint:
-      '已结束活动：仅可编辑影片详情（导演、时长、描述、英文标题/导演、豆瓣 / Letterboxd 链接），主标题与放映时间不可修改。',
+      '已结束活动：仅可编辑影片详情（导演、时长、描述、英文标题/导演、豆瓣 / Letterboxd / 预告片链接），主标题与放映时间不可修改。',
     altLanguageTitle: '英文标题（备选）',
     altLanguageTitleHint:
       '当网站语言为英文时，在首页、弹幕与活动页显示；留空则仍显示主标题。',
@@ -406,6 +409,8 @@ export const tZh = {
     screeningDoubanUrlHint: '粘贴豆瓣影片页完整链接，或只填域名与路径（未写 https:// 时会自动补上）。',
     screeningLetterboxdUrl: 'Letterboxd — 影片页链接（可选）',
     screeningLetterboxdUrlHint: '粘贴 Letterboxd 影片页链接。',
+    screeningTrailerUrl: '预告片 — 视频链接（可选）',
+    screeningTrailerUrlHint: 'YouTube 或其他 https:// 预告片、片段链接。',
     groupAnnouncementTitle: '一键生成群公告',
     generateGroupAnnouncement: '生成群公告',
     generateWithSignup: '生成报名信息（含实时状态）',
@@ -604,6 +609,7 @@ export const tZh = {
     filmNotes: '影片说明',
     linkDouban: '豆瓣',
     linkLetterboxd: 'Letterboxd',
+    linkTrailer: '预告片',
   },
   seatMap: {
     loadingSeats: '加载座位中...',

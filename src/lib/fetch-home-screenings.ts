@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 const SELECT_HOME =
-  'id, title, screening_at, description, room_id, year, director, duration_minutes, douban_url, letterboxd_url, rooms(furniture_json)';
+  'id, title, screening_at, description, room_id, year, director, duration_minutes, douban_url, letterboxd_url, trailer_url, rooms(furniture_json)';
 
 /** Upcoming active screenings for the home page. */
 export async function fetchUpcomingScreeningsForHome(client: SupabaseClient) {

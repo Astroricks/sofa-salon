@@ -18,6 +18,7 @@ export default function NewScreeningPage() {
   const [description, setDescription] = useState('');
   const [doubanUrl, setDoubanUrl] = useState('');
   const [letterboxdUrl, setLetterboxdUrl] = useState('');
+  const [trailerUrl, setTrailerUrl] = useState('');
   const [screeningAt, setScreeningAt] = useState('');
   const [roomId, setRoomId] = useState('');
   const [waitlistMode, setWaitlistMode] = useState<'auto' | 'manual'>('auto');
@@ -58,6 +59,7 @@ export default function NewScreeningPage() {
         director_en: directorEn.trim() || null,
         douban_url: doubanUrl.trim(),
         letterboxd_url: letterboxdUrl.trim(),
+        trailer_url: trailerUrl.trim(),
       }),
     });
     setLoading(false);
@@ -221,6 +223,20 @@ export default function NewScreeningPage() {
             style={{ borderRadius: 0 }}
           />
           <p className="font-mono text-[11px] text-[#555] mt-1.5">{t.admin.screeningLetterboxdUrlHint}</p>
+        </div>
+        <div>
+          <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
+            {t.admin.screeningTrailerUrl}
+          </label>
+          <input
+            type="text"
+            value={trailerUrl}
+            onChange={(e) => setTrailerUrl(e.target.value)}
+            className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a] placeholder:text-[#444444]"
+            placeholder="https://www.youtube.com/watch?v=…"
+            style={{ borderRadius: 0 }}
+          />
+          <p className="font-mono text-[11px] text-[#555] mt-1.5">{t.admin.screeningTrailerUrlHint}</p>
         </div>
         <div>
           <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">

@@ -46,3 +46,26 @@ export function LetterboxdMark({
     />
   );
 }
+
+/** Compact YouTube-style mark (trailer link); inline SVG, no asset file. */
+export function TrailerYoutubeMark({
+  className,
+  size = 'md',
+}: {
+  className?: string;
+  size?: 'sm' | 'md';
+}) {
+  const dim = size === 'sm' ? 20 : 24;
+  return (
+    <svg
+      width={dim}
+      height={dim}
+      viewBox="0 0 24 24"
+      className={`shrink-0 ${className ?? ''}`}
+      aria-hidden
+    >
+      <rect x="1" y="3" width="22" height="18" rx="4" fill="#FF0000" />
+      <path d="M10 8.5v7l6-3.5-6-3.5z" fill="#fff" />
+    </svg>
+  );
+}

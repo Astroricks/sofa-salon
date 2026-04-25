@@ -21,6 +21,7 @@ const tMock = {
   screening: {
     linkDouban: 'Douban',
     linkLetterboxd: 'Letterboxd',
+    linkTrailer: 'Trailer',
   },
 };
 
@@ -45,6 +46,7 @@ describe('ScreeningCard external icons', () => {
           ...baseScreening,
           douban_url: 'https://movie.douban.com/subject/1291999/',
           letterboxd_url: 'https://letterboxd.com/film/chungking-express/',
+          trailer_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         }}
         reservedCount={0}
         totalSeats={4}
@@ -55,9 +57,11 @@ describe('ScreeningCard external icons', () => {
 
     const douban = screen.getByRole('link', { name: 'Douban' });
     const lb = screen.getByRole('link', { name: 'Letterboxd' });
+    const trailer = screen.getByRole('link', { name: 'Trailer' });
     expect(douban).toHaveAttribute('href', 'https://movie.douban.com/subject/1291999/');
     expect(douban).toHaveAttribute('target', '_blank');
     expect(lb).toHaveAttribute('href', 'https://letterboxd.com/film/chungking-express/');
+    expect(trailer).toHaveAttribute('href', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
     expect(screen.queryByText('Douban')).not.toBeInTheDocument();
     expect(screen.queryByText('Letterboxd')).not.toBeInTheDocument();
   });

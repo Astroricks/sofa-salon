@@ -35,7 +35,7 @@ export default async function EditScreeningPage({
   const { data: screening } = await supabase
     .from('screenings')
     .select(
-      'id, title, description, screening_at, room_id, squeeze_note, waitlist_mode, is_active, year, director, duration_minutes, douban_url, letterboxd_url'
+      'id, title, description, screening_at, room_id, squeeze_note, waitlist_mode, is_active, year, director, duration_minutes, douban_url, letterboxd_url, trailer_url'
     )
     .eq('id', id)
     .single();
@@ -61,6 +61,7 @@ export default async function EditScreeningPage({
           description: screening.description ?? '',
           douban_url: (screening as { douban_url?: string | null }).douban_url ?? '',
           letterboxd_url: (screening as { letterboxd_url?: string | null }).letterboxd_url ?? '',
+          trailer_url: (screening as { trailer_url?: string | null }).trailer_url ?? '',
           screening_at: screening.screening_at ?? '',
           room_id: screening.room_id ?? '',
           squeeze_note: screening.squeeze_note ?? '',

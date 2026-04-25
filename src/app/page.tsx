@@ -42,6 +42,7 @@ export default async function HomePage({
       duration_minutes?: number | null;
       douban_url?: string | null;
       letterboxd_url?: string | null;
+      trailer_url?: string | null;
     };
     const alt = altLocaleById[s.id];
     return {
@@ -57,6 +58,7 @@ export default async function HomePage({
       duration_minutes: row.duration_minutes ?? undefined,
       douban_url: row.douban_url ?? undefined,
       letterboxd_url: row.letterboxd_url ?? undefined,
+      trailer_url: row.trailer_url ?? undefined,
       reservedCount,
       totalSeats: totalSeats > 0 ? totalSeats : undefined,
     };

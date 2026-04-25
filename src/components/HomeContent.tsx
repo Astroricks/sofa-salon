@@ -12,6 +12,7 @@ interface Screening {
   description?: string;
   douban_url?: string;
   letterboxd_url?: string;
+  trailer_url?: string;
   room_id?: string;
   year?: number;
   director?: string;
@@ -134,6 +135,7 @@ export default function HomeContent({ screenings, openId }: Props) {
                   duration_minutes: s.duration_minutes,
                   douban_url: s.douban_url,
                   letterboxd_url: s.letterboxd_url,
+                  trailer_url: s.trailer_url,
                 }}
                 reservedCount={s.reservedCount}
                 totalSeats={s.totalSeats}

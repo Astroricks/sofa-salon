@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
     director_en,
     douban_url,
     letterboxd_url,
+    trailer_url,
   } = body;
 
   if (!title || !screening_at) {
@@ -55,6 +56,7 @@ export async function POST(req: NextRequest) {
     duration_minutes: duration_minutes != null ? Number(duration_minutes) : null,
     douban_url: String(douban_url ?? '').trim(),
     letterboxd_url: String(letterboxd_url ?? '').trim(),
+    trailer_url: String(trailer_url ?? '').trim(),
     created_by: user.id,
   };
 

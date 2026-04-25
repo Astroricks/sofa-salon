@@ -17,6 +17,7 @@ interface ScreeningFormData {
   description: string;
   douban_url: string;
   letterboxd_url: string;
+  trailer_url: string;
   screening_at: string;
   room_id: string;
   squeeze_note: string;
@@ -54,6 +55,7 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
   const [description, setDescription] = useState(screening.description ?? '');
   const [doubanUrl, setDoubanUrl] = useState(screening.douban_url ?? '');
   const [letterboxdUrl, setLetterboxdUrl] = useState(screening.letterboxd_url ?? '');
+  const [trailerUrl, setTrailerUrl] = useState(screening.trailer_url ?? '');
   const [screeningAt, setScreeningAt] = useState(toLocalDatetimeLocal(screening.screening_at));
   const [roomId, setRoomId] = useState(screening.room_id);
   const [waitlistMode, setWaitlistMode] = useState<'auto' | 'manual'>(screening.waitlist_mode);
@@ -78,6 +80,7 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
           description,
           douban_url: doubanUrl.trim(),
           letterboxd_url: letterboxdUrl.trim(),
+          trailer_url: trailerUrl.trim(),
           screening_at: screening.screening_at,
           room_id: screening.room_id || null,
           squeeze_note: screening.squeeze_note ?? '',
@@ -94,6 +97,7 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
           description,
           douban_url: doubanUrl.trim(),
           letterboxd_url: letterboxdUrl.trim(),
+          trailer_url: trailerUrl.trim(),
           screening_at: new Date(screeningAt).toISOString(),
           room_id: roomId || null,
           squeeze_note: screening.squeeze_note ?? '',
@@ -287,6 +291,20 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
             style={{ borderRadius: 0 }}
           />
           <p className="font-mono text-[11px] text-[#555] mt-1.5">{t.admin.screeningLetterboxdUrlHint}</p>
+        </div>
+        <div>
+          <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
+            {t.admin.screeningTrailerUrl}
+          </label>
+          <input
+            type="text"
+            value={trailerUrl}
+            onChange={(e) => setTrailerUrl(e.target.value)}
+            className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a] placeholder:text-[#444444]"
+            placeholder="https://www.youtube.com/watch?v=…"
+            style={{ borderRadius: 0 }}
+          />
+          <p className="font-mono text-[11px] text-[#555] mt-1.5">{t.admin.screeningTrailerUrlHint}</p>
         </div>
         {!isPast && (
           <>

@@ -140,6 +140,7 @@ export async function PATCH(
     director_en,
     douban_url,
     letterboxd_url,
+    trailer_url,
   } = body;
 
   if (!title || !screening_at) {
@@ -180,6 +181,7 @@ export async function PATCH(
     duration_minutes: duration_minutes != null ? Number(duration_minutes) : null,
     douban_url: String(douban_url ?? '').trim(),
     letterboxd_url: String(letterboxd_url ?? '').trim(),
+    trailer_url: String(trailer_url ?? '').trim(),
   };
   if (typeof is_active === 'boolean') updates.is_active = is_active;
 

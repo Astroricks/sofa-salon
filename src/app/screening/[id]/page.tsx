@@ -50,7 +50,11 @@ export default async function ScreeningPage({
   if (!screening) notFound();
   const altLocaleById = await fetchScreeningAltLocaleByIds(supabase, [id]);
   const altRow = altLocaleById[id];
-  const links = screening as { douban_url?: string | null; letterboxd_url?: string | null };
+  const links = screening as {
+    douban_url?: string | null;
+    letterboxd_url?: string | null;
+    trailer_url?: string | null;
+  };
   const roomsRaw = screening.rooms;
   const roomData = Array.isArray(roomsRaw) ? roomsRaw[0] : roomsRaw;
   if (!roomData) {
@@ -185,10 +189,12 @@ export default async function ScreeningPage({
         description={filmDescription}
         doubanUrl={links.douban_url ?? ''}
         letterboxdUrl={links.letterboxd_url ?? ''}
+        trailerUrl={links.trailer_url ?? ''}
         labels={{
           filmNotes: t.screening.filmNotes,
           linkDouban: t.screening.linkDouban,
           linkLetterboxd: t.screening.linkLetterboxd,
+          linkTrailer: t.screening.linkTrailer,
         }}
       />
       <p className="font-pixel-cjk text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-6">

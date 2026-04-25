@@ -1,6 +1,6 @@
 'use client';
 
-import { DoubanMark, LetterboxdMark } from '@/components/ScreeningLinkIcons';
+import { DoubanMark, LetterboxdMark, TrailerYoutubeMark } from '@/components/ScreeningLinkIcons';
 import { useLocale } from '@/components/LocaleProvider';
 import { screeningDisplayDirector, screeningDisplayTitle } from '@/lib/screening-display';
 import { safeHttpUrl } from '@/lib/safe-http-url';
@@ -18,6 +18,7 @@ interface Screening {
   duration_minutes?: number;
   douban_url?: string | null;
   letterboxd_url?: string | null;
+  trailer_url?: string | null;
 }
 
 interface Props {
@@ -64,6 +65,7 @@ export default function ScreeningCard({
 
   const doubanHref = safeHttpUrl(screening.douban_url);
   const letterboxdHref = safeHttpUrl(screening.letterboxd_url);
+  const trailerHref = safeHttpUrl(screening.trailer_url);
   const linkIconClass =
     'flex shrink-0 items-center justify-center opacity-90 ring-1 ring-transparent transition hover:opacity-100 hover:ring-[#e8c84a]/35 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#e8c84a]/60';
 
@@ -136,7 +138,7 @@ export default function ScreeningCard({
             {metaParts.join(' · ').toUpperCase()}
           </div>
         )}
-        {(doubanHref || letterboxdHref) && (
+        {(doubanHref || letterboxdHref || trailerHref) && (
           <div
             className="mt-0.5 mb-3 flex flex-wrap items-center gap-1"
             data-testid="screening-card-external-icons"
@@ -165,6 +167,18 @@ export default function ScreeningCard({
                 onClick={(e) => e.stopPropagation()}
               >
                 <LetterboxdMark size="sm" />
+              </a>
+            ) : null}
+            {trailerHref ? (
+              <a
+                href={trailerHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkIconClass}
+                aria-label={t.screening.linkTrailer}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <TrailerYoutubeMark size="sm" />
               </a>
             ) : null}
           </div>

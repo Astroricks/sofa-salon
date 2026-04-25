@@ -1,15 +1,17 @@
 import { safeHttpUrl } from '@/lib/safe-http-url';
 
-import { DoubanMark, LetterboxdMark } from '@/components/ScreeningLinkIcons';
+import { DoubanMark, LetterboxdMark, TrailerYoutubeMark } from '@/components/ScreeningLinkIcons';
 
 interface Labels {
   linkDouban: string;
   linkLetterboxd: string;
+  linkTrailer: string;
 }
 
 interface Props {
   doubanUrl?: string | null;
   letterboxdUrl?: string | null;
+  trailerUrl?: string | null;
   labels: Labels;
   className?: string;
 }
@@ -21,16 +23,18 @@ const chipBase =
   'hover:bg-white/[0.06] hover:text-[#e8e4dc] ' +
   'focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[#e8c84a]/60';
 
-/** Shared Douban / Letterboxd link row (server or client). */
+/** Shared Douban / Letterboxd / trailer link row (server or client). */
 export default function ScreeningExternalLinksRow({
   doubanUrl,
   letterboxdUrl,
+  trailerUrl,
   labels,
   className = '',
 }: Props) {
   const doubanHref = safeHttpUrl(doubanUrl);
   const letterboxdHref = safeHttpUrl(letterboxdUrl);
-  if (!doubanHref && !letterboxdHref) return null;
+  const trailerHref = safeHttpUrl(trailerUrl);
+  if (!doubanHref && !letterboxdHref && !trailerHref) return null;
 
   return (
     <div
@@ -63,6 +67,20 @@ export default function ScreeningExternalLinksRow({
             <LetterboxdMark />
           </span>
           <span>{labels.linkLetterboxd}</span>
+        </a>
+      )}
+      {trailerHref && (
+        <a
+          href={trailerHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={chipBase}
+          aria-label={labels.linkTrailer}
+        >
+          <span className="shrink-0 transition-opacity group-hover:opacity-95">
+            <TrailerYoutubeMark />
+          </span>
+          <span>{labels.linkTrailer}</span>
         </a>
       )}
     </div>
