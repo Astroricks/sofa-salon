@@ -1,7 +1,11 @@
 /**
  * Unit tests for lib/ticker-utils.ts — ticker rating display and constants.
  */
-import { RECENT_RATINGS_SCREENING_LIMIT, starsFromAvg } from '../ticker-utils';
+import {
+  formatSystemEventTickerMessage,
+  RECENT_RATINGS_SCREENING_LIMIT,
+  starsFromAvg,
+} from '../ticker-utils';
 
 describe('RECENT_RATINGS_SCREENING_LIMIT', () => {
   it('is 2 so only the two most recent past screenings show ratings on ticker', () => {
@@ -41,5 +45,25 @@ describe('starsFromAvg', () => {
 
   it('clamps over 5 to 5 full stars', () => {
     expect(starsFromAvg(5.9)).toBe('★★★★★');
+  });
+});
+
+describe('formatSystemEventTickerMessage', () => {
+  it('uses title_en in English for rescheduled', () => {
+    expect(
+      formatSystemEventTickerMessage('en', 'rescheduled', '你好世界', 'Hello World')
+    ).toBe('Event "Hello World" has been rescheduled');
+  });
+
+  it('uses primary title in Chinese for rescheduled', () => {
+    expect(formatSystemEventTickerMessage('zh', 'rescheduled', '你好世界', 'Hello World')).toBe(
+      '活动《你好世界》已改期'
+    );
+  });
+
+  it('uses title_en in English for cancelled', () => {
+    expect(
+      formatSystemEventTickerMessage('en', 'cancelled', '/foo/', 'Bar Film')
+    ).toBe('Event "Bar Film" has been cancelled');
   });
 });

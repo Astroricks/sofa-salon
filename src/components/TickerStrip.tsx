@@ -3,13 +3,14 @@
 import type { Locale } from '@/lib/i18n';
 import { useLocale } from '@/components/LocaleProvider';
 import { screeningDisplayTitle } from '@/lib/screening-display';
-import { starsFromAvg } from '@/lib/ticker-utils';
+import { formatSystemEventTickerMessage, starsFromAvg } from '@/lib/ticker-utils';
 
 export type TickerSegmentItem =
   | string
   | { type: 'event'; screening_at: string; title: string; title_en?: string | null }
   | { type: 'past_thanks'; title: string; title_en?: string | null }
-  | { type: 'rating_row'; title: string; title_en?: string | null; avg: number };
+  | { type: 'rating_row'; title: string; title_en?: string | null; avg: number }
+  | { type: 'system_event'; variant: 'cancelled' | 'rescheduled'; title: string; title_en?: string | null };
 
 /** Format event segment(s) in the viewer's local time (runs in browser = correct timezone). */
 function formatEventSegmentStrings(
@@ -101,6 +102,8 @@ function expandSegments(
       out.push(...pastThanksStrings(item, locale));
     } else if (item.type === 'rating_row') {
       out.push(ratingRowString(item, locale));
+    } else if (item.type === 'system_event') {
+      out.push(formatSystemEventTickerMessage(locale, item.variant, item.title, item.title_en));
     }
   }
   return out;

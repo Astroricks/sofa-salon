@@ -50,7 +50,11 @@ export default async function Ticker() {
     supabase.from('screenings').select('id, title').lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(RECENT_RATINGS_SCREENING_LIMIT),
     supabase.from('ticker_user_messages').select('content, user_id').eq('is_active', true).order('created_at', { ascending: true }),
     supabase.from('screenings').select('id, title').eq('is_active', true).lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(1).maybeSingle(),
-    supabase.from('ticker_system_events').select('type, title').gt('expires_at', nowIso).order('created_at', { ascending: false }),
+    supabase
+      .from('ticker_system_events')
+      .select('type, title, screening_id')
+      .gt('expires_at', nowIso)
+      .order('created_at', { ascending: false }),
   ]);
 
   const config: Record<string, string> = {};
@@ -90,10 +94,17 @@ export default async function Ticker() {
   const upcomingRows = (screeningsRes.data ?? []) as { id: string; screening_at: string; title: string }[];
   const ratingsRows = (ratingsRes.data ?? []) as { id: string; title: string }[];
   const pastRow = pastScreeningRes.data as { id?: string; title?: string } | null;
+  const systemEventRowsRaw = (systemEventsRes.data ?? []) as Array<{
+    screening_id?: string | null;
+  }>;
+  const systemEventScreeningIds = systemEventRowsRaw
+    .map((r) => r.screening_id)
+    .filter((id): id is string => typeof id === 'string' && id.length > 0);
   const altIds = [
     ...upcomingRows.map((r) => r.id),
     ...ratingsRows.map((r) => r.id),
     ...(pastRow?.id ? [pastRow.id] : []),
+    ...systemEventScreeningIds,
   ];
   const altLocaleById = await fetchScreeningAltLocaleByIds(supabase, altIds);
 
@@ -157,15 +168,19 @@ export default async function Ticker() {
     .map((r) => `${userDisplayNames[r.user_id] ?? '—'}：${r.content}`)
     .filter((s) => s.length > 0);
 
-  type SystemEventRow = { type: string; title: string };
+  type SystemEventRow = { type: string; title: string; screening_id: string | null };
   const systemEventRows = (systemEventsRes.data ?? []) as SystemEventRow[];
-  const systemEventSegments: string[] = showRescheduleCancelTicker
+  const systemEventSegments: TickerSegmentItem[] = showRescheduleCancelTicker
     ? systemEventRows.map((r) => {
-        const t = r.title || 'Event';
-        if (r.type === 'cancelled') {
-          return locale === 'zh' ? `活动《${t}》已取消` : `Event "${t}" has been cancelled`;
-        }
-        return locale === 'zh' ? `活动《${t}》已改期` : `Event "${t}" has been rescheduled`;
+        const sid = r.screening_id;
+        const title_en = sid ? altLocaleById[sid]?.title_en ?? null : null;
+        const variant = r.type === 'cancelled' ? ('cancelled' as const) : ('rescheduled' as const);
+        return {
+          type: 'system_event' as const,
+          variant,
+          title: r.title || 'Event',
+          title_en,
+        };
       })
     : [];
 
