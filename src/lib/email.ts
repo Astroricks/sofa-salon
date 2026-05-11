@@ -6,6 +6,7 @@ function getResend(): Resend | null {
   if (!key) return null;
   return new Resend(key);
 }
+/** Production: set `EMAIL_FROM` to an address on your Resend-verified sending domain. */
 const FROM = process.env.EMAIL_FROM ?? 'onboarding@resend.dev';
 
 /** Venue name for all emails (e.g. "Ziggy Graph"). From env so users know who the email is from. */

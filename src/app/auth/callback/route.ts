@@ -21,7 +21,8 @@ function getRedirectOrigin(request: Request): string {
 }
 
 /**
- * OAuth callback for Google (or other OAuth) sign-in.
+ * Auth callback: exchanges PKCE `code` for a session, then redirects to `next`.
+ * Used for Google OAuth and for password-recovery links when Supabase sends users here first.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

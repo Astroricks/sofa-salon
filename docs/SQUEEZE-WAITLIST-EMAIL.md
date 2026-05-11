@@ -69,7 +69,7 @@
 
 - **Resend** 已在项目里集成（`src/lib/email.ts`），用环境变量：
   - `RESEND_API_KEY`：在 Resend 后台拿 API Key。
-  - `EMAIL_FROM`：发件人邮箱（例如用 Resend 提供的域名或你自己验证的域名），不设则用 `onboarding@resend.dev`。
+  - `EMAIL_FROM`：发件人邮箱（例如用 Resend 验证过的域名下的地址）；不设则用 `onboarding@resend.dev`。
 - 已经实现的邮件：
   1. **选座确认**（`sendConfirmation`）：用户选座成功后发「Seat confirmed」。
   2. **候补升级**（`sendWaitlistPromotion`）：Auto 模式下候补第一人上位时发「You're in!」。

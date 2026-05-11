@@ -13,11 +13,14 @@ Supabase 只会把用户重定向到「已加入白名单」的地址；`redirec
 1. 打开 [Supabase Dashboard](https://supabase.com/dashboard) → 你的项目
 2. 左侧 **Authentication** → **URL Configuration**
 3. 在 **Redirect URLs** 里确保有：
-   - 本地：`http://localhost:3000/**` 或 `http://127.0.0.1:3000/**`
+   - 本地：必须包含**你实际用的 origin 和端口**，例如 `http://localhost:3000/**`、`http://localhost:3001/**`（Next 若跑在 3001 就加 3001）。
+   - 密码重置邮件里的 `redirectTo` 是本站 `/auth/callback?next=...`；若该 URL 不在白名单里，Supabase 会退回到 **Site URL**（你看到的 `redirect_to=http://localhost:3001/` 就是这样），邮件链接里的 `code` 会出现在首页而不是 `/auth/callback`，会话无法建立。请至少加一条：`http://localhost:3001/auth/callback**` 或用通配 **`http://localhost:3001/**`**。
    - 生产：`https://ziggygraph.vercel.app/**`（换成你的真实域名）
 4. 点 **Save**
 
 支持通配符：一条 `https://ziggygraph.vercel.app/**` 即可覆盖该域名下所有路径（如 `/auth/callback?next=/profile`）。
+
+**密码重置链接**：设计上只能**成功点一次**；再次点击会报 `otp_expired` / invalid link，这是预期（一次性 token）。项目中间件会把误落在首页的 `/?code=...` 转发到 `/auth/callback` 并进入设置新密码页；仍应在 Supabase 里把 **`/auth/callback`** 配进 Redirect URLs，避免依赖该兜底。
 
 ### 1.2 Site URL（建议改）
 

@@ -40,6 +40,14 @@ test.describe('Navigation', () => {
   });
 });
 
+test.describe('Auth login page', () => {
+  test('shows forgot-password control', async ({ page }) => {
+    await page.goto('/auth/login');
+    const body = page.locator('body');
+    await expect(body).toContainText(/Forgot password|忘记密码/i);
+  });
+});
+
 test.describe('Profile page (unauthenticated)', () => {
   test('shows ticker submit section or login when visiting /profile', async ({ page }) => {
     await page.goto('/profile');

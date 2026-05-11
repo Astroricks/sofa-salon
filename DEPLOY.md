@@ -91,7 +91,7 @@ git push -u origin main
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 是 | Supabase anon public key |
 | `SUPABASE_SERVICE_ROLE_KEY` | 否 | 用于 waitlist 升级、发邮件等，不填则部分后台功能不可用 |
 | `RESEND_API_KEY` | 否 | 发预约/候补邮件，不填则不发邮件 |
-| `EMAIL_FROM` | 否 | 发件人邮箱（用 Resend 时填） |
+| `EMAIL_FROM` | 否 | 发件人邮箱（用 Resend 发信时填）；要向任意收件人发信，须先在 Resend **Domains** 验证你的发信域名，再填该域名下的地址（见 `docs/SUPABASE-RESEND-SMTP.md`） |
 | `NEXT_PUBLIC_APP_NAME` | 否 | 应用名称，默认 "Sofa Salon" |
 | `NEXT_PUBLIC_APP_TAGLINE` | 否 | 副标题，默认 "Your host's living room" |
 
