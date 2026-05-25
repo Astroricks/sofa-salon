@@ -84,6 +84,9 @@ describe('sendAdminRemovedFromScreening', () => {
     expect(call.html).toContain('Sun, May 24, 2026');
     expect(call.html).toContain('Schedule conflict &lt;sorry&gt;');
     expect(call.html).not.toContain('<sorry>');
+    expect(call.html).toContain('background:#f7f4eb');
+    expect(call.html).toContain('color:#1a1a1a');
+    expect(call.html).not.toContain('background:#1a1a1a');
   });
 });
 
