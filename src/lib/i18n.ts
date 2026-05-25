@@ -71,7 +71,7 @@ export const tEn = {
     title: 'Profile',
     displayName: 'Display name',
     contactPlatformLabel: 'Preferred contact',
-    contactPlatformWechat: 'WeChat / 微信',
+    contactPlatformWechat: 'WeChat',
     contactPlatformWhatsapp: 'WhatsApp',
     contactPlatformInstagram: 'Instagram',
     contactPlatformDiscord: 'Discord',
