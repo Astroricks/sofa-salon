@@ -37,17 +37,27 @@ npm run lint
 
 ## 2. Build verification
 
-Run **before finishing every task**:
+Run **before finishing every task** (same gates Vercel uses on deploy).
+
+### 2a. Production build (required)
+
+```bash
+npm run build
+```
+
+- Must exit with **zero errors**. This runs full TypeScript checking (`Linting and checking validity of types`) across the app — errors that `npm run lint` and `npm test` alone will not catch.
+- If you changed or added dependencies, run `npm install` first, then `npm run build` again.
+
+### 2b. Dev server (required)
 
 ```bash
 npm run dev
 ```
 
 - The command must start without TypeScript compilation errors or runtime crashes.
-- If you changed or added dependencies, run `npm install` first, then `npm run dev` again.
 - If startup fails, check: missing env vars in `.env.local` (compare with `.env.example`), missing imports, circular dependencies.
 
-> **Note for AI agents:** You cannot open a browser. "Passes" here means `npm run dev` starts without error output. The user will do visual smoke-testing.
+> **Note for AI agents:** You cannot open a browser. "Passes" here means commands exit/start without error output. The user will do visual smoke-testing.
 
 ---
 
@@ -92,10 +102,11 @@ Before reporting a task as done, confirm **all** of the following:
 | # | Check | Command |
 |---|-------|---------|
 | 1 | Lint passes | `npm run lint` |
-| 2 | Dev server starts clean | `npm run dev` |
-| 3 | All unit tests pass | `npm test` |
-| 4 | E2E passes (if UI changed) | `npm run test:e2e` |
-| 5 | No unrelated files modified | Review your own diff |
+| 2 | Production build passes | `npm run build` |
+| 3 | Dev server starts clean | `npm run dev` |
+| 4 | All unit tests pass | `npm test` |
+| 5 | E2E passes (if UI changed) | `npm run test:e2e` |
+| 6 | No unrelated files modified | Review your own diff |
 
 If **any** check fails, fix it before reporting done. Test failures are signals, not noise.
 
@@ -118,7 +129,7 @@ These are project-specific conventions. Follow them for consistency:
 ## 6. Dependencies
 
 - **Do not add new npm packages** without stating why in your response. Prefer using what's already in `package.json`.
-- After adding a dependency: `npm install` → `npm run lint` → `npm run dev` → `npm test`.
+- After adding a dependency: `npm install` → `npm run lint` → `npm run build` → `npm run dev` → `npm test`.
 - Never install packages globally in the project.
 
 ---
