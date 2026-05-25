@@ -197,7 +197,7 @@ export async function sendAdminRemovedFromScreening(params: {
   const venue = getVenueName();
   const noteBlock =
     customMessage.trim() !== ''
-      ? `<p style="margin:16px 0;padding:12px;border-left:3px solid #e8c84a;background:#1a1a1a;">${escapeHtmlText(customMessage.trim())}</p>`
+      ? `<p style="margin:16px 0;padding:12px 16px;border-left:3px solid #e8c84a;background:#f7f4eb;color:#1a1a1a;font-size:14px;line-height:1.5;">${escapeHtmlText(customMessage.trim())}</p>`
       : '';
   const { data, error } = await resend.emails.send({
     from: FROM,
