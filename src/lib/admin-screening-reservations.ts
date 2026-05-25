@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { getProfileContact } from '@/lib/contact-platform';
+import { getProfileContact, type ProfileContactRow } from '@/lib/contact-platform';
 import {
   getSeatPositions,
   getSqueezePositions,
@@ -39,7 +39,7 @@ export async function findProfilesByDisplayName(
 
 /** Tie-breaker label for duplicate display names (includes platform when not WeChat). */
 export function profileMatchContactLine(
-  row: ProfileMatch,
+  row: ProfileContactRow,
   labels: Record<'wechat' | 'whatsapp' | 'instagram' | 'discord', string>
 ): string {
   const { platform, id } = getProfileContact(row);
