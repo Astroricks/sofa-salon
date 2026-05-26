@@ -1,7 +1,10 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { APP_NAME_PARTS } from '@/lib/config';
-import { RECENT_RATINGS_SCREENING_LIMIT } from '@/lib/ticker-utils';
+import {
+  RECENT_RATINGS_SCREENING_LIMIT,
+  tickerUserMessagesVisibleSince,
+} from '@/lib/ticker-utils';
 import type { Locale } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import TickerStrip, { type TickerSegmentItem } from '@/components/TickerStrip';
@@ -43,12 +46,18 @@ export default async function Ticker() {
   const hostLabel = locale === 'zh' ? '公告' : 'Announcement';
 
   const nowIso = new Date().toISOString();
+  const userMessagesSinceIso = tickerUserMessagesVisibleSince();
   const [configRows, customRows, screeningsRes, ratingsRes, userMessagesRes, pastScreeningRes, systemEventsRes] = await Promise.all([
     supabase.from('ticker_config').select('key, value'),
     supabase.from('ticker_custom').select('content, created_by').eq('is_active', true).order('sort_order', { ascending: true }),
     supabase.from('screenings').select('id, title, screening_at').eq('is_active', true).gte('screening_at', nowIso).order('screening_at', { ascending: true }).limit(5),
     supabase.from('screenings').select('id, title').lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(RECENT_RATINGS_SCREENING_LIMIT),
-    supabase.from('ticker_user_messages').select('content, user_id').eq('is_active', true).order('created_at', { ascending: true }),
+    supabase
+      .from('ticker_user_messages')
+      .select('content, user_id')
+      .eq('is_active', true)
+      .gte('created_at', userMessagesSinceIso)
+      .order('created_at', { ascending: true }),
     supabase.from('screenings').select('id, title').eq('is_active', true).lt('screening_at', nowIso).order('screening_at', { ascending: false }).limit(1).maybeSingle(),
     supabase
       .from('ticker_system_events')

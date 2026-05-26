@@ -5,7 +5,20 @@ import {
   formatSystemEventTickerMessage,
   RECENT_RATINGS_SCREENING_LIMIT,
   starsFromAvg,
+  TICKER_USER_MESSAGE_MAX_AGE_DAYS,
+  tickerUserMessagesVisibleSince,
 } from '../ticker-utils';
+
+describe('tickerUserMessagesVisibleSince', () => {
+  it('uses a 30-day window', () => {
+    expect(TICKER_USER_MESSAGE_MAX_AGE_DAYS).toBe(30);
+    const now = new Date('2026-05-24T12:00:00.000Z');
+    const since = new Date(tickerUserMessagesVisibleSince(now));
+    const expected = new Date(now);
+    expected.setDate(expected.getDate() - 30);
+    expect(since.getTime()).toBe(expected.getTime());
+  });
+});
 
 describe('RECENT_RATINGS_SCREENING_LIMIT', () => {
   it('is 2 so only the two most recent past screenings show ratings on ticker', () => {

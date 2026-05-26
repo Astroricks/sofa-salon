@@ -9,6 +9,16 @@ import { screeningDisplayTitle } from '@/lib/screening-display';
 /** Number of past screenings whose ratings are shown on the ticker (most recent first). */
 export const RECENT_RATINGS_SCREENING_LIMIT = 2;
 
+/** User 弹幕 on the floating ticker; older messages are hidden (admin list unchanged). */
+export const TICKER_USER_MESSAGE_MAX_AGE_DAYS = 30;
+
+/** ISO timestamp: only messages created at or after this time appear on the public ticker. */
+export function tickerUserMessagesVisibleSince(now: Date = new Date()): string {
+  const since = new Date(now);
+  since.setDate(since.getDate() - TICKER_USER_MESSAGE_MAX_AGE_DAYS);
+  return since.toISOString();
+}
+
 /**
  * Reschedule / cancel lines in the floating ticker; uses English title when locale is EN.
  */
