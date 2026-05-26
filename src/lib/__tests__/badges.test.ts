@@ -15,7 +15,6 @@ describe('getBadgeLevel', () => {
     const badge = getBadgeLevel(3);
     expect(badge.labelEn).toBe('Bronze');
     expect(badge.emoji).toBe('🥉');
-    expect(badge.level).toBe(1);
   });
 
   it('returns Silver for 5 attendance', () => {
@@ -34,6 +33,24 @@ describe('getBadgeLevel', () => {
     const badge = getBadgeLevel(20);
     expect(badge.labelEn).toBe('Diamond');
     expect(badge.emoji).toBe('💎');
+  });
+
+  it('returns Honored guest at 30', () => {
+    const badge = getBadgeLevel(30);
+    expect(badge.labelEn).toBe('Honored guest');
+    expect(badge.emoji).toBe('🛋️');
+  });
+
+  it('returns Patron at 50', () => {
+    const badge = getBadgeLevel(50);
+    expect(badge.labelEn).toBe('Patron');
+    expect(badge.emoji).toBe('👑');
+  });
+
+  it('returns House legend at 80', () => {
+    const badge = getBadgeLevel(80);
+    expect(badge.labelEn).toBe('House legend');
+    expect(badge.emoji).toBe('🏆');
   });
 
   it('clamps negative to Sprout', () => {

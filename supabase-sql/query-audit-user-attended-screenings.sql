@@ -1,5 +1,5 @@
 -- Audit: one row per badge-relevant screening per user (same filters as migration 27 / attendance_count).
--- attended column: NULL = unset (still counts), true = marked attended, false = 鸽了 (excluded here).
+-- attended column: NULL = present (counts), false = 鸽了 (excluded here).
 
 SELECT
   p.display_name,

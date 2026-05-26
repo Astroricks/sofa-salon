@@ -8,6 +8,7 @@ import {
   getProfileContact,
   type ContactPlatform,
 } from '@/lib/contact-platform';
+import { reservationIsNoShow } from '@/lib/attendance';
 import { seatKeyToDisplayLabel } from '@/lib/furniture';
 
 interface ReservationRow {
@@ -49,9 +50,8 @@ interface Labels {
   removalMessagePlaceholder: string;
   confirmRemove: string;
   cancel: string;
-  attended: string;
   noShow: string;
-  unset: string;
+  noShowColumn: string;
   seatsCount: string;
   saveFailed: string;
   reservationsNotUpdated: string;
@@ -84,12 +84,12 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
         displayName: string;
         contactLine: string;
         seatKeys: string[];
-        attended: boolean | null;
+        isNoShow: boolean;
       }
     >();
     for (const r of nonGhost) {
       const existing = map.get(r.user_id);
-      const attended = r.attended ?? null;
+      const seatNoShow = reservationIsNoShow(r.attended);
       const contact = getProfileContact(r.profiles ?? {});
       const contactLine = formatContactForAdminList(
         contact.platform,
@@ -98,14 +98,13 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
       );
       if (existing) {
         existing.seatKeys.push(r.seat_key);
-        if (attended === true) existing.attended = true;
-        else if (attended === false) existing.attended = false;
+        if (seatNoShow) existing.isNoShow = true;
       } else {
         map.set(r.user_id, {
           displayName: r.profiles?.display_name ?? '—',
           contactLine,
           seatKeys: [r.seat_key],
-          attended,
+          isNoShow: seatNoShow,
         });
       }
     }
@@ -172,14 +171,14 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
     }
   };
 
-  const updateAttended = async (userId: string, attended: boolean | null) => {
+  const updateNoShow = async (userId: string, noShow: boolean) => {
     setActionError(null);
     setUpdating((prev) => ({ ...prev, [userId]: true }));
     try {
       const res = await fetch(`/api/admin/screenings/${screeningId}/attendance`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, attended }),
+        body: JSON.stringify({ userId, noShow }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as {
@@ -291,7 +290,7 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
                 <th className="py-2 pr-4">#</th>
                 <th className="py-2 pr-4">Name</th>
                 <th className="py-2 pr-4">Seats</th>
-                <th className="py-2 pr-4">Status</th>
+                <th className="py-2 pr-4">{labels.noShowColumn}</th>
                 <th className="py-2" />
               </tr>
             </thead>
@@ -311,25 +310,16 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
                       : seatKeyToDisplayLabel(row.seatKeys[0])}
                   </td>
                   <td className="py-2 pr-4">
-                    <select
-                      value={
-                        row.attended === true ? 'yes' : row.attended === false ? 'no' : ''
-                      }
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        updateAttended(
-                          userId,
-                          v === 'yes' ? true : v === 'no' ? false : null
-                        );
-                      }}
-                      disabled={updating[userId]}
-                      className="bg-[#0f0f0f] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[11px] px-2 py-1"
-                      style={{ borderRadius: 0 }}
-                    >
-                      <option value="">{labels.unset}</option>
-                      <option value="yes">{labels.attended}</option>
-                      <option value="no">{labels.noShow}</option>
-                    </select>
+                    <label className="inline-flex items-center gap-2 cursor-pointer font-mono text-[11px] text-[#e8e4dc]">
+                      <input
+                        type="checkbox"
+                        checked={row.isNoShow}
+                        onChange={(e) => updateNoShow(userId, e.target.checked)}
+                        disabled={updating[userId]}
+                        className="accent-[#e8c84a]"
+                      />
+                      <span>{labels.noShow}</span>
+                    </label>
                   </td>
                   <td className="py-2">
                     {removingUserId === userId ? (

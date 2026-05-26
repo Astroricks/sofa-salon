@@ -158,6 +158,9 @@ export default function NavBar() {
               >
                 {t.nav.pastScreenings}
               </a>
+              <Link href="/leaderboard" className={linkClass(!!pathname?.startsWith('/leaderboard'))}>
+                {t.nav.leaderboard}
+              </Link>
               <a
                 href={t.nav.developedByHref}
                 target="_blank"
@@ -223,6 +226,13 @@ export default function NavBar() {
                     >
                       {t.nav.pastScreenings}
                     </a>
+                    <Link
+                      href="/leaderboard"
+                      className={linkClass(!!pathname?.startsWith('/leaderboard')) + ' px-4'}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.nav.leaderboard}
+                    </Link>
                     <a
                       href={t.nav.developedByHref}
                       target="_blank"
@@ -275,6 +285,9 @@ export default function NavBar() {
               >
                 {t.nav.pastScreenings}
               </a>
+              <Link href="/leaderboard" className={linkClass(!!pathname?.startsWith('/leaderboard'))}>
+                {t.nav.leaderboard}
+              </Link>
               <a
                 href={t.nav.developedByHref}
                 target="_blank"
@@ -332,6 +345,13 @@ export default function NavBar() {
                     >
                       {t.nav.pastScreenings}
                     </a>
+                    <Link
+                      href="/leaderboard"
+                      className={linkClass(!!pathname?.startsWith('/leaderboard')) + ' px-4'}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.nav.leaderboard}
+                    </Link>
                     <a
                       href={t.nav.developedByHref}
                       target="_blank"

@@ -1,12 +1,10 @@
--- Manual history: add an existing user to a past screening and mark them attended.
--- Mirrors admin "add guest" + "Attended" but without sending email.
+-- Manual history: add an existing user to a past screening (present = attended null).
+-- Mirrors admin "add guest" without sending email.
 -- Run in Supabase SQL Editor. Run SELECT steps first; uncomment the transaction only when IDs look right.
 --
 -- Badge / audit queries count past non-ghost reservations where attended IS DISTINCT FROM false
--- (unset still counts). Setting attended = true matches the admin UI and rating eligibility.
---
--- Profile side effects (consecutive_attendances / pigeon recovery) are NOT applied here.
--- If you need those counters to match, adjust profiles separately or use the admin Guests UI.
+-- (present = null). Profile side effects (consecutive_attendances / pigeon recovery) are NOT applied
+-- here — use admin Guests UI or adjust profiles separately if needed.
 
 -- ========== 1. Resolve user (edit display_name if needed) ==========
 SELECT id AS user_id, display_name, contact_platform, contact_id, no_show_count, consecutive_attendances
@@ -40,9 +38,9 @@ WHERE screening_id = 'SCREENING_UUID'::uuid
 ORDER BY seat_key;
 */
 
--- ========== 5. Execute: insert reservation (if missing) + mark attended ==========
+-- ========== 5. Execute: insert reservation (if missing) — present = null ==========
 -- Sister TangYi · 盗日者 — fill seat_key after step 4.
--- If step 3 already shows a row, skip INSERT and only run the UPDATE.
+-- If step 3 already shows a row, skip INSERT.
 
 BEGIN;
 
@@ -64,7 +62,7 @@ SELECT
   'sofa-0:0',  -- CHANGE: must be free on this screening (see step 4)
   false,
   false,
-  true
+  NULL
 FROM target t
 WHERE t.user_id IS NOT NULL
   AND t.screening_id IS NOT NULL
@@ -75,25 +73,6 @@ WHERE t.user_id IS NOT NULL
       AND r.user_id = t.user_id
       AND COALESCE(r.is_ghost, false) = false
   );
-
-WITH target AS (
-  SELECT
-    (SELECT id FROM profiles WHERE display_name = 'Sister TangYi' LIMIT 1) AS user_id,
-    (
-      SELECT id
-      FROM screenings
-      WHERE title = '盗日者'
-      ORDER BY screening_at DESC
-      LIMIT 1
-    ) AS screening_id
-)
-UPDATE reservations r
-SET attended = true
-FROM target t
-WHERE r.screening_id = t.screening_id
-  AND r.user_id = t.user_id
-  AND COALESCE(r.is_ghost, false) = false
-  AND r.attended IS DISTINCT FROM true;
 
 COMMIT;
 

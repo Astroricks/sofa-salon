@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
+import { reservationIsPresent } from '@/lib/attendance';
 import { APP_NAME_PARTS } from '@/lib/config';
 import BackButton from '@/components/BackButton';
 import { getT, type Locale } from '@/lib/i18n';
@@ -64,7 +65,7 @@ export default async function AdminRatingsPage() {
 
     for (const sid of ids) attendanceCount[sid] = 0;
     for (const r of reservationsRes.data ?? []) {
-      if ((r as { attended: boolean | null }).attended === true) {
+      if (reservationIsPresent((r as { attended: boolean | null }).attended)) {
         const sid = (r as { screening_id: string }).screening_id;
         attendanceCount[sid] = (attendanceCount[sid] ?? 0) + 1;
       }

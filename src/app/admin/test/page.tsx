@@ -7,10 +7,15 @@ import { getBadgeLevel } from '@/lib/badges';
 
 type EmailTestType = 'welcome' | 'reminder' | 'waitlist_promotion' | 'post_event_rating';
 
+/** Breakpoints for badge preview (matches getBadgeLevel tiers). */
+const BADGE_PREVIEW_COUNTS = [0, 3, 5, 10, 20, 30, 50, 80] as const;
+
 export default function AdminTestPage() {
   const { t, locale } = useLocale();
   const [noShowCount, setNoShowCount] = useState(0);
   const [badgeFromHistory, setBadgeFromHistory] = useState(0);
+  /** Local-only override for badge preview on this page (null = use history). */
+  const [badgePreviewCount, setBadgePreviewCount] = useState<number | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +57,8 @@ export default function AdminTestPage() {
     }
   };
 
-  const badge = getBadgeLevel(badgeFromHistory);
+  const effectiveBadgeCount = badgePreviewCount ?? badgeFromHistory;
+  const badge = getBadgeLevel(effectiveBadgeCount);
 
   const sendTestEmail = async (type: EmailTestType) => {
     setEmailResult(null);
@@ -145,11 +151,69 @@ export default function AdminTestPage() {
           {t.admin.testAttendanceCountHelp}
         </p>
 
-        {badge && (
-          <p className="font-mono text-[13px] text-[#888888] mb-4">
-            {t.admin.testBadgePreview}: {badge.emoji} {locale === 'zh' ? badge.label : badge.labelEn}
-          </p>
+        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] mb-1">
+          {t.admin.testBadgePreview}
+        </p>
+        <p className="font-mono text-[11px] text-[#666] mb-2">
+          {t.admin.testBadgePreviewHint}
+        </p>
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <input
+            type="number"
+            min={0}
+            max={999}
+            value={effectiveBadgeCount}
+            onChange={(e) => {
+              const n = parseInt(e.target.value, 10);
+              setBadgePreviewCount(Number.isFinite(n) ? Math.max(0, n) : 0);
+            }}
+            className="w-20 bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-3 py-2 outline-none focus:border-[#e8c84a] tabular-nums"
+            style={{ borderRadius: 0 }}
+            aria-label={t.admin.testBadgePreview}
+          />
+          <span className="font-mono text-[13px] text-[#888888]">
+            {badge.emoji} {locale === 'zh' ? badge.label : badge.labelEn}
+          </span>
+        </div>
+        {badgePreviewCount !== null && (
+          <button
+            type="button"
+            onClick={() => setBadgePreviewCount(null)}
+            className="font-mono text-[10px] tracking-[0.15em] uppercase text-[#888888] hover:text-[#e8c84a] mb-3 transition-colors"
+          >
+            {t.admin.testBadgePreviewReset} ({badgeFromHistory})
+          </button>
         )}
+        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
+          {t.admin.testBadgeTierGallery}
+        </p>
+        <ul className="grid grid-cols-2 gap-2 mb-4">
+          {BADGE_PREVIEW_COUNTS.map((n) => {
+            const tier = getBadgeLevel(n);
+            const label = locale === 'zh' ? tier.label : tier.labelEn;
+            const active = effectiveBadgeCount === n;
+            return (
+              <li key={n}>
+                <button
+                  type="button"
+                  onClick={() => setBadgePreviewCount(n)}
+                  className={`w-full border px-2 py-2 font-mono text-[11px] text-left transition-colors ${
+                    active
+                      ? 'border-[#e8c84a] text-[#e8e4dc]'
+                      : 'border-[#2a2a2a] text-[#888888] hover:border-[#444]'
+                  }`}
+                  style={{ borderRadius: 0 }}
+                >
+                  <span className="inline-flex items-center gap-1.5">
+                    <span>{tier.emoji}</span>
+                    <span className="tabular-nums">{n === 0 ? '0' : `${n}+`}</span>
+                    <span className="truncate">{label}</span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
 
         <button
           type="button"

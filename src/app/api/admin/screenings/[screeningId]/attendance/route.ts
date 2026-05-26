@@ -3,18 +3,20 @@ import { getAdminWriteClient, reservationsUpdateHint } from '@/lib/admin-db';
 import {
   countNoShowScreeningsForUser,
   noShowCountAfterAdminMark,
+  parseAdminAttendanceBody,
+  presentAttendanceValue,
+  profileUpdatesAfterConsecutiveAttendance,
+  reservationIsPresent,
   shouldApplyNoShowForScreeningUser,
+  shouldIncrementConsecutiveAttendance,
   shouldUndoNoShowForScreeningUser,
   syncNoShowCountAfterAdminClear,
 } from '@/lib/attendance';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * Set attended for all reservations of one user in this screening.
- *
- * Important: `profiles` has admin UPDATE RLS (migration 25), but `reservations` did not
- * until migration 30. Without service role or migration 30, reservation UPDATE returns 0 rows
- * (503) and neither attended nor no_show_count should change.
+ * Set no-show for all reservations of one user in this screening.
+ * Present (default) = `attended` null; no-show = `attended` false.
  */
 export async function PATCH(
   req: NextRequest,
@@ -38,19 +40,19 @@ export async function PATCH(
 
   const { screeningId } = await params;
   const body = await req.json();
-  const { userId: targetUserId, attended } = body;
+  const { userId: targetUserId } = body;
   if (!screeningId || !targetUserId) {
     return NextResponse.json(
       { error: 'screeningId and userId required' },
       { status: 400 }
     );
   }
-  if (attended !== true && attended !== false && attended !== null) {
-    return NextResponse.json(
-      { error: 'attended must be true, false, or null' },
-      { status: 400 }
-    );
+
+  const parsed = parseAdminAttendanceBody(body);
+  if ('error' in parsed) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
+  const attended = parsed.value;
 
   const admin = getAdminWriteClient();
   const db = admin ?? supabase;
@@ -60,12 +62,13 @@ export async function PATCH(
     .select('attended')
     .eq('screening_id', screeningId)
     .eq('user_id', targetUserId);
-  const hadAnyAttendedTrue = priorRows?.some((r) => r.attended === true) ?? false;
   const priorValues = (priorRows ?? []).map((r) => r.attended);
 
   const { data: updatedRows, error: updateError } = await db
     .from('reservations')
-    .update({ attended: attended ?? null })
+    .update({
+      attended: attended === false ? false : presentAttendanceValue(),
+    })
     .eq('screening_id', screeningId)
     .eq('user_id', targetUserId)
     .select('id');
@@ -91,8 +94,9 @@ export async function PATCH(
 
   let noShow = Number(profile?.no_show_count ?? 0);
   const consecutive = Number(profile?.consecutive_attendances ?? 0);
+  const newIsPresent = reservationIsPresent(attended);
 
-  if (attended !== false) {
+  if (newIsPresent) {
     try {
       noShow = await syncNoShowCountAfterAdminClear(
         db,
@@ -106,34 +110,24 @@ export async function PATCH(
     }
   }
 
-  if (attended === true) {
-    if (hadAnyAttendedTrue) {
-      return NextResponse.json({
-        ok: true,
-        reservationsUpdated: updatedRows.length,
-        no_show_count: noShow,
-      });
-    }
-    const nextConsecutive = consecutive + 1;
-    const isPigeon = noShow >= 3;
-    const updates: {
+  if (newIsPresent && shouldIncrementConsecutiveAttendance(priorValues, true)) {
+    const streak = profileUpdatesAfterConsecutiveAttendance(consecutive, noShow);
+    const profilePatch: {
       consecutive_attendances: number;
       no_show_count?: number;
-    } = {
-      consecutive_attendances: isPigeon && nextConsecutive >= 2 ? 0 : nextConsecutive,
-    };
-    if (isPigeon && nextConsecutive >= 2) {
-      updates.no_show_count = 0;
-      noShow = 0;
+    } = { consecutive_attendances: streak.consecutive_attendances };
+    if (streak.no_show_count !== undefined) {
+      profilePatch.no_show_count = streak.no_show_count;
     }
+    noShow = streak.noShow;
     const { error: profileErr } = await db
       .from('profiles')
-      .update(updates)
+      .update(profilePatch)
       .eq('id', targetUserId);
     if (profileErr) {
       return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }
-  } else if (attended === false) {
+  } else if (!newIsPresent) {
     if (!shouldApplyNoShowForScreeningUser(priorValues)) {
       return NextResponse.json({
         ok: true,

@@ -6,9 +6,13 @@ import {
   noShowCountAfterClearingAttendance,
   noShowCountAfterUndo,
   noShowScreeningIds,
-  shouldApplyNoShowForReservationRow,
+  parseAdminAttendanceBody,
+  presentAttendanceValue,
+  profileUpdatesAfterConsecutiveAttendance,
+  reservationIsNoShow,
+  reservationIsPresent,
   shouldApplyNoShowForScreeningUser,
-  shouldUndoNoShowForReservationRow,
+  shouldIncrementConsecutiveAttendance,
   shouldUndoNoShowForScreeningUser,
 } from '../attendance';
 import { getBadgeLevel } from '../badges';
@@ -66,28 +70,11 @@ describe('buildAttendanceMap', () => {
   });
 });
 
-describe('shouldApplyNoShowForReservationRow', () => {
-  it('returns false when row was already no-show (idempotent)', () => {
-    expect(shouldApplyNoShowForReservationRow(false, false)).toBe(false);
-  });
-
-  it('returns false when another seat in the screening is already no-show', () => {
-    expect(shouldApplyNoShowForReservationRow(null, true)).toBe(false);
-    expect(shouldApplyNoShowForReservationRow(true, true)).toBe(false);
-  });
-
-  it('returns true when first no-show mark for this screening (this row, no sibling false)', () => {
-    expect(shouldApplyNoShowForReservationRow(null, false)).toBe(true);
-    expect(shouldApplyNoShowForReservationRow(true, false)).toBe(true);
-    expect(shouldApplyNoShowForReservationRow(undefined, false)).toBe(true);
-  });
-});
-
 describe('noShowScreeningIds', () => {
   it('returns screening ids with attended=false on non-ghost reservations', () => {
     const ids = noShowScreeningIds([
       { screening_id: 'a', attended: false },
-      { screening_id: 'b', attended: true },
+      { screening_id: 'b', attended: null },
       { screening_id: 'c', attended: false, is_ghost: true },
     ]);
     expect(ids.has('a')).toBe(true);
@@ -105,9 +92,9 @@ describe('noShowCountAfterUndo', () => {
 });
 
 describe('shouldUndoNoShowForScreeningUser', () => {
-  it('returns true when clearing 鸽了 to attended or unset', () => {
+  it('returns true when clearing 鸽了 to present', () => {
     expect(shouldUndoNoShowForScreeningUser([false], null)).toBe(true);
-    expect(shouldUndoNoShowForScreeningUser([false, false], true)).toBe(true);
+    expect(shouldUndoNoShowForScreeningUser([false, false], null)).toBe(true);
   });
 
   it('returns false when marking no-show or screening was not false', () => {
@@ -148,13 +135,76 @@ describe('countNoShowScreeningsFromRows', () => {
   });
 });
 
-describe('shouldUndoNoShowForReservationRow', () => {
-  it('returns false when sibling seat stays no-show', () => {
-    expect(shouldUndoNoShowForReservationRow(false, null, true)).toBe(false);
+describe('reservationIsPresent', () => {
+  it('treats null as present and false as no-show', () => {
+    expect(reservationIsPresent(null)).toBe(true);
+    expect(reservationIsPresent(false)).toBe(false);
+  });
+});
+
+describe('parseAdminAttendanceBody', () => {
+  it('maps noShow checkbox to attended values', () => {
+    expect(parseAdminAttendanceBody({ noShow: true })).toEqual({ value: false });
+    expect(parseAdminAttendanceBody({ noShow: false })).toEqual({ value: null });
   });
 
-  it('returns true when clearing the only false seat', () => {
-    expect(shouldUndoNoShowForReservationRow(false, null, false)).toBe(true);
+  it('accepts script-style attended false or null', () => {
+    expect(parseAdminAttendanceBody({ attended: false })).toEqual({ value: false });
+    expect(parseAdminAttendanceBody({ attended: null })).toEqual({ value: null });
+  });
+
+  it('rejects attended=true and invalid body', () => {
+    expect(parseAdminAttendanceBody({ attended: true })).toHaveProperty('error');
+    expect(parseAdminAttendanceBody({})).toHaveProperty('error');
+  });
+});
+
+describe('presentAttendanceValue', () => {
+  it('returns null for DB present state', () => {
+    expect(presentAttendanceValue()).toBeNull();
+  });
+});
+
+describe('shouldIncrementConsecutiveAttendance', () => {
+  it('counts when clearing 鸽了 and no seat stays false', () => {
+    expect(shouldIncrementConsecutiveAttendance([false], true)).toBe(true);
+    expect(shouldIncrementConsecutiveAttendance([false, null], true)).toBe(true);
+  });
+
+  it('does not count when screening was already all present', () => {
+    expect(shouldIncrementConsecutiveAttendance([null], true)).toBe(false);
+    expect(shouldIncrementConsecutiveAttendance([null, null], true)).toBe(false);
+  });
+
+  it('does not count when another seat remains 鸽了', () => {
+    expect(shouldIncrementConsecutiveAttendance([false], true, true)).toBe(false);
+  });
+
+  it('never counts when marking no-show', () => {
+    expect(shouldIncrementConsecutiveAttendance([null], false)).toBe(false);
+  });
+});
+
+describe('reservationIsNoShow', () => {
+  it('is only false', () => {
+    expect(reservationIsNoShow(false)).toBe(true);
+    expect(reservationIsNoShow(null)).toBe(false);
+  });
+});
+
+describe('profileUpdatesAfterConsecutiveAttendance', () => {
+  it('clears pigeon after second consecutive when no_show_count is 3', () => {
+    const u = profileUpdatesAfterConsecutiveAttendance(1, 3);
+    expect(u.consecutive_attendances).toBe(0);
+    expect(u.no_show_count).toBe(0);
+    expect(u.noShow).toBe(0);
+  });
+
+  it('increments streak without clearing when not yet pigeon', () => {
+    const u = profileUpdatesAfterConsecutiveAttendance(0, 2);
+    expect(u.consecutive_attendances).toBe(1);
+    expect(u.no_show_count).toBeUndefined();
+    expect(u.noShow).toBe(2);
   });
 });
 
@@ -166,7 +216,6 @@ describe('shouldApplyNoShowForScreeningUser', () => {
 
   it('returns true when any prior row was not yet false', () => {
     expect(shouldApplyNoShowForScreeningUser([null])).toBe(true);
-    expect(shouldApplyNoShowForScreeningUser([true])).toBe(true);
     expect(shouldApplyNoShowForScreeningUser([false, null])).toBe(true);
   });
 

@@ -22,6 +22,17 @@ test.describe('Home page', () => {
   });
 });
 
+test.describe('Leaderboard', () => {
+  test('loads from nav', async ({ page }) => {
+    await page.goto('/');
+    const leaderboardLink = page.getByRole('link', { name: /Leaderboard|排行榜/i }).first();
+    await expect(leaderboardLink).toBeVisible();
+    await leaderboardLink.click();
+    await expect(page).toHaveURL(/\/leaderboard/);
+    await expect(page.locator('body')).toContainText(/Leaderboard|排行榜|Badge|徽章/i);
+  });
+});
+
 test.describe('Navigation', () => {
   test('main nav links load without error', async ({ page }) => {
     await page.goto('/');

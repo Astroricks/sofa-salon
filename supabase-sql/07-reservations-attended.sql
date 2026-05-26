@@ -5,4 +5,4 @@
 ALTER TABLE reservations
   ADD COLUMN IF NOT EXISTS attended boolean DEFAULT NULL;
 
-COMMENT ON COLUMN reservations.attended IS 'NULL = not set, true = attended, false = no-show (鸽了)';
+COMMENT ON COLUMN reservations.attended IS 'NULL = present (default), false = no-show (鸽了). App writes only null or false.';

@@ -1,5 +1,38 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+/** Stored on reservations: null = present, false = no-show (鸽了). */
+export type AttendanceMark = false | null;
+
+/** Present unless explicitly no-show (`attended = false`). */
+export function reservationIsPresent(attended: boolean | null | undefined): boolean {
+  return attended !== false;
+}
+
+export function reservationIsNoShow(attended: boolean | null | undefined): boolean {
+  return attended === false;
+}
+
+/** DB value for a registered guest who is not marked no-show. */
+export function presentAttendanceValue(): AttendanceMark {
+  return null;
+}
+
+/** Parse admin attendance PATCH: `{ noShow: boolean }` or script `{ attended: false | null }`. */
+export function parseAdminAttendanceBody(body: {
+  attended?: unknown;
+  noShow?: unknown;
+}): { value: AttendanceMark } | { error: string } {
+  if (typeof body.noShow === 'boolean') {
+    return { value: body.noShow ? false : null };
+  }
+  if (body.attended === false) return { value: false };
+  if (body.attended === null) return { value: null };
+  if (body.attended === true) {
+    return { error: 'attended=true is no longer supported; use noShow:false or attended:null' };
+  }
+  return { error: 'Provide noShow (boolean) or attended (false | null)' };
+}
+
 export type AttendanceCountRow = {
   user_id: string;
   attendance_count: number;
@@ -67,20 +100,6 @@ export async function fetchAttendanceCountForUser(
 }
 
 /**
- * Admin marks one reservation `attended=false`. Bump `no_show_count` at most once per user per
- * screening: skip if this row was already false (retries), or another seat for the same screening
- * was already marked no-show (multi-seat bookings).
- */
-export function shouldApplyNoShowForReservationRow(
-  previousThisRow: boolean | null | undefined,
-  otherSiblingSeatAlreadyFalse: boolean
-): boolean {
-  if (previousThisRow === false) return false;
-  if (otherSiblingSeatAlreadyFalse) return false;
-  return true;
-}
-
-/**
  * Admin bulk-sets all reservations for (screening, user) to `attended=false`. Bump at most once per
  * screening: if every row was already false, skip (idempotent replays / retries).
  */
@@ -91,25 +110,13 @@ export function shouldApplyNoShowForScreeningUser(
   return !priorAttendedValues.every((a) => a === false);
 }
 
-/** Admin clears 鸽了 on this screening (Attended or Unset). Drop one blood-bar segment. */
+/** Admin clears no-show on this screening (present). Drop one blood-bar segment. */
 export function shouldUndoNoShowForScreeningUser(
   priorAttendedValues: ReadonlyArray<boolean | null | undefined>,
   newAttended: boolean | null
 ): boolean {
-  if (newAttended === false) return false;
+  if (reservationIsNoShow(newAttended)) return false;
   return priorAttendedValues.some((a) => a === false);
-}
-
-/** Per-reservation admin path: undo only if this seat was false and no sibling stays false. */
-export function shouldUndoNoShowForReservationRow(
-  previousThisRow: boolean | null | undefined,
-  newAttended: boolean | null,
-  otherSiblingSeatAlreadyFalse: boolean
-): boolean {
-  if (newAttended === false) return false;
-  if (previousThisRow !== false) return false;
-  if (otherSiblingSeatAlreadyFalse) return false;
-  return true;
 }
 
 export function noShowCountAfterUndo(stored: number): number {
@@ -147,7 +154,7 @@ export async function countNoShowScreeningsForUser(
 }
 
 /**
- * After admin sets Attended/Unset: blood bar must match reservation rows.
+ * After admin clears no-show: blood bar must match reservation rows.
  * Handles orphan `no_show_count` when profile was bumped without `attended=false`.
  */
 export function noShowCountAfterClearingAttendance(
@@ -173,7 +180,46 @@ export function noShowCountAfterAdminMark(
   return Math.min(3, Math.max(stored, falseScreeningCount));
 }
 
-/** Persist blood bar after admin sets Attended or Unset (not 鸽了). */
+/**
+ * Count one screening toward pigeon recovery when admin clears no-show (present).
+ * At most once per screening; no-op if already all present or another seat stays no-show.
+ */
+export function shouldIncrementConsecutiveAttendance(
+  priorAttendedValues: ReadonlyArray<boolean | null | undefined>,
+  newIsPresent: boolean,
+  otherSeatsStillFalse = false
+): boolean {
+  if (!newIsPresent) return false;
+  if (otherSeatsStillFalse) return false;
+  if (priorAttendedValues.every((a) => reservationIsPresent(a))) return false;
+  return priorAttendedValues.some((a) => a === false);
+}
+
+export type ConsecutiveAttendanceProfileUpdate = {
+  consecutive_attendances: number;
+  no_show_count?: number;
+  noShow: number;
+};
+
+/** After a screening counts toward recovery, bump consecutive and clear pigeon at 2 when `no_show_count >= 3`. */
+export function profileUpdatesAfterConsecutiveAttendance(
+  consecutive: number,
+  noShow: number
+): ConsecutiveAttendanceProfileUpdate {
+  const nextConsecutive = consecutive + 1;
+  const isPigeon = noShow >= 3;
+  const updates: ConsecutiveAttendanceProfileUpdate = {
+    consecutive_attendances: isPigeon && nextConsecutive >= 2 ? 0 : nextConsecutive,
+    noShow,
+  };
+  if (isPigeon && nextConsecutive >= 2) {
+    updates.no_show_count = 0;
+    updates.noShow = 0;
+  }
+  return updates;
+}
+
+/** Persist blood bar after admin clears no-show (present, not 鸽了). */
 export async function syncNoShowCountAfterAdminClear(
   client: SupabaseClient,
   userId: string,

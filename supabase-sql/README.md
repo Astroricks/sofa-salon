@@ -1,11 +1,11 @@
 # Supabase SQL migrations
 
-All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order (00 → 21, then 25 → 32 as needed).
+All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order (00 → 21, then 25 → 35 as needed).
 
 ## Migration safety
 
 - **Always back up your database before running migrations on production.** Use Supabase Dashboard → Database → Backups, or `pg_dump`, before applying new scripts.
-- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then 01 through 21, then 25 through 32 as applicable.
+- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then 01 through 21, then 25 through 35 as applicable.
 - **If a migration fails halfway**, the database may be in an inconsistent state. Read the failed SQL file to understand what it was doing; fix data or schema manually if needed, then re-run only the failed file (or the remainder) after fixing.
 
 ## Order of execution
@@ -44,6 +44,8 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 32 | `32-profiles-existing-contact-platform-data.sql` | Data: existing users → `wechat`; **charles.j.lovering**, **Sister TangYi** → `whatsapp`. Run after **31**. |
 | 33 | `33-profiles-contact-id-unique-index.sql` | Unique on `(display_name, contact_id)` — not global. Run after **32**; if it fails, use `query-find-duplicate-contact-ids.sql` first. |
 | 34 | `34-profiles-reset-no-show-counts.sql` | Resets `no_show_count` and `consecutive_attendances` to 0 for all profiles. |
+| — | `31-attended-present-normalize.sql` | **One-time data:** `attended=true` → `null`. Run once if upgrading from tri-state marks. |
+| 35 | `35-reservations-attended-check.sql` | `CHECK`: `attended` is only `NULL` (present) or `false` (no-show). Run after normalize. |
 
 ## New environment setup
 

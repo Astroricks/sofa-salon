@@ -166,13 +166,11 @@ BEGIN
 
   UPDATE reservations r
   SET attended = CASE
-    WHEN ps.any_true THEN true
     WHEN ps.any_false THEN false
-    ELSE r.attended
+    ELSE NULL
   END
   FROM (
     SELECT screening_id,
-           bool_or(attended IS TRUE) AS any_true,
            bool_or(attended IS FALSE) AS any_false
     FROM reservations
     WHERE user_id = to_id AND COALESCE(is_ghost, false) = false
@@ -182,8 +180,8 @@ BEGIN
     AND r.screening_id = ps.screening_id
     AND COALESCE(r.is_ghost, false) = false
     AND (
-      (ps.any_true AND r.attended IS DISTINCT FROM true)
-      OR (ps.any_false AND NOT ps.any_true AND r.attended IS DISTINCT FROM false)
+      (ps.any_false AND r.attended IS DISTINCT FROM false)
+      OR (NOT ps.any_false AND r.attended IS NOT NULL)
     );
 
   IF from_profile_exists THEN

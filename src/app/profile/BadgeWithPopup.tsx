@@ -1,12 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-type Badge = {
-  emoji: string;
-  label: string;
-  labelEn: string;
-};
+import type { BadgeLevel } from '@/lib/badges';
 
 export default function BadgeWithPopup({
   badge,
@@ -14,7 +9,7 @@ export default function BadgeWithPopup({
   explanationTitle,
   explanation,
 }: {
-  badge: Badge;
+  badge: Pick<BadgeLevel, 'emoji' | 'label' | 'labelEn'>;
   locale: 'en' | 'zh';
   explanationTitle: string;
   explanation: string;
