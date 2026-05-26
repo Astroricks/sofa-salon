@@ -1,6 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
 import { getAdminWriteClient, reservationsUpdateHint } from '@/lib/admin-db';
-import { shouldApplyNoShowForReservationRow } from '@/lib/attendance';
+import {
+  countNoShowScreeningsForUser,
+  noShowCountAfterAdminMark,
+  shouldApplyNoShowForReservationRow,
+  shouldUndoNoShowForReservationRow,
+  syncNoShowCountAfterAdminClear,
+} from '@/lib/attendance';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(
@@ -84,7 +90,7 @@ export async function PATCH(
     );
   }
 
-  const userId = reservation?.user_id;
+  const userId = reservation.user_id;
   if (!userId) {
     return NextResponse.json(reservation);
   }
@@ -95,8 +101,26 @@ export async function PATCH(
     .eq('id', userId)
     .single();
 
-  const noShow = Number(guestProfile?.no_show_count ?? 0);
+  let noShow = Number(guestProfile?.no_show_count ?? 0);
   const consecutive = Number(guestProfile?.consecutive_attendances ?? 0);
+
+  if (attended !== false) {
+    try {
+      noShow = await syncNoShowCountAfterAdminClear(
+        db,
+        userId,
+        noShow,
+        shouldUndoNoShowForReservationRow(
+          before.attended,
+          attended,
+          otherSeatHadAttendedFalse
+        )
+      );
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Failed to sync no_show_count';
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
+  }
 
   if (attended === true) {
     const firstTimeCountedForScreening = !hadScreeningAttendedCounted;
@@ -122,13 +146,21 @@ export async function PATCH(
     if (!shouldApplyNoShowForReservationRow(before.attended, otherSeatHadAttendedFalse)) {
       return NextResponse.json(reservation);
     }
-    const current = Math.min(noShow, 3);
-    const next = Math.min(current + 1, 3);
-    const updates = {
-      consecutive_attendances: 0,
-      no_show_count: next,
-    };
-    const { error: profileErr } = await db.from('profiles').update(updates).eq('id', userId);
+    let next = noShow;
+    try {
+      const falseScreeningCount = await countNoShowScreeningsForUser(db, userId);
+      next = noShowCountAfterAdminMark(noShow, falseScreeningCount);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Failed to count no-shows';
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
+    const { error: profileErr } = await db
+      .from('profiles')
+      .update({
+        consecutive_attendances: 0,
+        no_show_count: next,
+      })
+      .eq('id', userId);
     if (profileErr) {
       return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }

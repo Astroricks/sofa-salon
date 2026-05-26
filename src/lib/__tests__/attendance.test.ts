@@ -1,8 +1,15 @@
 /** Unit tests for buildAttendanceMap and badge tiers (getBadgeLevel). */
 import {
   buildAttendanceMap,
+  countNoShowScreeningsFromRows,
+  noShowCountAfterAdminMark,
+  noShowCountAfterClearingAttendance,
+  noShowCountAfterUndo,
+  noShowScreeningIds,
   shouldApplyNoShowForReservationRow,
   shouldApplyNoShowForScreeningUser,
+  shouldUndoNoShowForReservationRow,
+  shouldUndoNoShowForScreeningUser,
 } from '../attendance';
 import { getBadgeLevel } from '../badges';
 
@@ -76,11 +83,78 @@ describe('shouldApplyNoShowForReservationRow', () => {
   });
 });
 
-describe('attendance API split-RLS behaviour (documented)', () => {
-  it('profile no_show_count can change while reservations.attended stays null without reservation UPDATE policy', () => {
-    // Migration 25 allows admin UPDATE on profiles; reservations had no UPDATE until 30.
-    // Old API updated profiles after a silent 0-row reservation update — UI showed "unset".
-    expect(true).toBe(true);
+describe('noShowScreeningIds', () => {
+  it('returns screening ids with attended=false on non-ghost reservations', () => {
+    const ids = noShowScreeningIds([
+      { screening_id: 'a', attended: false },
+      { screening_id: 'b', attended: true },
+      { screening_id: 'c', attended: false, is_ghost: true },
+    ]);
+    expect(ids.has('a')).toBe(true);
+    expect(ids.has('b')).toBe(false);
+    expect(ids.has('c')).toBe(false);
+  });
+});
+
+describe('noShowCountAfterUndo', () => {
+  it('decrements by one within 0–3', () => {
+    expect(noShowCountAfterUndo(2)).toBe(1);
+    expect(noShowCountAfterUndo(1)).toBe(0);
+    expect(noShowCountAfterUndo(0)).toBe(0);
+  });
+});
+
+describe('shouldUndoNoShowForScreeningUser', () => {
+  it('returns true when clearing 鸽了 to attended or unset', () => {
+    expect(shouldUndoNoShowForScreeningUser([false], null)).toBe(true);
+    expect(shouldUndoNoShowForScreeningUser([false, false], true)).toBe(true);
+  });
+
+  it('returns false when marking no-show or screening was not false', () => {
+    expect(shouldUndoNoShowForScreeningUser([false], false)).toBe(false);
+    expect(shouldUndoNoShowForScreeningUser([null], null)).toBe(false);
+  });
+});
+
+describe('noShowCountAfterAdminMark', () => {
+  it('raises count to match false screenings', () => {
+    expect(noShowCountAfterAdminMark(0, 1)).toBe(1);
+    expect(noShowCountAfterAdminMark(2, 1)).toBe(2);
+  });
+});
+
+describe('noShowCountAfterClearingAttendance', () => {
+  it('clamps orphan no_show_count when profile has a strike but no attended=false rows', () => {
+    expect(noShowCountAfterClearingAttendance(1, 0, false)).toBe(0);
+  });
+
+  it('decrements when clearing a screening that was marked false', () => {
+    expect(noShowCountAfterClearingAttendance(2, 0, true)).toBe(0);
+  });
+
+  it('keeps count when another screening is still false', () => {
+    expect(noShowCountAfterClearingAttendance(2, 1, true)).toBe(1);
+  });
+});
+
+describe('countNoShowScreeningsFromRows', () => {
+  it('counts distinct false screenings', () => {
+    expect(
+      countNoShowScreeningsFromRows([
+        { screening_id: 'a', attended: false },
+        { screening_id: 'a', attended: false },
+      ])
+    ).toBe(1);
+  });
+});
+
+describe('shouldUndoNoShowForReservationRow', () => {
+  it('returns false when sibling seat stays no-show', () => {
+    expect(shouldUndoNoShowForReservationRow(false, null, true)).toBe(false);
+  });
+
+  it('returns true when clearing the only false seat', () => {
+    expect(shouldUndoNoShowForReservationRow(false, null, false)).toBe(true);
   });
 });
 

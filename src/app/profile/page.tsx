@@ -12,7 +12,7 @@ import ProfileForm from './ProfileForm';
 import BadgeWithPopup from './BadgeWithPopup';
 import TickerUserSubmit from '@/components/TickerUserSubmit';
 import WatchHistory from './WatchHistory';
-import { fetchAttendanceCountForUser } from '@/lib/attendance';
+import { fetchAttendanceCountForUser, noShowScreeningIds } from '@/lib/attendance';
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -55,12 +55,20 @@ export default async function ProfilePage() {
   };
   const now = Date.now();
   const upcomingByScreening = new Map<string, { title: string; screeningAt: string; seatCount: number }>();
-  const pastScreenings: { screeningId: string; title: string; screeningAt: string; rating: number | null; durationMinutes: number | null }[] = [];
+  const pastScreenings: {
+    screeningId: string;
+    title: string;
+    screeningAt: string;
+    rating: number | null;
+    durationMinutes: number | null;
+  }[] = [];
   const seenPast = new Set<string>();
+  const hiddenNoShowIds = noShowScreeningIds(reservations as ReservationRow[]);
 
   for (const r of reservations as ReservationRow[]) {
     const screening = Array.isArray(r.screenings) ? r.screenings[0] : r.screenings;
     if (!screening?.id) continue;
+    if (r.is_ghost === true) continue;
     const screeningAt = typeof screening.screening_at === 'string' ? screening.screening_at : '';
     const ts = new Date(screeningAt).getTime();
     if (ts >= now) {
@@ -75,6 +83,7 @@ export default async function ProfilePage() {
         cur.seatCount += 1;
       }
     } else {
+      if (hiddenNoShowIds.has(screening.id)) continue;
       if (seenPast.has(screening.id)) continue;
       seenPast.add(screening.id);
       pastScreenings.push({

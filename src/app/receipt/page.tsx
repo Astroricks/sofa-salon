@@ -3,6 +3,7 @@
  * Fetches past reservations with screening + rating data, builds ReceiptData,
  * renders ReceiptSVG and ReceiptExportButton (export as PNG).
  */
+import { noShowScreeningIds } from '@/lib/attendance';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import ReceiptSVG from '@/components/ReceiptSVG';
@@ -55,7 +56,7 @@ export default async function ReceiptPage() {
     supabase
       .from('reservations')
       .select(
-        'screening_id, seat_key, screenings(id, title, director, year, duration_minutes, screening_at)'
+        'screening_id, seat_key, attended, is_ghost, screenings(id, title, director, year, duration_minutes, screening_at)'
       )
       .eq('user_id', user.id),
     supabase
@@ -76,6 +77,8 @@ export default async function ReceiptPage() {
   type Row = {
     screening_id: string;
     seat_key?: string | null;
+    attended?: boolean | null;
+    is_ghost?: boolean | null;
     screenings:
       | {
           id: string;
@@ -98,10 +101,12 @@ export default async function ReceiptPage() {
 
   const now = Date.now();
   const films: ReceiptFilm[] = [];
+  const hiddenNoShowIds = noShowScreeningIds(reservations as Row[]);
 
   for (const r of reservations as Row[]) {
     const s = Array.isArray(r.screenings) ? r.screenings[0] : r.screenings;
     if (!s?.id || !s.screening_at) continue;
+    if (hiddenNoShowIds.has(s.id)) continue;
     const screeningAt = s.screening_at;
     if (new Date(screeningAt).getTime() >= now) continue;
     films.push({

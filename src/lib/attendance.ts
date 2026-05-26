@@ -90,3 +90,120 @@ export function shouldApplyNoShowForScreeningUser(
   if (priorAttendedValues.length === 0) return false;
   return !priorAttendedValues.every((a) => a === false);
 }
+
+/** Admin clears 鸽了 on this screening (Attended or Unset). Drop one blood-bar segment. */
+export function shouldUndoNoShowForScreeningUser(
+  priorAttendedValues: ReadonlyArray<boolean | null | undefined>,
+  newAttended: boolean | null
+): boolean {
+  if (newAttended === false) return false;
+  return priorAttendedValues.some((a) => a === false);
+}
+
+/** Per-reservation admin path: undo only if this seat was false and no sibling stays false. */
+export function shouldUndoNoShowForReservationRow(
+  previousThisRow: boolean | null | undefined,
+  newAttended: boolean | null,
+  otherSiblingSeatAlreadyFalse: boolean
+): boolean {
+  if (newAttended === false) return false;
+  if (previousThisRow !== false) return false;
+  if (otherSiblingSeatAlreadyFalse) return false;
+  return true;
+}
+
+export function noShowCountAfterUndo(stored: number): number {
+  return Math.max(0, Math.min(3, Math.floor(stored)) - 1);
+}
+
+type ReservationNoShowRow = {
+  screening_id: string;
+  attended?: boolean | null;
+  is_ghost?: boolean | null;
+};
+
+/** Distinct screenings with `attended = false` (non-ghost). Caps at 3 for blood bar. */
+export function countNoShowScreeningsFromRows(
+  rows: ReadonlyArray<ReservationNoShowRow>
+): number {
+  const ids = new Set<string>();
+  for (const r of rows) {
+    if (r.is_ghost === true) continue;
+    if (r.attended === false) ids.add(r.screening_id);
+  }
+  return Math.min(3, ids.size);
+}
+
+export async function countNoShowScreeningsForUser(
+  client: SupabaseClient,
+  userId: string
+): Promise<number> {
+  const { data, error } = await client
+    .from('reservations')
+    .select('screening_id, attended, is_ghost')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return countNoShowScreeningsFromRows(data ?? []);
+}
+
+/**
+ * After admin sets Attended/Unset: blood bar must match reservation rows.
+ * Handles orphan `no_show_count` when profile was bumped without `attended=false`.
+ */
+export function noShowCountAfterClearingAttendance(
+  stored: number,
+  falseScreeningCount: number,
+  shouldDecrementStrike: boolean
+): number {
+  const fromRows = Math.min(3, Math.max(0, Math.floor(falseScreeningCount)));
+  let next = Math.min(3, Math.max(0, Math.floor(stored)));
+  if (shouldDecrementStrike) {
+    next = noShowCountAfterUndo(next);
+  }
+  if (next > fromRows) {
+    next = fromRows;
+  }
+  return next;
+}
+
+export function noShowCountAfterAdminMark(
+  stored: number,
+  falseScreeningCount: number
+): number {
+  return Math.min(3, Math.max(stored, falseScreeningCount));
+}
+
+/** Persist blood bar after admin sets Attended or Unset (not 鸽了). */
+export async function syncNoShowCountAfterAdminClear(
+  client: SupabaseClient,
+  userId: string,
+  stored: number,
+  shouldDecrementStrike: boolean
+): Promise<number> {
+  const falseScreeningCount = await countNoShowScreeningsForUser(client, userId);
+  const next = noShowCountAfterClearingAttendance(
+    stored,
+    falseScreeningCount,
+    shouldDecrementStrike
+  );
+  if (next !== stored) {
+    const { error } = await client
+      .from('profiles')
+      .update({ no_show_count: next })
+      .eq('id', userId);
+    if (error) throw error;
+  }
+  return next;
+}
+
+/** Screenings to hide from profile history / receipt (admin marked 鸽了 on any non-ghost seat). */
+export function noShowScreeningIds(
+  rows: ReadonlyArray<ReservationNoShowRow>
+): Set<string> {
+  const ids = new Set<string>();
+  for (const r of rows) {
+    if (r.is_ghost === true) continue;
+    if (r.attended === false) ids.add(r.screening_id);
+  }
+  return ids;
+}

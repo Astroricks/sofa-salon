@@ -1,14 +1,20 @@
 import { createClient } from '@/lib/supabase/server';
 import { getAdminWriteClient, reservationsUpdateHint } from '@/lib/admin-db';
-import { shouldApplyNoShowForScreeningUser } from '@/lib/attendance';
+import {
+  countNoShowScreeningsForUser,
+  noShowCountAfterAdminMark,
+  shouldApplyNoShowForScreeningUser,
+  shouldUndoNoShowForScreeningUser,
+  syncNoShowCountAfterAdminClear,
+} from '@/lib/attendance';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * Set attended for all reservations of one user in this screening.
  *
  * Important: `profiles` has admin UPDATE RLS (migration 25), but `reservations` did not
- * until migration 30. Without service role or migration 30, only no_show_count changed
- * while reservations.attended stayed null — UI looked "unset" but profile counters moved.
+ * until migration 30. Without service role or migration 30, reservation UPDATE returns 0 rows
+ * (503) and neither attended nor no_show_count should change.
  */
 export async function PATCH(
   req: NextRequest,
@@ -55,6 +61,7 @@ export async function PATCH(
     .eq('screening_id', screeningId)
     .eq('user_id', targetUserId);
   const hadAnyAttendedTrue = priorRows?.some((r) => r.attended === true) ?? false;
+  const priorValues = (priorRows ?? []).map((r) => r.attended);
 
   const { data: updatedRows, error: updateError } = await db
     .from('reservations')
@@ -82,12 +89,30 @@ export async function PATCH(
     .eq('id', targetUserId)
     .single();
 
-  const noShow = Number(profile?.no_show_count ?? 0);
+  let noShow = Number(profile?.no_show_count ?? 0);
   const consecutive = Number(profile?.consecutive_attendances ?? 0);
+
+  if (attended !== false) {
+    try {
+      noShow = await syncNoShowCountAfterAdminClear(
+        db,
+        targetUserId,
+        noShow,
+        shouldUndoNoShowForScreeningUser(priorValues, attended)
+      );
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Failed to sync no_show_count';
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
+  }
 
   if (attended === true) {
     if (hadAnyAttendedTrue) {
-      return NextResponse.json({ ok: true, reservationsUpdated: updatedRows.length });
+      return NextResponse.json({
+        ok: true,
+        reservationsUpdated: updatedRows.length,
+        no_show_count: noShow,
+      });
     }
     const nextConsecutive = consecutive + 1;
     const isPigeon = noShow >= 3;
@@ -99,6 +124,7 @@ export async function PATCH(
     };
     if (isPigeon && nextConsecutive >= 2) {
       updates.no_show_count = 0;
+      noShow = 0;
     }
     const { error: profileErr } = await db
       .from('profiles')
@@ -108,24 +134,37 @@ export async function PATCH(
       return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }
   } else if (attended === false) {
-    const priorValues = (priorRows ?? []).map((r) => r.attended);
     if (!shouldApplyNoShowForScreeningUser(priorValues)) {
-      return NextResponse.json({ ok: true, reservationsUpdated: updatedRows.length });
+      return NextResponse.json({
+        ok: true,
+        reservationsUpdated: updatedRows.length,
+        no_show_count: noShow,
+      });
     }
-    const current = Math.min(noShow, 3);
-    const next = Math.min(current + 1, 3);
-    const updates = {
-      consecutive_attendances: 0,
-      no_show_count: next,
-    };
+    let next = noShow;
+    try {
+      const falseScreeningCount = await countNoShowScreeningsForUser(db, targetUserId);
+      next = noShowCountAfterAdminMark(noShow, falseScreeningCount);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Failed to count no-shows';
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
     const { error: profileErr } = await db
       .from('profiles')
-      .update(updates)
+      .update({
+        consecutive_attendances: 0,
+        no_show_count: next,
+      })
       .eq('id', targetUserId);
     if (profileErr) {
       return NextResponse.json({ error: profileErr.message }, { status: 500 });
     }
+    noShow = next;
   }
 
-  return NextResponse.json({ ok: true, reservationsUpdated: updatedRows.length });
+  return NextResponse.json({
+    ok: true,
+    reservationsUpdated: updatedRows.length,
+    no_show_count: noShow,
+  });
 }
