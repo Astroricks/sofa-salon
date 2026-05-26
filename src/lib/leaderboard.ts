@@ -8,6 +8,7 @@ export type LeaderboardRow = {
   displayName: string;
   attendanceCount: number;
   noShowCount: number;
+  avatarConfig: unknown;
 };
 
 export type UserLeaderboardStanding = {
@@ -91,7 +92,7 @@ export async function fetchLeaderboard(
   const userIds = top.map((c) => c.user_id);
   const { data: profiles, error: profileError } = await client
     .from('profiles')
-    .select('id, display_name, no_show_count')
+    .select('id, display_name, no_show_count, avatar_config')
     .in('id', userIds);
 
   if (profileError) {
@@ -104,6 +105,7 @@ export async function fetchLeaderboard(
       {
         displayName: (p.display_name as string | null) ?? '—',
         noShowCount: Number(p.no_show_count ?? 0),
+        avatarConfig: p.avatar_config,
       },
     ])
   );
@@ -116,6 +118,7 @@ export async function fetchLeaderboard(
       displayName: profile?.displayName ?? '—',
       attendanceCount: Number.isFinite(n) && n > 0 ? Math.floor(n) : 0,
       noShowCount: profile?.noShowCount ?? 0,
+      avatarConfig: profile?.avatarConfig ?? null,
     };
   });
 }

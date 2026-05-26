@@ -9,9 +9,14 @@ import {
   fetchUserLeaderboardRank,
   leaderboardRankAtIndex,
 } from '@/lib/leaderboard';
+import LeaderboardGuestCell from '@/components/LeaderboardGuestCell';
+import AvatarSVG from '@/components/AvatarSVG';
 import PigeonIcon from '@/components/PigeonIcon';
+import { jsonToConfig } from '@/lib/avatar';
 
 export const dynamic = 'force-dynamic';
+
+const YOUR_AVATAR_SIZE = 36;
 
 export default async function LeaderboardPage() {
   const supabase = await createClient();
@@ -23,10 +28,20 @@ export default async function LeaderboardPage() {
   const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
   const t = getT(locale);
 
-  const [rows, you] = await Promise.all([
+  const [rows, you, viewerProfileRes] = await Promise.all([
     fetchLeaderboard(supabase),
     user ? fetchUserLeaderboardRank(supabase, user.id) : null,
+    user
+      ? supabase
+          .from('profiles')
+          .select('avatar_config, no_show_count')
+          .eq('id', user.id)
+          .single()
+      : Promise.resolve({ data: null }),
   ]);
+
+  const viewerProfile = viewerProfileRes.data;
+  const viewerIsPigeon = (viewerProfile?.no_show_count ?? 0) >= 3;
 
   const yourBadge = you ? getBadgeLevel(you.attendanceCount) : null;
   const badgeLabel = (b: { label: string; labelEn: string }) =>
@@ -39,7 +54,7 @@ export default async function LeaderboardPage() {
           {APP_NAME_PARTS[0]}
           <span className="text-[#e8c84a]">{APP_NAME_PARTS.slice(1).join('')}</span>
         </h1>
-        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-6">
+        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-[#888888] mb-6">
           {t.leaderboard.title}
         </p>
 
@@ -48,26 +63,41 @@ export default async function LeaderboardPage() {
             className="mb-6 border border-[#e8c84a] p-4 bg-[#141414]"
             style={{ borderRadius: 0 }}
           >
-            <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] mb-2">
+            <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-[#e8c84a] mb-3">
               {t.leaderboard.yourStats}
             </p>
-            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-[#e8e4dc]">
-              {!you.excludedFromLeaderboard ? (
-                <span className="text-[13px]">
-                  {t.leaderboard.yourRank.replace('{n}', String(you.rank))}
+            <div className="flex items-center gap-3 mb-3">
+              {viewerIsPigeon ? (
+                <PigeonIcon size={YOUR_AVATAR_SIZE} className="flex-shrink-0" title="Pigeon" />
+              ) : viewerProfile?.avatar_config ? (
+                <AvatarSVG
+                  config={jsonToConfig(viewerProfile.avatar_config)}
+                  size={YOUR_AVATAR_SIZE}
+                  pose="stand"
+                />
+              ) : (
+                <div
+                  className="bg-[#1a1a1a] border border-[#2a2a2a] flex-shrink-0"
+                  style={{ width: YOUR_AVATAR_SIZE, height: YOUR_AVATAR_SIZE, borderRadius: 0 }}
+                  aria-hidden
+                />
+              )}
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-[#e8e4dc] text-[14px]">
+                {!you.excludedFromLeaderboard ? (
+                  <span>{t.leaderboard.yourRank.replace('{n}', String(you.rank))}</span>
+                ) : null}
+                <span className="text-[#888888]">
+                  {t.leaderboard.attendanceCount.replace('{n}', String(you.attendanceCount))}
                 </span>
-              ) : null}
-              <span className="text-[13px] text-[#888888]">
-                {t.leaderboard.attendanceCount.replace('{n}', String(you.attendanceCount))}
-              </span>
-              <span className="text-[13px] inline-flex items-center gap-1">
-                <span>{yourBadge.emoji}</span>
-                <span>{badgeLabel(yourBadge)}</span>
-              </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="text-lg leading-none">{yourBadge.emoji}</span>
+                  <span>{badgeLabel(yourBadge)}</span>
+                </span>
+              </div>
             </div>
           </section>
         ) : (
-          <p className="font-mono text-[12px] text-[#666] mb-6">
+          <p className="font-mono text-[13px] text-[#666] mb-6">
             {t.leaderboard.signInHint}{' '}
             <Link href="/auth/login?redirect=/leaderboard" className="text-[#e8c84a] hover:underline">
               {t.nav.signIn}
@@ -76,14 +106,14 @@ export default async function LeaderboardPage() {
         )}
 
         <section className="border border-[#2a2a2a]" style={{ borderRadius: 0 }}>
-          <div className="grid grid-cols-[2.5rem_1fr_auto_auto] gap-2 px-3 py-2 border-b border-[#2a2a2a] font-mono text-[9px] tracking-[0.15em] uppercase text-[#666]">
+          <div className="grid grid-cols-[3rem_1fr_auto_auto] gap-3 px-3 py-2.5 border-b border-[#2a2a2a] font-mono text-[10px] tracking-[0.15em] uppercase text-[#666] items-center">
             <span>#</span>
             <span>{t.leaderboard.guest}</span>
             <span className="text-right">{t.leaderboard.screenings}</span>
             <span className="text-right">{t.leaderboard.badge}</span>
           </div>
           {rows.length === 0 ? (
-            <p className="font-mono text-[12px] text-[#666] p-4">{t.leaderboard.empty}</p>
+            <p className="font-mono text-[13px] text-[#666] p-4">{t.leaderboard.empty}</p>
           ) : (
             <ol className="divide-y divide-[#2a2a2a]">
               {rows.map((row, index) => {
@@ -97,21 +127,33 @@ export default async function LeaderboardPage() {
                 return (
                   <li
                     key={row.userId}
-                    className={`grid grid-cols-[2.5rem_1fr_auto_auto] gap-2 px-3 py-2.5 items-center font-mono text-[12px] ${
-                      isYou ? 'bg-[#1a1a14] text-[#e8e4dc]' : 'text-[#c8c4bc]'
+                    className={`grid grid-cols-[3rem_1fr_auto_auto] gap-3 px-3 py-3 items-center ${
+                      isYou ? 'bg-[#1a1a14]' : ''
                     }`}
                   >
-                    <span className={rank <= 3 ? 'text-[#e8c84a]' : 'text-[#666]'}>{rank}</span>
-                    <span className="truncate pr-2" title={row.displayName}>
-                      {row.displayName}
-                      {isYou ? (
-                        <span className="ml-1 text-[#e8c84a] text-[10px]">({t.leaderboard.you})</span>
-                      ) : null}
+                    <span
+                      className={`font-mono text-[15px] tabular-nums ${
+                        rank <= 3 ? 'text-[#e8c84a]' : 'text-[#666]'
+                      }`}
+                    >
+                      {rank}
                     </span>
-                    <span className="text-right tabular-nums">{row.attendanceCount}</span>
-                    <span className="text-right text-base leading-none" title={badgeLabel(badge)}>
+                    <LeaderboardGuestCell
+                      displayName={row.displayName}
+                      avatarConfig={row.avatarConfig}
+                      isPigeon={isPigeon}
+                      isYou={isYou}
+                      youLabel={t.leaderboard.you}
+                    />
+                    <span className="text-right tabular-nums font-mono text-[14px] text-[#c8c4bc]">
+                      {row.attendanceCount}
+                    </span>
+                    <span
+                      className="text-right text-xl leading-none"
+                      title={badgeLabel(badge)}
+                    >
                       {isPigeon ? (
-                        <PigeonIcon size={18} className="inline-block align-middle" title="Pigeon" />
+                        <PigeonIcon size={22} className="inline-block align-middle" title="Pigeon" />
                       ) : (
                         badge.emoji
                       )}
