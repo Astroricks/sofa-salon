@@ -1,3 +1,17 @@
+describe('isScreeningPast', () => {
+  it('returns true when screening_at is before now', async () => {
+    const { isScreeningPast } = await import('../screening-datetime');
+    const past = new Date(Date.now() - 60_000).toISOString();
+    expect(isScreeningPast(past)).toBe(true);
+  });
+
+  it('returns false for upcoming screenings', async () => {
+    const { isScreeningPast } = await import('../screening-datetime');
+    const future = new Date(Date.now() + 86_400_000).toISOString();
+    expect(isScreeningPast(future)).toBe(false);
+  });
+});
+
 describe('formatScreeningAtForEmail', () => {
   const originalTz = process.env.TZ;
   const originalVenueTz = process.env.VENUE_TIMEZONE;

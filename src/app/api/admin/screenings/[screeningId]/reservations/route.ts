@@ -9,7 +9,7 @@ import {
 } from '@/lib/admin-screening-reservations';
 import { getProfileContact, hasProfileContact } from '@/lib/contact-platform';
 import { sendAdminRemovedFromScreening, sendConfirmation } from '@/lib/email';
-import { formatScreeningAtForEmail } from '@/lib/screening-datetime';
+import { formatScreeningAtForEmail, isScreeningPast } from '@/lib/screening-datetime';
 import { NextRequest, NextResponse } from 'next/server';
 
 const MAX_REMOVAL_MESSAGE = 2000;
@@ -156,7 +156,7 @@ export async function POST(
     return NextResponse.json({ error: insertError.message }, { status: 400 });
   }
 
-  if (admin) {
+  if (admin && !isScreeningPast(screening.screening_at)) {
     const email = await getUserEmail(admin, targetUserId);
     if (email) {
       try {
