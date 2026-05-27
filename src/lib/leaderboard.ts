@@ -16,9 +16,20 @@ export type UserLeaderboardStanding = {
   attendanceCount: number;
   /** Non-admin profiles (registered guests eligible for the public board). */
   totalRegisteredGuests: number;
-  /** True when viewer is admin: rank 0 in standing; omitted from the table below. */
+  /** True when viewer is admin: same standing UI, omitted from the table below. */
   excludedFromLeaderboard: boolean;
 };
+
+/** 1-based rank vs other guests' attendance (admins are not in `eligible`). */
+export function rankAmongEligibleGuests(
+  attendanceCount: number,
+  eligible: ReadonlyArray<CountRow>
+): number {
+  if (attendanceCount <= 0) {
+    return eligible.filter((c) => c.attendance_count > 0).length + 1;
+  }
+  return eligible.filter((c) => c.attendance_count > attendanceCount).length + 1;
+}
 
 /** Count of registered guest profiles (excludes admins). */
 export async function fetchRegisteredGuestCount(client: SupabaseClient): Promise<number> {
@@ -150,28 +161,19 @@ export async function fetchUserLeaderboardRank(
     fetchRegisteredGuestCount(client),
   ]);
 
+  const rank = rankAmongEligibleGuests(attendanceCount, eligible);
+
   if (adminIds.has(userId)) {
     return {
-      rank: 0,
+      rank,
       attendanceCount,
       totalRegisteredGuests,
       excludedFromLeaderboard: true,
     };
   }
 
-  if (attendanceCount <= 0) {
-    const withPositive = eligible.filter((c) => c.attendance_count > 0).length;
-    return {
-      rank: withPositive + 1,
-      attendanceCount: 0,
-      totalRegisteredGuests,
-      excludedFromLeaderboard: false,
-    };
-  }
-
-  const higher = eligible.filter((c) => c.attendance_count > attendanceCount).length;
   return {
-    rank: higher + 1,
+    rank,
     attendanceCount,
     totalRegisteredGuests,
     excludedFromLeaderboard: false,

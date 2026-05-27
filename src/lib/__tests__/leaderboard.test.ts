@@ -1,6 +1,7 @@
 import {
   LEADERBOARD_TOP_N,
   leaderboardRankAtIndex,
+  rankAmongEligibleGuests,
   selectLeaderboardCutoff,
 } from '../leaderboard';
 import { tEn } from '../i18n';
@@ -67,9 +68,24 @@ describe('yourRank copy', () => {
     expect(line).toBe('Rank #12 of 200 guests');
   });
 
-  it('shows rank 0 for admin standing copy', () => {
-    const line = tEn.leaderboard.yourRank.replace('{n}', '0').replace('{total}', '50');
-    expect(line).toBe('Rank #0 of 50 guests');
+});
+
+describe('rankAmongEligibleGuests', () => {
+  const eligible = [
+    { user_id: 'a', attendance_count: 10 },
+    { user_id: 'b', attendance_count: 5 },
+    { user_id: 'c', attendance_count: 5 },
+    { user_id: 'd', attendance_count: 1 },
+  ];
+
+  it('ranks by attendance vs eligible guests (for admin standing too)', () => {
+    expect(rankAmongEligibleGuests(10, eligible)).toBe(1);
+    expect(rankAmongEligibleGuests(5, eligible)).toBe(2);
+    expect(rankAmongEligibleGuests(1, eligible)).toBe(4);
+  });
+
+  it('puts zero attendance after everyone with at least one screening', () => {
+    expect(rankAmongEligibleGuests(0, eligible)).toBe(5);
   });
 });
 
