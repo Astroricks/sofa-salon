@@ -18,3 +18,32 @@ Outputs:
 | `historical-title-en-unmatched.json` | Rows with no Letterboxd match (fill manually on site) |
 
 Matching rules (see `scripts/lib/match-letterboxd-en.mjs`): same screening date + year; unique-year pairing on multi-film nights; ±1 **Watched Date** when no same-day match and exactly one unused ziggygraph row on the adjacent day with the same release year.
+
+### OMDb runtimes (`duration_minutes`)
+
+For past rows missing `duration_minutes` (needs `OMDB_API_KEY` in `.env.local`):
+
+```bash
+node scripts/fetch-historical-durations-omdb.mjs --resume
+```
+
+Uses live DB rows (`screening_at < now()`, `duration_minutes IS NULL`) with `title_en` + `year`. Accepts **exact title** matches when catalog year is within **±2** of our row.
+
+Writes:
+
+| File | Purpose |
+|------|---------|
+| `historical-duration-omdb.json` | Full report |
+| `historical-duration-omdb-review.json` | Rows still missing runtime |
+| `historical-duration-omdb-approximations.json` | Exact title, year ±1/±2 |
+| `../supabase-sql/41-patch-historical-duration-minutes.sql` | `UPDATE` only where duration is null |
+
+Options: `--resume`, `--retry-omdb`, `--reverse`, `--apply`, `--limit=N`, `--source=csv`.
+
+**Manual / LLM gaps** (e.g. Gemini): fill `title_en,year,duration_minutes` CSV, then:
+
+```bash
+node scripts/apply-manual-durations.mjs scripts/data/your-file.csv
+```
+
+Review `historical-duration-omdb-review.json` before running **41** in Supabase SQL Editor.

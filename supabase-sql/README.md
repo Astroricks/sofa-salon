@@ -48,6 +48,7 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 35 | `35-reservations-attended-check.sql` | `CHECK`: `attended` is only `NULL` (present) or `false` (no-show). Run after normalize. |
 | 36 | `36-screenings-catalog-archive.sql` | RLS: authenticated users can read past `screenings` (`screening_at < now()`). |
 | 37 | `37-seed-historical-screenings-catalog.sql` | Sheet seed (273 rows) + fill empty `title`/`title_en` on existing same-night rows. Regenerate: `node scripts/generate-historical-screenings-sql.mjs`. |
+| 41 | `41-patch-historical-duration-minutes.sql` | **One-off data:** `duration_minutes` for past rows (OMDb + manual). Run `node scripts/fetch-historical-durations-omdb.mjs` and/or `apply-manual-durations.mjs`; review `scripts/data/historical-duration-omdb-review.json`. |
 
 ### First-time: past screenings + sheet sync (36 → 37)
 

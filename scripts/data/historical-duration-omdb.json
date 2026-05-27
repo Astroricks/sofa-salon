@@ -1,0 +1,5648 @@
+[
+  {
+    "id": "ff97cd58-abd8-41d0-b58e-0cb191959641",
+    "title": "影子部队",
+    "titleEn": "Army of Shadows",
+    "year": 1969,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q681225",
+    "externalTitle": "Army of Shadows",
+    "durationMinutes": 138,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "70d39c13-ff5e-4344-9dc5-b925aab01abf",
+    "title": "家书",
+    "titleEn": "Letters Home",
+    "year": 1986,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Letters Home",
+    "durationMinutes": 104,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q6533698",
+        "title": "Letters Home",
+        "release_date": ""
+      },
+      {
+        "id": "Q6533699",
+        "title": "Letters Home",
+        "release_date": ""
+      },
+      {
+        "id": "Q16996203",
+        "title": "Letters Home",
+        "release_date": ""
+      },
+      {
+        "id": "Q97367336",
+        "title": "Letters Home",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1986,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "158fb949-9b3b-449b-bc35-a328ef62641c",
+    "title": "是的",
+    "titleEn": "Yes",
+    "year": 2025,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Yes",
+    "durationMinutes": 150,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q184386",
+        "title": "Yes",
+        "release_date": ""
+      },
+      {
+        "id": "Q1541554",
+        "title": "Yes",
+        "release_date": ""
+      },
+      {
+        "id": "Q6452715",
+        "title": "yes",
+        "release_date": ""
+      },
+      {
+        "id": "Q37121870",
+        "title": "Yes",
+        "release_date": ""
+      },
+      {
+        "id": "Q109578530",
+        "title": "Yes",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2025,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "c1c8ff78-c68a-4c39-8db6-23b4e18e29c6",
+    "title": "破碎之镜",
+    "titleEn": "Broken Mirrors",
+    "year": 1984,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q745281",
+    "externalTitle": "Broken Mirrors",
+    "durationMinutes": 112,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "27afcb76-86d0-488b-ba44-30874054abe8",
+    "title": "她们的疯狂",
+    "titleEn": "Sheer Madness",
+    "year": 1983,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q3201804",
+    "externalTitle": "Sheer Madness",
+    "durationMinutes": 105,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "68e87862-0288-40d0-8875-53803d37f072",
+    "title": "真幻之爱",
+    "titleEn": "Love on the Ground",
+    "year": 1984,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q25508",
+    "externalTitle": "Love on the Ground",
+    "durationMinutes": 125,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "1315e247-5e6c-4da8-a59c-09273259174d",
+    "title": "情色剧院",
+    "titleEn": "Variety",
+    "year": 1983,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Variety",
+    "durationMinutes": 100,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q471728",
+        "title": "Variety",
+        "release_date": ""
+      },
+      {
+        "id": "Q767728",
+        "title": "variety",
+        "release_date": ""
+      },
+      {
+        "id": "Q7915876",
+        "title": "variety",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1983,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "ce5fd274-02e8-46e9-b619-7e2a89dbc378",
+    "title": "夜班时分",
+    "titleEn": "Nightshift",
+    "year": 1981,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Nightshift",
+    "durationMinutes": 68,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1981,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "833adb7e-337e-4fe3-9a03-f020674ae161",
+    "title": "谢尔曼的征程",
+    "titleEn": "Sherman's March",
+    "year": 1985,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Sherman's March",
+    "durationMinutes": 157,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q111464376",
+        "title": "Sherman's March",
+        "release_date": ""
+      },
+      {
+        "id": "Q111464368",
+        "title": "Sherman's March",
+        "release_date": ""
+      },
+      {
+        "id": "Q111463042",
+        "title": "Sherman's March",
+        "release_date": ""
+      },
+      {
+        "id": "Q111464248",
+        "title": "Sherman's March",
+        "release_date": ""
+      },
+      {
+        "id": "Q111463916",
+        "title": "Sherman's March",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1985,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "e92a95fc-ec46-4b3f-bf6a-9fc73e659708",
+    "title": "金都",
+    "titleEn": "My Prince Edward",
+    "year": 2019,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "My Prince Edward",
+    "durationMinutes": 92,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2019,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "7e4fc124-9bb8-49b7-b7b1-b8d36e10b9d4",
+    "title": "空山灵雨",
+    "titleEn": "Raining in the Mountain",
+    "year": 1979,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q377767",
+    "externalTitle": "Raining in the Mountain",
+    "durationMinutes": 120,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "08e59dd4-a56c-494c-b2ff-b33168cc3e38",
+    "title": "死亡万岁",
+    "titleEn": "Long Live Death",
+    "year": 1971,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Long Live Death",
+    "durationMinutes": 90,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1971,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "f8d18682-a80a-4d34-be8b-6b9e5238541a",
+    "title": "杀手蝴蝶梦",
+    "titleEn": "My Heart Is That Eternal Rose",
+    "year": 1989,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q3331191",
+    "externalTitle": "My Heart Is That Eternal Rose",
+    "durationMinutes": 90,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "8218695c-9e33-4c34-9ad0-8c7c2cc290ac",
+    "title": "破碎太阳之心",
+    "titleEn": "A Short Story",
+    "year": 2022,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "A Short Story",
+    "durationMinutes": 15,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2022,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "a0d9b7a6-ca56-45fd-b6f0-7b7461c8cc90",
+    "title": "时间不确定",
+    "titleEn": "Time Indefinite",
+    "year": 1993,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q7805006",
+    "externalTitle": "Time Indefinite",
+    "durationMinutes": 114,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "fd4e60f3-a89a-4918-b38a-de805032202d",
+    "title": "卡洛斯",
+    "titleEn": "Carlos",
+    "year": 2010,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Carlos",
+    "durationMinutes": 165,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q364753",
+        "title": "Carlos",
+        "release_date": ""
+      },
+      {
+        "id": "Q14647443",
+        "title": "Carlos",
+        "release_date": ""
+      },
+      {
+        "id": "Q739573",
+        "title": "Carlos",
+        "release_date": "1943-01-01"
+      },
+      {
+        "id": "Q2939278",
+        "title": "Carlos",
+        "release_date": "1997-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2010,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "2190e7b1-bacb-4006-99e0-4a624488c3da",
+    "title": "耶里肖",
+    "titleEn": "Jerichow",
+    "year": 2008,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1422242",
+    "externalTitle": "Jerichow",
+    "durationMinutes": 92,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "eb196938-e023-4636-80bd-ba81b0b11aee",
+    "title": "八仙饭店之人肉叉烧包",
+    "titleEn": "The Untold Story",
+    "year": 1993,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1254221",
+    "externalTitle": "The Untold Story",
+    "durationMinutes": 96,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "dfc2a67e-cb5a-4c63-916b-192e1e093028",
+    "title": "一只市民阶级犬的自我批评",
+    "titleEn": "Self-Criticism of a Bourgeois Dog",
+    "year": 2017,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q28142555",
+    "externalTitle": "Self-criticism of a Bourgeois Dog",
+    "durationMinutes": 99,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "543818e7-c86b-4bfc-abd7-90d8942a8b6e",
+    "title": "我的二十世纪",
+    "titleEn": "My Twentieth Century",
+    "year": 1989,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "My Twentieth Century",
+    "durationMinutes": 104,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1989,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "466f2df1-fac9-4b6a-baf8-aba52b9cc45e",
+    "title": "热带小径",
+    "titleEn": "Tropical Paths",
+    "year": 1977,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q127880933",
+    "externalTitle": "Tropical paths in vertex-colored graphs",
+    "durationMinutes": 25,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "71d92c71-941b-4f35-b9da-2b87b6877450",
+    "title": "镜的第三乐章",
+    "titleEn": "Miroirs No. 3",
+    "year": 2025,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q133875448",
+    "externalTitle": "Miroirs No. 3",
+    "durationMinutes": 86,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "fc38e887-637d-4f66-9a0b-e9fdf88d47f5",
+    "title": "梦想的生活",
+    "titleEn": "Dream Life",
+    "year": 1972,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q3213706",
+    "externalTitle": "Dream Life",
+    "durationMinutes": 84,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "f2ebe714-506b-4fba-bfd3-d09c09f7fc9b",
+    "title": "猎鹰湖",
+    "titleEn": "Falcon Lake",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q111208972",
+    "externalTitle": "Falcon Lake",
+    "durationMinutes": 100,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "c8b6a371-6211-420a-a8e6-44671f9ecb19",
+    "title": "电话铃响的时候",
+    "titleEn": "When the Phone Rang",
+    "year": 2025,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "When the Phone Rang",
+    "durationMinutes": 74,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2024,
+    "matchNote": "year ±1 (catalog 2024 vs our 2025); OMDb found without year filter (searched y=2025)",
+    "yearDelta": 1
+  },
+  {
+    "id": "7f17d1cd-b09a-4a45-b5ee-1aa8e9fac17e",
+    "title": "情人",
+    "titleEn": "The Lover",
+    "year": 2002,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q602927",
+    "externalTitle": "The Lover",
+    "durationMinutes": 115,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "65c59180-bb30-47ee-a0e4-7ee0f29971bd",
+    "title": "舍间声响",
+    "titleEn": "Neighboring Sounds",
+    "year": 2012,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Neighboring Sounds",
+    "durationMinutes": 131,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2012,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "20759269-6525-4eb1-b36d-2bd5ee1cf3df",
+    "title": "夏日假期",
+    "titleEn": "The Summer Holidays",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 26,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "d3733fab-ce19-45bc-be29-0940bb654425",
+    "title": "巴黎夏日",
+    "titleEn": "That Summer in Paris",
+    "year": 2025,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q132063739",
+    "externalTitle": "That Summer in Paris",
+    "durationMinutes": 77,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "426f20a5-860d-4723-8d9f-a3fc3f7b8c5a",
+    "title": "流氓医生",
+    "titleEn": "Doctor Mack",
+    "year": 1995,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Doctor Mack",
+    "durationMinutes": 98,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1995,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "fc1d86db-240d-4824-babd-5d40832a5cc5",
+    "title": "光明的未来",
+    "titleEn": "Bright Future",
+    "year": 2002,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q3107331",
+    "externalTitle": "Bright Future",
+    "durationMinutes": 115,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "a6e8e895-0e35-4521-91b2-edd584476920",
+    "title": "流砂幻爱",
+    "titleEn": "Like Grains of Sand",
+    "year": 1995,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q750613",
+    "externalTitle": "Like Grains of Sand",
+    "durationMinutes": 129,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "acc6a50b-c6a7-47dd-a0f4-1dbdc2a23bc1",
+    "title": "桃色公寓",
+    "titleEn": "The Apartment",
+    "year": 1960,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q270510",
+    "externalTitle": "The Apartment",
+    "durationMinutes": 125,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "46bc7c72-911a-4aa4-b3b0-8e50d18564c6",
+    "title": "妙想天开",
+    "titleEn": "Brazil",
+    "year": 1985,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Brazil",
+    "durationMinutes": 132,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q155",
+        "title": "Brazil",
+        "release_date": ""
+      },
+      {
+        "id": "Q16860380",
+        "title": "Brazil",
+        "release_date": ""
+      },
+      {
+        "id": "Q96336868",
+        "title": "Brazil",
+        "release_date": "1957-01-01"
+      },
+      {
+        "id": "Q96336800",
+        "title": "Brazil",
+        "release_date": "1975-01-01"
+      },
+      {
+        "id": "Q1998364",
+        "title": "Brazil",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1985,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "1b1da355-db66-4892-9b2e-fa4fd9fc1f50",
+    "title": "潘金莲之前世今生",
+    "titleEn": "The Reincarnation of Golden Lotus",
+    "year": 1989,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q15915320",
+    "externalTitle": "The Reincarnation of Golden Lotus",
+    "durationMinutes": 99,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "efd8970d-eb14-4d9c-a385-b1f9b931b0bc",
+    "title": "捷克惊魂夜",
+    "titleEn": "One Night in One City",
+    "year": 2007,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q7093065",
+    "externalTitle": "One Night in One City",
+    "durationMinutes": 76,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "ed0664a3-68ee-4730-b353-3119fefba080",
+    "title": "电子管",
+    "titleEn": "The Tube with a Hat",
+    "year": 2007,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q12731933",
+    "externalTitle": "The Tube with a Hat",
+    "durationMinutes": 23,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "a3462cc6-58ef-4f4e-9537-9ef859fb22f2",
+    "title": "迷雾中的小刺猬",
+    "titleEn": "Hedgehog in the Fog",
+    "year": 1975,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q260138",
+    "externalTitle": "Hedgehog in the Fog",
+    "durationMinutes": 11,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "5ebd3132-bbc4-42f7-8438-aee804ef8013",
+    "title": "千面珍宝金",
+    "titleEn": "Jane B. by Agnès V.",
+    "year": 1988,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 99,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "f2eea136-765e-45bc-a22f-391f973839ad",
+    "title": "积少成多",
+    "titleEn": "Little by Little",
+    "year": 1970,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Little by Little",
+    "durationMinutes": 96,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q63184775",
+        "title": "Little by Little",
+        "release_date": "1964-01-01"
+      },
+      {
+        "id": "Q72919783",
+        "title": "Little by Little",
+        "release_date": "2002-01-01"
+      },
+      {
+        "id": "Q1865918",
+        "title": "Little by Little",
+        "release_date": ""
+      },
+      {
+        "id": "Q2563216",
+        "title": "Little by Little",
+        "release_date": ""
+      },
+      {
+        "id": "Q129669",
+        "title": "Little by Little",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1970,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "928dbf16-541e-4608-abaa-bc72c9859daa",
+    "title": "普通事故",
+    "titleEn": "It Was Just an Accident",
+    "year": 2025,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q133866932",
+    "externalTitle": "It Was Just an Accident",
+    "durationMinutes": 105,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "c35fdd00-43de-4e97-a721-8dce844fa03e",
+    "title": "The Invention of the Other",
+    "titleEn": "The Invention of the Other",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 144,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "9423d42c-dc53-4b0c-a3d1-24cce33229e1",
+    "title": "且唱且珍惜",
+    "titleEn": "The Klezmer Project",
+    "year": 2023,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q116386970",
+    "externalTitle": "The Klezmer Project",
+    "durationMinutes": 117,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "ff8c0388-06df-43da-b45c-1ffdf5e8653b",
+    "title": "秋天的童话",
+    "titleEn": "An Autumn's Tale",
+    "year": 1987,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q837111",
+    "externalTitle": "An Autumn's Tale",
+    "durationMinutes": 98,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "35b45895-b9ee-46cd-a150-acdae0bc3184",
+    "title": "爱在别乡的季节",
+    "titleEn": "Farewell China",
+    "year": 1990,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q15911757",
+    "externalTitle": "Farewell China",
+    "durationMinutes": 114,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "be622b47-595a-4ab7-81cb-7ac565744598",
+    "title": "主要音调",
+    "titleEn": "The Major Tones",
+    "year": 2023,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q124005927",
+    "externalTitle": "The Major Tones",
+    "durationMinutes": 101,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "d4e4a445-f59e-4082-b609-203b9e35c7d7",
+    "title": "茶之味",
+    "titleEn": "The Taste of Tea",
+    "year": 2004,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q472012",
+    "externalTitle": "The Taste of Tea",
+    "durationMinutes": 124,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "093e57c5-97cb-4124-a446-879c07b170fc",
+    "title": "夕阳天使",
+    "titleEn": "So Close",
+    "year": 2002,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q2635074",
+    "externalTitle": "So Close",
+    "durationMinutes": 110,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "be1bd2b9-5035-4fa2-9fb4-16a693867994",
+    "title": "诱僧",
+    "titleEn": "Temptation of a Monk",
+    "year": 1993,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q7699037",
+    "externalTitle": "Temptation of a Monk",
+    "durationMinutes": 118,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "0cf0aab1-0ebf-4e70-8ec2-0f5c06a56251",
+    "title": "外星奇遇",
+    "titleEn": "Kin-dza-dza!",
+    "year": 1986,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1415194",
+    "externalTitle": "Kin-dza-dza!",
+    "durationMinutes": 127,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "4cf41a6b-a8d4-47b9-864e-fbed42fd0e05",
+    "title": "不要太期待世界末日",
+    "titleEn": "Do Not Expect Too Much from the End of the World",
+    "year": 2023,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q121200137",
+    "externalTitle": "Do Not Expect Too Much from the End of the World",
+    "durationMinutes": 163,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "9115e955-fce3-4c87-af16-592a0822f272",
+    "title": "季风婚宴",
+    "titleEn": "Monsoon Wedding",
+    "year": 2001,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q945586",
+    "externalTitle": "Monsoon Wedding",
+    "durationMinutes": 114,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "b9f0a9db-edd4-4f34-bae0-1c3ff132d218",
+    "title": "非快速眼动之窗",
+    "titleEn": "ノンレムの窓 2022・秋",
+    "year": 2022,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 55,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "externalYear": null,
+    "matchNote": "manual entry",
+    "yearDelta": null
+  },
+  {
+    "id": "3d2e82ba-945f-4dc7-ba05-6471a5af71aa",
+    "title": "事情原来是这样的……",
+    "titleEn": "What Happened Was...",
+    "year": 1994,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q7991117",
+    "externalTitle": "What Happened Was",
+    "durationMinutes": 91,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "2fc31e54-2202-4329-9f85-2e8980badf9f",
+    "title": "无熊之境",
+    "titleEn": "No Bears",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q113151425",
+    "externalTitle": "No Bears",
+    "durationMinutes": 106,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "5ffb818f-31bc-4d61-ab7c-39f6f9633254",
+    "title": "日常",
+    "titleEn": "Decameron",
+    "year": 2021,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q720159",
+    "externalTitle": "The Decameron",
+    "durationMinutes": 112,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "fab7177e-58e6-44fb-b8e0-50f066298fa2",
+    "title": "星球大战",
+    "titleEn": "Star Wars",
+    "year": 1977,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "medium",
+    "externalId": "Q17738",
+    "externalTitle": "Star Wars: Episode IV – A New Hope",
+    "durationMinutes": 121,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "a8d6cd46-e8df-43a4-9607-0224ad071bdd",
+    "title": "四月物语",
+    "titleEn": "April Story",
+    "year": 1998,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1072582",
+    "externalTitle": "April Story",
+    "durationMinutes": 67,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "7435360b-914c-47a9-8b57-79720c342c32",
+    "title": "杀羊人",
+    "titleEn": "Killer of Sheep",
+    "year": 1978,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1752684",
+    "externalTitle": "Killer of Sheep",
+    "durationMinutes": 83,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "93ae1548-a159-416a-8cac-07461680fe98",
+    "title": "恋恋风尘",
+    "titleEn": "Dust in the Wind",
+    "year": 1986,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q700474",
+    "externalTitle": "Dust in the Wind",
+    "durationMinutes": 109,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "b5850bb2-d733-4add-81a5-00206f497455",
+    "title": "热天午后",
+    "titleEn": "Dog Day Afternoon",
+    "year": 1975,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q458656",
+    "externalTitle": "Dog Day Afternoon",
+    "durationMinutes": 125,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "f73cbb97-d1bd-46f6-87ef-a98b8af0277a",
+    "title": "惊世狂花",
+    "titleEn": "Bound",
+    "year": 1996,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q864930",
+    "externalTitle": "Bound",
+    "durationMinutes": 108,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "4946a8a3-43bc-4b76-b18f-c27d055460d8",
+    "title": "浴室里的鳄鱼",
+    "titleEn": "Crocodile",
+    "year": 2009,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q495394",
+    "externalTitle": "Crocodile",
+    "durationMinutes": 99,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "a43be5ec-3b2c-4852-8a84-9084ff60580f",
+    "title": "最佳出价",
+    "titleEn": "The Best Offer",
+    "year": 2013,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q324011",
+    "externalTitle": "The Best Offer",
+    "durationMinutes": 124,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "fa95729c-5f1c-43af-b431-31d85214a17d",
+    "title": "Rehearsals for Retirement",
+    "titleEn": "Rehearsals for Retirement",
+    "year": 2007,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Rehearsals for Retirement",
+    "durationMinutes": 11,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2007,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "6aeebbdc-92c8-4dca-89dc-a97bb53e1fae",
+    "title": "妖怪人",
+    "titleEn": "Kummatty",
+    "year": 1979,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Kummatty",
+    "durationMinutes": 90,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1979,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "703f63c6-a6ab-4e43-bc35-8a72bcd33332",
+    "title": "安然无恙",
+    "titleEn": "Safe",
+    "year": 1995,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Safe",
+    "durationMinutes": 119,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q37234682",
+        "title": "Safe",
+        "release_date": ""
+      },
+      {
+        "id": "Q471898",
+        "title": "safe",
+        "release_date": ""
+      },
+      {
+        "id": "Q136335637",
+        "title": "Safe",
+        "release_date": "2025-01-01"
+      },
+      {
+        "id": "Q134965762",
+        "title": "Safe",
+        "release_date": "2018-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1995,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "df3b7b35-7fab-44b6-903b-590b4db3bd5f",
+    "title": "医生",
+    "titleEn": "Doctor",
+    "year": 2006,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Doctor",
+    "durationMinutes": 92,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q4618975",
+        "title": "Doctor",
+        "release_date": ""
+      },
+      {
+        "id": "Q37137094",
+        "title": "Doctor",
+        "release_date": ""
+      },
+      {
+        "id": "Q34358",
+        "title": "The Doctor",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2006,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "36f0ebc5-4e0c-43c9-b990-1c3876cbf4e0",
+    "title": "奥兰多",
+    "titleEn": "Orlando",
+    "year": 1992,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Orlando",
+    "durationMinutes": 94,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q49233",
+        "title": "Orlando",
+        "release_date": ""
+      },
+      {
+        "id": "Q9053129",
+        "title": "Orlando",
+        "release_date": ""
+      },
+      {
+        "id": "Q108480194",
+        "title": "Orlando",
+        "release_date": ""
+      },
+      {
+        "id": "Q108584752",
+        "title": "Orlando",
+        "release_date": ""
+      },
+      {
+        "id": "Q16880790",
+        "title": "Orlando",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1992,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "c88572bb-6e74-44c6-a398-5e9cd36f0306",
+    "title": "宽恕",
+    "titleEn": "Misericordia",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q125457384",
+    "externalTitle": "Misericordia",
+    "durationMinutes": 104,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "f5881954-33e4-4d2e-a6d7-788f1babf051",
+    "title": "笑林小子",
+    "titleEn": "Shaolin Popey",
+    "year": 1994,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Shaolin Popey",
+    "durationMinutes": 92,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1994,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "ed5146aa-189a-4dde-8a2a-f90dfa8eb433",
+    "title": "梦旅人",
+    "titleEn": "Picnic",
+    "year": 1996,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1300420",
+    "externalTitle": "Picnic",
+    "durationMinutes": 115,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "6cbd0a90-74d2-4087-adcf-f7d179fef2c5",
+    "title": "我看见了一只美洲狮",
+    "titleEn": "I Could See a Puma",
+    "year": 2011,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 17,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "5df22a82-06a8-492d-b026-2f92c926186e",
+    "title": "纳萨林",
+    "titleEn": "Nazarín",
+    "year": 1959,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q386522",
+    "externalTitle": "Nazarín",
+    "durationMinutes": 94,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "f0bce4f6-3e24-4875-8319-cb4fe4aa8d3a",
+    "title": "在黑暗的时代",
+    "titleEn": "In the Darkness of Time",
+    "year": 2002,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 10,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "71a97843-232e-4ce5-b440-e17eb1904c40",
+    "title": "都市寓言",
+    "titleEn": "An Urban Allegory",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q128249611",
+    "externalTitle": "An Urban Allegory",
+    "durationMinutes": 21,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "8a436d0e-896e-445e-9073-237fb1ee7d8b",
+    "title": "在她们眼中",
+    "titleEn": "Le Pupille",
+    "year": 2022,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Le pupille",
+    "durationMinutes": 39,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2022,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "51cf69f7-c9ce-4ad7-b2ad-ce3ab11bfc6d",
+    "title": "惊恐小镇",
+    "titleEn": "A Town Called Panic",
+    "year": 2009,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q2011263",
+    "externalTitle": "A Town Called Panic",
+    "durationMinutes": 75,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "6107fc89-c127-4b27-820c-612e46ccbacd",
+    "title": "神话",
+    "titleEn": "Phenomena",
+    "year": 1985,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1474376",
+    "externalTitle": "Phenomena",
+    "durationMinutes": 116,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "0571a99d-0fd1-44ca-aa28-92472d2d1d4b",
+    "title": "有一天皮娜问我",
+    "titleEn": "One Day Pina Asked...",
+    "year": 1989,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 57,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "b993cb30-3443-4dd9-9789-188fc61d1887",
+    "title": "20世纪的乡愁",
+    "titleEn": "20th Century Nostalgia",
+    "year": 1997,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q6382516",
+    "externalTitle": "20th Century Nostalgia",
+    "durationMinutes": 93,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": "Wikidata has no P2047 duration",
+        "externalId": "Q6382516"
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "ca9c2ee0-df03-4855-a868-499358be25e2",
+    "title": "初缠恋后的2人世界",
+    "titleEn": "First Love: The Litter on the Breeze",
+    "year": 1997,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q139720543",
+    "externalTitle": "First Love: The Litter on the Breeze",
+    "durationMinutes": 99,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": "Wikidata has no P2047 duration",
+        "externalId": "Q139720543"
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "ac10d5f1-5369-4e94-a2c5-7815dadc5805",
+    "title": "他他她他他",
+    "titleEn": "Gusto Kita With All My Hypothalamus",
+    "year": 2018,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Gusto kita with all my hypothalamus",
+    "durationMinutes": 105,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2018,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "e5b674e2-7c34-43a9-a56a-afa10aa82a6d",
+    "title": "公园的沙池",
+    "titleEn": "Garden Sandbox",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 69,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "f65c1ff5-b54d-4b22-9b70-f90fb514510c",
+    "title": "非家庭电影",
+    "titleEn": "No Home Movie",
+    "year": 2015,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "No Home Movie",
+    "durationMinutes": 115,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2015,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "db832e76-620d-4129-ba66-58f16fefaef1",
+    "title": "罗塞塔",
+    "titleEn": "Rosetta",
+    "year": 1999,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Rosetta",
+    "durationMinutes": 95,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q16281020",
+        "title": "Rosetta",
+        "release_date": ""
+      },
+      {
+        "id": "Q119265",
+        "title": "Rosetta",
+        "release_date": ""
+      },
+      {
+        "id": "Q111153737",
+        "title": "Rosetta",
+        "release_date": ""
+      },
+      {
+        "id": "Q21502233",
+        "title": "Rosetta",
+        "release_date": ""
+      },
+      {
+        "id": "Q7368678",
+        "title": "Rosetta",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1999,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "16541667-0178-425e-9036-86572617eca8",
+    "title": "昨日青春",
+    "titleEn": "Happyend",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q128787037",
+    "externalTitle": "Happyend",
+    "durationMinutes": 113,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "1bc0f860-6d35-4141-be8e-e1ca1e9ed2e5",
+    "title": "侠女",
+    "titleEn": "A Touch of Zen",
+    "year": 1970,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q704780",
+    "externalTitle": "A Touch of Zen",
+    "durationMinutes": 200,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "c3c7bbe6-070f-40c4-81d5-341fb07f50ec",
+    "title": "观看《他人之痛》",
+    "titleEn": "Watching the Pain of Others",
+    "year": 2018,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Watching the Pain of Others",
+    "durationMinutes": 31,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2018,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "0ca4b110-6ba0-4a76-85b6-016b7af11f97",
+    "title": "共同的语言",
+    "titleEn": "Universal Language",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q125503721",
+    "externalTitle": "Universal Language",
+    "durationMinutes": 89,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "6c256be5-2f66-4812-abec-5ca4b2f4df50",
+    "title": "木星的初恋",
+    "titleEn": "Mukhsin",
+    "year": 2006,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Mukhsin",
+    "durationMinutes": 95,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2006,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "129188b2-8a64-4a12-ba19-cac71c6a1e7f",
+    "title": "我仍在此",
+    "titleEn": "I'm Still Here",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1552765",
+    "externalTitle": "I'm Still Here",
+    "durationMinutes": 108,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "044aa524-cf27-42a6-9c06-7b00bfb06581",
+    "title": "花火",
+    "titleEn": "Fireworks",
+    "year": 1997,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Fireworks",
+    "durationMinutes": 103,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1997,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "e8dd48ff-59f8-4cda-9c6c-d043a8eea929",
+    "title": "海上花",
+    "titleEn": "Flowers of Shanghai",
+    "year": 1998,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q383729",
+    "externalTitle": "Flowers of Shanghai",
+    "durationMinutes": 130,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "590cf86c-8d7e-4cfe-befd-237e2f100c14",
+    "title": "女孩终究是女孩",
+    "titleEn": "Girls Will Be Girls",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q123982001",
+    "externalTitle": "Girls Will Be Girls",
+    "durationMinutes": 90,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "1f22354a-6f5f-47bc-b1d9-013a5e45aef3",
+    "title": "橘色",
+    "titleEn": "Tangerine",
+    "year": 2015,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q19263995",
+    "externalTitle": "Tangerine",
+    "durationMinutes": 88,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "accf9df2-41ed-43f6-a5bc-83a307c266d7",
+    "title": "工薪女孩",
+    "titleEn": "Working Girls",
+    "year": 1986,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q8034915",
+    "externalTitle": "Working Girls",
+    "durationMinutes": 93,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "5ce42e33-6c8f-44ad-a150-522748b352e7",
+    "title": "默文·卡拉",
+    "titleEn": "Morvern Callar",
+    "year": 2002,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q2943636",
+    "externalTitle": "Morvern Callar",
+    "durationMinutes": 97,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "7dc18fd3-1e91-48e6-bf42-aee0dcb64631",
+    "title": "德国姊妹",
+    "titleEn": "Marianne and Juliane",
+    "year": 1981,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q703966",
+    "externalTitle": "Marianne and Juliane",
+    "durationMinutes": 106,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "18a1fae1-2a5f-41ff-ae71-773f0fc5a3e0",
+    "title": "82年生的金智英",
+    "titleEn": "Kim Ji-young: Born 1982",
+    "year": 2019,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q68283959",
+    "externalTitle": "Kim Ji-young, Born 1982",
+    "durationMinutes": 119,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "e4cfbe66-664d-4fc6-a19a-1a51e19cbfb4",
+    "title": "竖笛考试",
+    "titleEn": "The Recorder Exam",
+    "year": 2011,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Recorder Exam",
+    "durationMinutes": 27,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2011,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "3053e5db-c17e-462c-a21c-7678ac9d7a0b",
+    "title": "午后阴影",
+    "titleEn": "Afternoon Clouds",
+    "year": 2017,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Afternoon Clouds",
+    "durationMinutes": 13,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2017,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "f9bf571e-870b-4acf-b423-f433c126644c",
+    "title": "绿光",
+    "titleEn": "The Green Ray",
+    "year": 1986,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1171334",
+    "externalTitle": "The Green Ray",
+    "durationMinutes": 98,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "53c0a4e4-4d8e-4c6b-894c-41d71e09683f",
+    "title": "出走的决心",
+    "titleEn": "Like A Rolling Stone",
+    "year": 2024,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Like a Rolling Stone",
+    "durationMinutes": 106,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2024,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "5e98ca69-36da-44d6-a3fa-a479e8641a94",
+    "title": "我想聊聊杜拉斯",
+    "titleEn": "I Want to Talk About Duras",
+    "year": 2021,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q108685984",
+    "externalTitle": "I Want to Talk About Duras",
+    "durationMinutes": 95,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "ba72527a-3a97-47e7-95de-20d05d42ddd0",
+    "title": "鱼缸",
+    "titleEn": "Fish Tank",
+    "year": 2009,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q557596",
+    "externalTitle": "Fish Tank",
+    "durationMinutes": 123,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "5e0f581f-de9a-4c2d-94e0-63f892f8ea1e",
+    "title": "豆芽",
+    "titleEn": "Sprout",
+    "year": 2013,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Sprout",
+    "durationMinutes": 20,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q7581363",
+        "title": "Sprout",
+        "release_date": ""
+      },
+      {
+        "id": "Q114508548",
+        "title": "Sprout",
+        "release_date": ""
+      },
+      {
+        "id": "Q124074167",
+        "title": "Sprout",
+        "release_date": "2007-01-01"
+      },
+      {
+        "id": "Q11312841",
+        "title": "Sprout",
+        "release_date": ""
+      },
+      {
+        "id": "Q3967288",
+        "title": "Sprout",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2013,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "ef2cface-9dbc-4498-a0d5-36d819ae73d4",
+    "title": "盗信情缘",
+    "titleEn": "Postman Blues",
+    "year": 1997,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q11339147",
+    "externalTitle": "Postman Blues",
+    "durationMinutes": 110,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "b1cd9670-ae2f-4ff8-bee3-ad154966d01e",
+    "title": "大只佬",
+    "titleEn": "Running on Karma",
+    "year": 2003,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q832366",
+    "externalTitle": "Running on Karma",
+    "durationMinutes": 93,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "d3502b14-731c-4066-8211-4037b7eb361e",
+    "title": "柏蒂娜的苦泪",
+    "titleEn": "The Bitter Tears of Petra von Kant",
+    "year": 1972,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q689300",
+    "externalTitle": "The Bitter Tears of Petra von Kant",
+    "durationMinutes": 124,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "f5b25c85-ab8e-44a9-aa0b-d59b91ba49b1",
+    "title": "秘密与谎言",
+    "titleEn": "Secrets & Lies",
+    "year": 1996,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q391172",
+    "externalTitle": "Secrets & Lies",
+    "durationMinutes": 142,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "c316121b-3863-47d8-acea-8c2a83404aa4",
+    "title": "密阳",
+    "titleEn": "Secret Sunshine",
+    "year": 2007,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q496752",
+    "externalTitle": "Secret Sunshine",
+    "durationMinutes": 142,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "32e16e36-7e3b-4411-9d4f-32e1aed70a11",
+    "title": "爱情与无政府",
+    "titleEn": "Love and Anarchy",
+    "year": 1973,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q475925",
+    "externalTitle": "Love and Anarchy",
+    "durationMinutes": 120,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "b95978bf-3a61-4a91-b76c-c42c9ff6d8e4",
+    "title": "爱情来了",
+    "titleEn": "Love Go Go",
+    "year": 1998,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Love Go Go",
+    "durationMinutes": 113,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1997,
+    "matchNote": "year ±1 (catalog 1997 vs our 1998); OMDb found without year filter (searched y=1998)",
+    "yearDelta": 1
+  },
+  {
+    "id": "9ef00bca-4bb7-4b0f-9002-f68270ad955d",
+    "title": "豆满江",
+    "titleEn": "Dooman River",
+    "year": 2010,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Dooman River",
+    "durationMinutes": 90,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2010,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "f86b5912-0d30-4584-aec8-8165f8c76e04",
+    "title": "姐姐",
+    "titleEn": "Older Sister",
+    "year": 1996,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q4440845",
+    "externalTitle": "Older sister",
+    "durationMinutes": 102,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "fc1da911-55a3-4291-a7ab-0a250fc2ccdc",
+    "title": "红颜",
+    "titleEn": "Dam Street",
+    "year": 2005,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q5211847",
+    "externalTitle": "Dam Street",
+    "durationMinutes": 93,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "42b519e0-8964-43cc-a46f-f19aa9ab7b43",
+    "title": "涩谷24小时",
+    "titleEn": "Bounce Ko Gals",
+    "year": 1997,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q4949807",
+    "externalTitle": "Bounce Ko Gals",
+    "durationMinutes": 110,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "692b2a9e-bb6a-43d3-8251-5eaa6bedca78",
+    "title": "Łukasz i Lotta",
+    "titleEn": "Łukasz i Lotta",
+    "year": 2012,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 9,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "2d3ee02c-0857-4356-98f3-afaf1ab50e1a",
+    "title": "陌生人为伴",
+    "titleEn": "The Company of Strangers",
+    "year": 1990,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 101,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": "Wikidata has no P2047 duration",
+        "externalId": "Q5392147"
+      }
+    ],
+    "matchedBy": "manual",
+    "externalYear": null,
+    "matchNote": "manual entry",
+    "yearDelta": null
+  },
+  {
+    "id": "e0d59112-2730-4f8c-a92d-42972ec91857",
+    "title": "鱼的故事",
+    "titleEn": "Fish Story",
+    "year": 2009,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q875965",
+    "externalTitle": "Fish Story",
+    "durationMinutes": 112,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "d3faaafb-98d9-4238-83b1-29fda493a1b2",
+    "title": "黄蜂",
+    "titleEn": "Wasp",
+    "year": 2003,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Wasp",
+    "durationMinutes": 26,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q37574354",
+        "title": "Wasp",
+        "release_date": ""
+      },
+      {
+        "id": "Q648125",
+        "title": "Wasp",
+        "release_date": ""
+      },
+      {
+        "id": "Q2107998",
+        "title": "Wasp",
+        "release_date": "1925-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2003,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "1c0a3764-c5b8-4efa-a93b-3016c4f8cee8",
+    "title": "小奏鸣曲",
+    "titleEn": "Sonatine",
+    "year": 1984,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Sonatine",
+    "durationMinutes": 91,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1984,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "ce3093ba-d5ee-46b1-9f99-3c346444635f",
+    "title": "猫皮",
+    "titleEn": "Cat Skin",
+    "year": 1962,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q56304070",
+    "externalTitle": "Cat Skin",
+    "durationMinutes": 97,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "02629f49-1e18-49fb-af3e-aa91a58415b1",
+    "title": "逃家",
+    "titleEn": "Taking Off",
+    "year": 1971,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1273817",
+    "externalTitle": "Taking Off",
+    "durationMinutes": 93,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "a7374260-4a9e-406d-afd2-01a0386328fa",
+    "title": "爱",
+    "titleEn": "Amour",
+    "year": 2012,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q637820",
+    "externalTitle": "Amour",
+    "durationMinutes": 127,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "21863c24-419c-4282-828f-fb61e9abbb65",
+    "title": "三粒粗盐",
+    "titleEn": "Three Grains of Coarse Salt",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 26,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "ed1a71b6-469c-47f9-a774-304300367c16",
+    "title": "蓦然回首",
+    "titleEn": "Look Back",
+    "year": 2024,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q127526724",
+    "externalTitle": "Look Back",
+    "durationMinutes": 60,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "f9466f31-6506-4b86-8ac9-521b013883a6",
+    "title": "烟花",
+    "titleEn": "Fireworks, Should We See It from the Side or the Bottom?",
+    "year": 1995,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Fireworks, Should We See It from the Side or the Bottom?",
+    "durationMinutes": 45,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q1054710",
+        "title": "Fireworks, Should We See It from the Side or the Bottom?",
+        "release_date": "1993-01-01"
+      },
+      {
+        "id": "Q30601864",
+        "title": "Fireworks, Should We See It from the Side or the Bottom?",
+        "release_date": "2017-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1995,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "5c15a248-3f2c-4429-b512-edab6bb91670",
+    "title": "鬼汤",
+    "titleEn": "Ghost Soup",
+    "year": 1995,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q5557159",
+    "externalTitle": "Ghost Soup",
+    "durationMinutes": 58,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "2c0273fb-639b-41f7-909b-03688ddb95fe",
+    "title": "下妻物语",
+    "titleEn": "Kamikaze Girls",
+    "year": 2004,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1191668",
+    "externalTitle": "Kamikaze Girls",
+    "durationMinutes": 102,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "2fa375ee-e2bd-41b6-b33e-fbcc33a8c0ef",
+    "title": "为吾子寄信吾母",
+    "titleEn": "Letter to My Mother for My Son",
+    "year": 2022,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q113728883",
+    "externalTitle": "Letter to My Mother for My Son",
+    "durationMinutes": 24,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "cfbd838d-7ced-4451-ab38-ba1c4ed9d269",
+    "title": "传说在下午,有时会遇到吸血鬼",
+    "titleEn": "Emotion",
+    "year": 1966,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Emotion",
+    "durationMinutes": 39,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q5373749",
+        "title": "Emotion",
+        "release_date": ""
+      },
+      {
+        "id": "Q9415",
+        "title": "emotion",
+        "release_date": ""
+      },
+      {
+        "id": "Q105513931",
+        "title": "Emotion",
+        "release_date": "1974-01-01"
+      },
+      {
+        "id": "Q116036073",
+        "title": "emotion",
+        "release_date": ""
+      },
+      {
+        "id": "Q20046854",
+        "title": "Emotion",
+        "release_date": "2015-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1966,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "f60742d6-9f9d-44e9-ac73-de93b63b40ef",
+    "title": "电话谋杀案",
+    "titleEn": "Dial M for Murder",
+    "year": 1954,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q496255",
+    "externalTitle": "Dial M for Murder",
+    "durationMinutes": 101,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "4cd4253b-34ab-4a31-82db-0a030782f045",
+    "title": "美国甜心",
+    "titleEn": "American Honey",
+    "year": 2016,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q20001112",
+    "externalTitle": "American Honey",
+    "durationMinutes": 163,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "c7b9d597-8b4c-4ba2-a9fd-74f24b7e41a0",
+    "title": "噪音如是说",
+    "titleEn": "Thus a Noise Speaks",
+    "year": 2010,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "medium",
+    "externalId": null,
+    "externalTitle": "Thus a Noise Speaks",
+    "durationMinutes": 38,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "medium",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2012,
+    "matchNote": "approximate year: catalog 2012 vs our 2010 (title exact); OMDb found without year filter (searched y=2010)",
+    "yearDelta": 2
+  },
+  {
+    "id": "2f2997c0-9ec7-49c0-b9db-17ce4abb6d14",
+    "title": "怠惰女子的肖像",
+    "titleEn": "Portrait of a Lazy Woman",
+    "year": 1986,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 8,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "8388fca0-0aa8-4f3b-ad52-d179c4795fe1",
+    "title": "Examen d’entrée INSAS",
+    "titleEn": "Examen d'entrée INSAS",
+    "year": 1967,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Examen d'entrée INSAS",
+    "durationMinutes": 10,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1967,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "d6dc9738-2488-4961-a90b-cc5a05eec2d8",
+    "title": "秘密花园",
+    "titleEn": "My Secret Cache",
+    "year": 1997,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q980973",
+    "externalTitle": "My Secret Cache",
+    "durationMinutes": 83,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "e8462d86-192c-47c9-836c-3af1348d7dea",
+    "title": "夜幕降临上海",
+    "titleEn": "Nightfall in Shanghai",
+    "year": 2007,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 14,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "3b2b14de-723c-4f3d-84ed-4b6e6fc32692",
+    "title": "太阳狗",
+    "titleEn": "Sun Dog",
+    "year": 2019,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Sun Dog",
+    "durationMinutes": 20,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q51879928",
+        "title": "Sun Dogs",
+        "release_date": "2017-01-01"
+      },
+      {
+        "id": "Q7638276",
+        "title": "Sun Dogs",
+        "release_date": "2006-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2020,
+    "matchNote": "year ±1 (catalog 2020 vs our 2019); OMDb found without year filter (searched y=2019)",
+    "yearDelta": 1
+  },
+  {
+    "id": "9a84f614-3145-4964-b8c0-dce8e724d83e",
+    "title": "入侵",
+    "titleEn": "Invasion",
+    "year": 1969,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Invasion",
+    "durationMinutes": 123,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q26204412",
+        "title": "Invasion",
+        "release_date": "1987-01-01"
+      },
+      {
+        "id": "Q74069549",
+        "title": "Invasion",
+        "release_date": "1985-01-01"
+      },
+      {
+        "id": "Q467011",
+        "title": "invasion",
+        "release_date": ""
+      },
+      {
+        "id": "Q74069968",
+        "title": "Invasion",
+        "release_date": "2015-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1969,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "37fb8cb1-85fe-4a5c-99d2-de5dd7921353",
+    "title": "东京家族",
+    "titleEn": "Tokyo Family",
+    "year": 2013,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q11524787",
+    "externalTitle": "Tokyo Family",
+    "durationMinutes": 146,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "b0087621-e37c-4b68-ac58-fae201d9e04e",
+    "title": "肮脏的爱情",
+    "titleEn": "Troubling Love",
+    "year": 1995,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 104,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q65129990",
+        "title": "Troubling Love",
+        "release_date": "1992-01-01"
+      },
+      {
+        "id": "Q128764837",
+        "title": "Troubling Love",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": "Wikidata has no P2047 duration",
+        "externalId": "Q128764837"
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "20d81956-78c1-4950-ab31-969b150601c8",
+    "title": "花与爱丽丝杀人事件",
+    "titleEn": "The Case of Hana & Alice",
+    "year": 2015,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q18389392",
+    "externalTitle": "The Case of Hana & Alice",
+    "durationMinutes": 99,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": "Wikidata has no P2047 duration",
+        "externalId": "Q18389392"
+      }
+    ],
+    "matchedBy": "manual",
+    "matchNote": "manual entry"
+  },
+  {
+    "id": "9f66ec47-1751-4bb8-a0c3-da505f31c22c",
+    "title": "再见，杰罗姆！",
+    "titleEn": "Goodbye Jerome!",
+    "year": 2022,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Goodbye Jerome!",
+    "durationMinutes": 8,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2022,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "9ff02517-adcb-4c6a-aa1a-cdbc6a0138dd",
+    "title": "热带鱼",
+    "titleEn": "Tropical Fish",
+    "year": 1995,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q7845793",
+    "externalTitle": "Tropical Fish",
+    "durationMinutes": 107,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "1ad53189-c838-4009-b73a-529ed9b57525",
+    "title": "最后大浪",
+    "titleEn": "The Last Wave",
+    "year": 1977,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1218841",
+    "externalTitle": "The Last Wave",
+    "durationMinutes": 110,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "7e769801-205c-4d17-adc8-851f9a62c970",
+    "title": "然后我们跳了舞",
+    "titleEn": "And Then We Danced",
+    "year": 1996,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q63800585",
+    "externalTitle": "And Then We Danced",
+    "durationMinutes": 105,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "286abd21-485c-47e9-b6bb-08059f2d02cd",
+    "title": "国王的电影",
+    "titleEn": "A King and His Movie",
+    "year": 1986,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q21568958",
+    "externalTitle": "A King and His Movie",
+    "durationMinutes": 107,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "81e6c47c-ad17-4653-a57f-2450d5a607f6",
+    "title": "人·鬼·情",
+    "titleEn": "Woman Demon Human",
+    "year": 1987,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q105492998",
+    "externalTitle": "Woman Demon Human",
+    "durationMinutes": 108,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "4fd727a3-229d-47c6-aaf2-1101bdcfbc9f",
+    "title": "观影室",
+    "titleEn": "The Viewing Booth",
+    "year": 2020,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q105102581",
+    "externalTitle": "The Viewing Booth",
+    "durationMinutes": 70,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "efe3c0f2-558d-4698-b413-f70f7abb20fb",
+    "title": "你妈妈也一样",
+    "titleEn": "Y Tu Mamá También",
+    "year": 2001,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q128848",
+    "externalTitle": "Y tu mamá también",
+    "durationMinutes": 101,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "377acfbe-dd68-47de-937e-939de9b727d2",
+    "title": "天涯沦落女",
+    "titleEn": "Vagabond",
+    "year": 1985,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q2298257",
+    "externalTitle": "Vagabond",
+    "durationMinutes": 100,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "0a0358e9-5b17-4eaa-82cd-9c763e9cc8f1",
+    "title": "鬼怪屋",
+    "titleEn": "House",
+    "year": 1977,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "House",
+    "durationMinutes": 88,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q3947",
+        "title": "house",
+        "release_date": ""
+      },
+      {
+        "id": "Q19902419",
+        "title": "House",
+        "release_date": ""
+      },
+      {
+        "id": "Q111045803",
+        "title": "House",
+        "release_date": ""
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1977,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "92763b0c-3431-40dc-a029-972363f3ed00",
+    "title": "被嫌弃的松子的一生",
+    "titleEn": "Memories of Matsuko",
+    "year": 2006,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q953722",
+    "externalTitle": "Memories of Matsuko",
+    "durationMinutes": 130,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "faabb984-e3b8-4533-b815-0de935190888",
+    "title": "修罗雪姬",
+    "titleEn": "Lady Snowblood",
+    "year": 1973,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q1754737",
+    "externalTitle": "Lady Snowblood",
+    "durationMinutes": 97,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "d543b4b3-1401-435d-b441-f6df561d650d",
+    "title": "独自生活的人们",
+    "titleEn": "Aloners",
+    "year": 2021,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q106921060",
+    "externalTitle": "Aloners",
+    "durationMinutes": 91,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "c9be1413-38c4-4360-901d-aea40a21cff7",
+    "title": "青春祭",
+    "titleEn": "Sacrificed Youth",
+    "year": 1985,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Sacrificed Youth",
+    "durationMinutes": 92,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1986,
+    "matchNote": "year ±1 (catalog 1986 vs our 1985); OMDb found without year filter (searched y=1985)",
+    "yearDelta": 1
+  },
+  {
+    "id": "a986b4d4-7e22-4b23-984a-e3e24cdca963",
+    "title": "怪谈",
+    "titleEn": "Kwaidan",
+    "year": 1964,
+    "source": "db",
+    "provider": "wikidata",
+    "confidence": "high",
+    "externalId": "Q133488",
+    "externalTitle": "Kwaidan",
+    "durationMinutes": 183,
+    "note": null,
+    "attempts": []
+  },
+  {
+    "id": "aadbd1ba-662b-4488-95d3-8784d161ab5e",
+    "title": "Pussy (Cipka)",
+    "titleEn": "Pussy",
+    "year": 2016,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "durationMinutes": 8,
+    "note": null,
+    "candidates": [
+      {
+        "id": "Q991026",
+        "title": "Pussy",
+        "release_date": ""
+      },
+      {
+        "id": "Q122826097",
+        "title": "PUSSY",
+        "release_date": "2019-01-01"
+      },
+      {
+        "id": "Q171041",
+        "title": "Pussy",
+        "release_date": "2009-01-01"
+      }
+    ],
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": "Wikidata has no P2047 duration",
+        "externalId": "Q991026"
+      }
+    ],
+    "matchedBy": "manual",
+    "externalYear": null,
+    "matchNote": "manual entry",
+    "yearDelta": null
+  },
+  {
+    "id": "063217e6-2797-49cc-8899-a302b7a0dc3d",
+    "title": "Contretemps",
+    "titleEn": "Contretemps",
+    "year": 2021,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Contretemps",
+    "durationMinutes": 7,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 2021,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "cfab3a54-494c-4fb7-a0fa-df592fcf07e2",
+    "title": "X圣治",
+    "titleEn": "Cure",
+    "year": 1997,
+    "source": "db",
+    "provider": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Cure",
+    "durationMinutes": 111,
+    "note": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "matchedBy": "omdb",
+    "externalYear": 1997,
+    "matchNote": null,
+    "yearDelta": 0
+  },
+  {
+    "id": "dbc839f5-ebb4-4243-870f-3a09d562f963",
+    "title": "身体记着世间何时崩裂",
+    "titleEn": "The Body Remembers When the World Broke Open",
+    "year": 2019,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Body Remembers When the World Broke Open",
+    "externalYear": 2019,
+    "durationMinutes": 105,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6aef6e94-0e8c-4092-b339-f8466315bce3",
+    "title": "帕乌利什塔的手",
+    "titleEn": "The Hand of Paulișta",
+    "year": 1998,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 10,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ]
+  },
+  {
+    "id": "44bd073a-c33d-4585-b6aa-b465da99d083",
+    "title": "绿色唱片",
+    "titleEn": "Green Vinyl",
+    "year": 2004,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Green Vinyl",
+    "externalYear": 2004,
+    "durationMinutes": 13,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "552ed5de-3fc1-4e7b-a4be-c20ff4ab92d8",
+    "title": "花与爱丽丝",
+    "titleEn": "Hana & Alice",
+    "year": 2004,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 135,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "1e05d168-d2fb-42dd-9cab-e6ec61148b69",
+    "title": "硝烟中诞生",
+    "titleEn": "Born in Flames",
+    "year": 1983,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Born in Flames",
+    "externalYear": 1983,
+    "durationMinutes": 79,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "e0fec7b9-fa0a-432d-8622-1dda7b784dc9",
+    "title": "芦笋",
+    "titleEn": "Asparagus",
+    "year": 1979,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Asparagus",
+    "externalYear": 1979,
+    "durationMinutes": 20,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "2e0edf71-8af0-45d1-a943-6763b836245e",
+    "title": "欢乐街",
+    "titleEn": "Joy Street",
+    "year": 1995,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Joy Street",
+    "externalYear": 1995,
+    "durationMinutes": 24,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "395be526-ddbe-43dd-90fd-254b5e5411aa",
+    "title": "东京金盏花",
+    "titleEn": "Tokyo Marigold",
+    "year": 2001,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Tokyo Marigold",
+    "externalYear": 2001,
+    "durationMinutes": 97,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "be8ed76f-a853-402e-9cdb-f73e6de27411",
+    "title": "自梳",
+    "titleEn": "Intimates",
+    "year": 1997,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Intimates",
+    "externalYear": 1997,
+    "durationMinutes": 117,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "e1467fbb-55d6-44ca-ad5f-10c9a7317c74",
+    "title": "爱与时尚",
+    "titleEn": "Love & Pop",
+    "year": 1998,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Love & Pop",
+    "externalYear": 1998,
+    "durationMinutes": 110,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "107292c5-b200-4df3-8604-cae81290eb2c",
+    "title": "妓院里的回忆",
+    "titleEn": "House of Tolerance",
+    "year": 2011,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "House of Tolerance",
+    "externalYear": 2011,
+    "durationMinutes": 122,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "04280a40-a9a5-4efa-8ce3-fd52ea1f3c56",
+    "title": "人鱼传说",
+    "titleEn": "Mermaid Legend",
+    "year": 1984,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Mermaid Legend",
+    "externalYear": 1984,
+    "durationMinutes": 110,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "fc011e29-03bf-43f3-bee5-5f72db9cd6bd",
+    "title": "三女性",
+    "titleEn": "3 Women",
+    "year": 1977,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "3 Women",
+    "externalYear": 1977,
+    "durationMinutes": 124,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6cecb6bb-ec1d-44a2-9e96-030d79a55ae7",
+    "title": "夏日感悟",
+    "titleEn": "This Summer Feeling",
+    "year": 2015,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "This Summer Feeling",
+    "externalYear": 2015,
+    "durationMinutes": 106,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "009b4f0e-c2e1-470c-96b2-957ef8840e3a",
+    "title": "巴黎夜旅人",
+    "titleEn": "The Passengers of the Night",
+    "year": 2022,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Passengers of the Night",
+    "externalYear": 2022,
+    "durationMinutes": 111,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "0a679a70-28fc-4d25-82e4-6c346a046952",
+    "title": "丛林怪兽",
+    "titleEn": "Macunaima",
+    "year": 1969,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Macunaima",
+    "externalYear": 1969,
+    "durationMinutes": 95,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "641f4d01-b67b-4525-b7fd-d72f848fc788",
+    "title": "贫穷的吸血鬼",
+    "titleEn": "The Vampires of Poverty",
+    "year": 1978,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Vampires of Poverty",
+    "externalYear": 1978,
+    "durationMinutes": 28,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "9a8e1de7-fbc0-4c19-9fd3-59f05d4d41fd",
+    "title": "My house walk-through",
+    "titleEn": "My House Walk-Through",
+    "year": 2016,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "My House Walk-Through",
+    "externalYear": 2016,
+    "durationMinutes": 12,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "ddc3a32c-9fec-41e7-a79f-53e4081e4302",
+    "title": "我的狗狗王子",
+    "titleEn": "Love on a Leash",
+    "year": 2011,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Love on a Leash",
+    "externalYear": 2011,
+    "durationMinutes": 90,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "b67b79dd-29c0-406c-9d71-14009cbb9d9f",
+    "title": "放大",
+    "titleEn": "Blow-Up",
+    "year": 1966,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Blow-Up",
+    "externalYear": 1966,
+    "durationMinutes": 111,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "464f51c6-af92-4750-8de1-ecdf3951a6af",
+    "title": "李文漫游东湖",
+    "titleEn": "Li Wen at East Lake",
+    "year": 2015,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Li Wen at East Lake",
+    "externalYear": 2015,
+    "durationMinutes": 117,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "9e43b706-97bd-4a90-a02e-5cd9951f2550",
+    "title": "琳达！琳达！琳达！",
+    "titleEn": "Linda Linda Linda",
+    "year": 2005,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Linda Linda Linda",
+    "externalYear": 2005,
+    "durationMinutes": 114,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "b67b5a7c-b9d2-4e1a-94f5-2af95d78a644",
+    "title": "钟声",
+    "titleEn": "Chime",
+    "year": 2024,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Chime",
+    "externalYear": 2024,
+    "durationMinutes": 45,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6aa9182a-d6e2-4d15-9de1-8a5b4632d7a3",
+    "title": "杀手烙印",
+    "titleEn": "Branded to Kill",
+    "year": 1967,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Branded to Kill",
+    "externalYear": 1967,
+    "durationMinutes": 91,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "a23e9e29-ebbd-499e-990c-ecf04c7caf0d",
+    "title": "交通意外",
+    "titleEn": "Trafic",
+    "year": 1971,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 96,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "ambiguous",
+        "note": "multiple Wikidata candidates",
+        "externalId": null
+      }
+    ],
+    "candidates": [
+      {
+        "id": "Q130247227",
+        "title": "Trafic",
+        "release_date": ""
+      },
+      {
+        "id": "Q20732590",
+        "title": "Trafic",
+        "release_date": ""
+      },
+      {
+        "id": "Q3030620",
+        "title": "Trafic",
+        "release_date": ""
+      }
+    ]
+  },
+  {
+    "id": "0d00baa8-dbed-4f44-8e73-d25e36d087bb",
+    "title": "清洁",
+    "titleEn": "Clean",
+    "year": 2004,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Clean",
+    "externalYear": 2004,
+    "durationMinutes": 90,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "c3956cfa-6fd6-43d1-a011-1828e3c0db4e",
+    "title": "唐皇游地府",
+    "titleEn": "Emperor Visits the Hell",
+    "year": 2012,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Emperor Visits the Hell",
+    "externalYear": 2012,
+    "durationMinutes": 67,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6a8b9f89-df26-4a94-b23c-0ce61d2bc792",
+    "title": "猫样少女",
+    "titleEn": "Take Care of My Cat",
+    "year": 2001,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Take Care of My Cat",
+    "externalYear": 2001,
+    "durationMinutes": 112,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "a888a3f1-eaac-4908-acfb-c963798ad8bb",
+    "title": "哈哈笑",
+    "titleEn": "Funny Ha Ha",
+    "year": 2002,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Funny Ha Ha",
+    "externalYear": 2002,
+    "durationMinutes": 89,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "c12997f9-0d7e-429e-9be0-020d45b54910",
+    "title": "八美图",
+    "titleEn": "8 Women",
+    "year": 2002,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "8 Women",
+    "externalYear": 2002,
+    "durationMinutes": 111,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "067ecbaa-013e-4746-9c96-89e0b591080b",
+    "title": "投奔怒海",
+    "titleEn": "Boat People",
+    "year": 1982,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Boat People",
+    "externalYear": 1982,
+    "durationMinutes": 109,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "d6aa0751-f9ed-49b5-b1b4-1f9971b345ec",
+    "title": "寻找西瓜女",
+    "titleEn": "The Watermelon Woman",
+    "year": 1996,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Watermelon Woman",
+    "externalYear": 1996,
+    "durationMinutes": 85,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "cefe98c8-c96b-4cb1-a55a-fadda7c1e796",
+    "title": "女朋友",
+    "titleEn": "Girlfriends",
+    "year": 1978,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Girlfriends",
+    "externalYear": 1978,
+    "durationMinutes": 88,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "551776f5-2c47-4b72-8d9e-c01d9ddad5f0",
+    "title": "还有明天",
+    "titleEn": "There's Still Tomorrow",
+    "year": 2023,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "There's Still Tomorrow",
+    "externalYear": 2023,
+    "durationMinutes": 118,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "0dd885ec-5cba-439d-a21d-4e8a3b3a93de",
+    "title": "金甲虫",
+    "titleEn": "The Gold Bug",
+    "year": 2014,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Gold Bug",
+    "externalYear": 2014,
+    "durationMinutes": 100,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "f27c94e0-67d2-47ff-967f-68e16ed58ce2",
+    "title": "黑暗",
+    "titleEn": "Tenebre",
+    "year": 1982,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 101,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ]
+  },
+  {
+    "id": "e15c67ad-004e-484e-9c2b-b4f1ebc2b92d",
+    "title": "甜蜜的东方",
+    "titleEn": "The Sweet East",
+    "year": 2023,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Sweet East",
+    "externalYear": 2023,
+    "durationMinutes": 104,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "61d1d8fe-febc-48db-a5a6-dea3b2369a23",
+    "title": "火之谜",
+    "titleEn": "Riddle of Fire",
+    "year": 2023,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Riddle of Fire",
+    "externalYear": 2023,
+    "durationMinutes": 115,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "35a79536-ccce-471d-8dc4-9a8fb7eeb0cf",
+    "title": "悲情城市",
+    "titleEn": "A City of Sadness",
+    "year": 1989,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "A City of Sadness",
+    "externalYear": 1989,
+    "durationMinutes": 157,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6a662084-0a56-4794-9a45-8d7b867a66b5",
+    "title": "我们天上见",
+    "titleEn": "We'll Meet in Heaven",
+    "year": 2009,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 120,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ]
+  },
+  {
+    "id": "69bd552d-4fc5-4723-90fd-f7b2a1f61c6a",
+    "title": "战争花园",
+    "titleEn": "Garden of War",
+    "year": 1969,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 91,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ]
+  },
+  {
+    "id": "e7d315b7-ab45-49be-9eae-ce5e0938f7c6",
+    "title": "天国还很遥远",
+    "titleEn": "Heaven Is Still Far Away",
+    "year": 2016,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Heaven Is Still Far Away",
+    "externalYear": 2016,
+    "durationMinutes": 38,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "de55a1e6-19fc-4958-9e7f-0b8ad7b7d62f",
+    "title": "赤裸童年",
+    "titleEn": "Naked Childhood",
+    "year": 1968,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Naked Childhood",
+    "externalYear": 1968,
+    "durationMinutes": 83,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "37cba50d-d4a9-4a21-a178-6f05b0925e67",
+    "title": "巴黎浮世绘",
+    "titleEn": "Code Unknown",
+    "year": 2000,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Code Unknown",
+    "externalYear": 2000,
+    "durationMinutes": 118,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "64bd7951-d601-4320-b550-45f141dcdc78",
+    "title": "东方三侠",
+    "titleEn": "The Heroic Trio",
+    "year": 1993,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Heroic Trio",
+    "externalYear": 1993,
+    "durationMinutes": 88,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "d121d27b-d437-4729-8bb0-d34b7109cad1",
+    "title": "蔷薇的葬礼",
+    "titleEn": "Funeral Parade of Roses",
+    "year": 1969,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Funeral Parade of Roses",
+    "externalYear": 1969,
+    "durationMinutes": 105,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "ab1d1b05-ad52-4a1c-adfd-997dae687705",
+    "title": "安东尼娅家族",
+    "titleEn": "Antonia's Line",
+    "year": 1995,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Antonia's Line",
+    "externalYear": 1995,
+    "durationMinutes": 102,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "fb438927-acde-4157-ba70-177c72afe377",
+    "title": "女囚701号-蝎子",
+    "titleEn": "Female Prisoner #701: Scorpion",
+    "year": 1972,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Female Prisoner #701: Scorpion",
+    "externalYear": 1972,
+    "durationMinutes": 87,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "46012b92-622b-4b46-b15a-7fda09d97789",
+    "title": "草迷宫",
+    "titleEn": "Grass Labyrinth",
+    "year": 1979,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Grass Labyrinth",
+    "externalYear": 1979,
+    "durationMinutes": 40,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "df6f3866-20c1-444c-b8cb-f7c876b82d89",
+    "title": "顺流逆流",
+    "titleEn": "Time and Tide",
+    "year": 2000,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Time and Tide",
+    "externalYear": 2000,
+    "durationMinutes": 113,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "fb5d47e1-c0b3-4ee7-b8f3-224c0c860e85",
+    "title": "机器人之梦",
+    "titleEn": "Robot Dreams",
+    "year": 2023,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Robot Dreams",
+    "externalYear": 2023,
+    "durationMinutes": 103,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "878bd254-5361-4e45-ae21-4eb59c8d1eb5",
+    "title": "女伶们",
+    "titleEn": "The Girls",
+    "year": 1968,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Girls",
+    "externalYear": 1968,
+    "durationMinutes": 100,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "8f310b77-1e0a-438d-b47c-ef63d35f2a92",
+    "title": "潘神的迷宫",
+    "titleEn": "Pan's Labyrinth",
+    "year": 2006,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Pan's Labyrinth",
+    "externalYear": 2007,
+    "durationMinutes": 118,
+    "note": null,
+    "matchNote": "same title, year ±1 (catalog 2007 vs our 2006); OMDb found without y= filter (searched y=2006)",
+    "yearDelta": 1,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "9b53fb86-d243-49c2-a53e-baa8406587b6",
+    "title": "特沃塔和我",
+    "titleEn": "Travolta and Me",
+    "year": 1993,
+    "source": "db",
+    "matchedBy": "wikidata",
+    "confidence": "high",
+    "externalId": "Q15971891",
+    "externalTitle": "Travolta and Me",
+    "externalYear": 1994,
+    "durationMinutes": 68,
+    "note": null,
+    "matchNote": "same title, year ±1 (catalog 1994 vs our 1993)",
+    "yearDelta": 1,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "high",
+        "note": null,
+        "externalId": "Q15971891"
+      }
+    ],
+    "provider": "wikidata"
+  },
+  {
+    "id": "fbb989cd-ac9b-4654-b4fd-53f1df2d368f",
+    "title": "铲车司机克劳斯—第一个工作日",
+    "titleEn": "Freddy Got Fingered",
+    "year": 2000,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Freddy Got Fingered",
+    "externalYear": 2001,
+    "durationMinutes": 87,
+    "note": null,
+    "matchNote": "same title, year ±1 (catalog 2001 vs our 2000); OMDb found without y= filter (searched y=2000)",
+    "yearDelta": 1,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "d6f92c07-03bb-4821-a7ae-12b515a5b28d",
+    "title": "漫画家之路",
+    "titleEn": "Forklift Driver Klaus: The First Day on the Job",
+    "year": 2001,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Forklift Driver Klaus: The First Day on the Job",
+    "externalYear": 2000,
+    "durationMinutes": 10,
+    "note": null,
+    "matchNote": "same title, year ±1 (catalog 2000 vs our 2001); OMDb found without y= filter (searched y=2001)",
+    "yearDelta": 1,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "3f9da05b-4c5c-47f9-aa2d-abc99685c2f5",
+    "title": "四月三周两天",
+    "titleEn": "4 Months, 3 Weeks and 2 Days",
+    "year": 2007,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "4 Months, 3 Weeks and 2 Days",
+    "externalYear": 2007,
+    "durationMinutes": 113,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "f951acd8-f9ec-429c-9004-3c02b2f19f76",
+    "title": "野玫瑰之恋",
+    "titleEn": "The Wild, Wild Rose",
+    "year": 1960,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Wild, Wild Rose",
+    "externalYear": 1960,
+    "durationMinutes": 128,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "aa9a4984-11b6-441d-ae10-a90040d03f38",
+    "title": "梁祝",
+    "titleEn": "The Lovers",
+    "year": 1994,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "The Lovers",
+    "externalYear": 1994,
+    "durationMinutes": 107,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6e803456-370a-4c0a-a2e3-370496e5b56a",
+    "title": "恐怖歌剧",
+    "titleEn": "Opera",
+    "year": 1987,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Opera",
+    "externalYear": 1987,
+    "durationMinutes": 107,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "56a7fb2d-7824-45a6-bc9c-02dc5ce9d34a",
+    "title": "东黑斯廷斯药房",
+    "titleEn": "East Hastings Pharmacy",
+    "year": 2012,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "East Hastings Pharmacy",
+    "externalYear": 2012,
+    "durationMinutes": 47,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "bed4d262-e18f-44fb-ab76-5688654117da",
+    "title": "活死人之夜",
+    "titleEn": "Night of the Living Dead",
+    "year": 1968,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Night of the Living Dead",
+    "externalYear": 1968,
+    "durationMinutes": 96,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "a3d37723-c05f-417c-b65d-849f0c7f7dfc",
+    "title": "一个唱，一个不唱",
+    "titleEn": "One Sings, the Other Doesn't",
+    "year": 1977,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "One Sings, the Other Doesn't",
+    "externalYear": 1977,
+    "durationMinutes": 120,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "c0971881-7d54-46c2-99e1-41f016bf0482",
+    "title": "银河铁道之夜",
+    "titleEn": "Night on the Galactic Railroad",
+    "year": 1985,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 113,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "ambiguous",
+        "note": "multiple Wikidata candidates",
+        "externalId": null
+      }
+    ],
+    "candidates": [
+      {
+        "id": "Q1524969",
+        "title": "Night on the Galactic Railroad",
+        "release_date": ""
+      },
+      {
+        "id": "Q16016999",
+        "title": "Night on the Galactic Railroad",
+        "release_date": "1985-01-01"
+      }
+    ]
+  },
+  {
+    "id": "ee6093f1-6504-4bfe-932a-dd2d51a3559f",
+    "title": "崩溃边缘的女人",
+    "titleEn": "Women on the Verge of a Nervous Breakdown",
+    "year": 1988,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Women on the Verge of a Nervous Breakdown",
+    "externalYear": 1988,
+    "durationMinutes": 88,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "6693bd6b-bb42-473a-9a5a-4b3dfba84833",
+    "title": "他的摩托，她的岛",
+    "titleEn": "His Motorbike, Her Island",
+    "year": 1986,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "His Motorbike, Her Island",
+    "externalYear": 1986,
+    "durationMinutes": 90,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "909f7382-52d2-4ef7-b001-e5973cc78248",
+    "title": "快盗鲁比",
+    "titleEn": "Kaito Ruby",
+    "year": 1988,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 96,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ]
+  },
+  {
+    "id": "21f8714d-dad5-4a9e-956c-f8ef8c535eba",
+    "title": "致胜法门",
+    "titleEn": "Theory of Achievement",
+    "year": 1991,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Theory of Achievement",
+    "externalYear": 1991,
+    "durationMinutes": 18,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "2e8d7b10-08b6-4de8-8689-efec48a8de08",
+    "title": "刀马旦",
+    "titleEn": "Peking Opera Blues",
+    "year": 1986,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Peking Opera Blues",
+    "externalYear": 1986,
+    "durationMinutes": 104,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "7fbc5156-51ba-4caf-bd3f-34f8d7dc7cac",
+    "title": "青蛇",
+    "titleEn": "Green Snake",
+    "year": 1993,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Green Snake",
+    "externalYear": 1993,
+    "durationMinutes": 99,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "46d9a0df-1ef7-495d-b3d9-a3155b5047ad",
+    "title": "饲养乌鸦",
+    "titleEn": "Cria!",
+    "year": 1976,
+    "source": "db",
+    "matchedBy": "manual",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": null,
+    "externalYear": null,
+    "durationMinutes": 105,
+    "note": null,
+    "matchNote": "manual entry",
+    "yearDelta": null,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "none",
+        "note": "OMDb no match",
+        "externalId": null
+      },
+      {
+        "provider": "wikidata",
+        "confidence": "none",
+        "note": "no Wikidata match",
+        "externalId": null
+      }
+    ]
+  },
+  {
+    "id": "a09f3890-51f5-4fea-95da-918a54872888",
+    "title": "对不起，我们错过了你",
+    "titleEn": "Sorry We Missed You",
+    "year": 2019,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Sorry We Missed You",
+    "externalYear": 2019,
+    "durationMinutes": 101,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "4ce62dbe-01bc-487f-bf66-d059f5fad81e",
+    "title": "梦幻银河",
+    "titleEn": "Labyrinth of Dreams",
+    "year": 1997,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Labyrinth of Dreams",
+    "externalYear": 1997,
+    "durationMinutes": 90,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "0aa7d419-f4ea-42a6-b16a-25bf0181fb4a",
+    "title": "脑髓地狱",
+    "titleEn": "Dogra Magra",
+    "year": 1988,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Dogra Magra",
+    "externalYear": 1988,
+    "durationMinutes": 109,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "527bd499-bc11-44b7-8ed2-77b0f17791e6",
+    "title": "史楚锡流浪记",
+    "titleEn": "Stroszek",
+    "year": 1977,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Stroszek",
+    "externalYear": 1977,
+    "durationMinutes": 115,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "b818e3a8-4b5c-43a7-9abf-6c2e2741afd1",
+    "title": "冰血暴",
+    "titleEn": "Fargo",
+    "year": 1996,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Fargo",
+    "externalYear": 1996,
+    "durationMinutes": 98,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "ea4e55c5-24be-47f0-b24b-6e1fcba40e16",
+    "title": "神呀神！你为何离弃我？",
+    "titleEn": "My God, My God, Why Hast Thou Forsaken Me?",
+    "year": 2005,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "My God, My God, Why Hast Thou Forsaken Me?",
+    "externalYear": 2005,
+    "durationMinutes": 107,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "bfff74e6-eebd-438b-9bf2-79cd41a4f270",
+    "title": "鲜杀",
+    "titleEn": "Fresh Kill",
+    "year": 1994,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Fresh Kill",
+    "externalYear": 1994,
+    "durationMinutes": 80,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "25831875-574f-4be7-b630-092a009ab1dd",
+    "title": "夏天 Лето",
+    "titleEn": "Summer",
+    "year": 2021,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Summer",
+    "externalYear": 2021,
+    "durationMinutes": 109,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "ce2b0cd2-c27d-46a8-873e-661c1d9ec8cf",
+    "title": "式日",
+    "titleEn": "Ritual",
+    "year": 2000,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Ritual",
+    "externalYear": 2000,
+    "durationMinutes": 128,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "2c63bf58-5cb1-435c-824f-e6fcbe3e54d0",
+    "title": "惠子，凝视",
+    "titleEn": "Small, Slow But Steady",
+    "year": 2022,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "Small, Slow But Steady",
+    "externalYear": 2022,
+    "durationMinutes": 99,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  },
+  {
+    "id": "d3c3fc4f-2dac-4c33-bf83-a40389ec536b",
+    "title": "水中八月",
+    "titleEn": "August in the Water",
+    "year": 1995,
+    "source": "db",
+    "matchedBy": "omdb",
+    "confidence": "high",
+    "externalId": null,
+    "externalTitle": "August in the Water",
+    "externalYear": 1995,
+    "durationMinutes": 117,
+    "note": null,
+    "matchNote": null,
+    "yearDelta": 0,
+    "attempts": [
+      {
+        "provider": "omdb",
+        "confidence": "high",
+        "note": null,
+        "externalId": null
+      }
+    ],
+    "provider": "omdb"
+  }
+]
