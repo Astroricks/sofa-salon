@@ -22,3 +22,20 @@ export const APP_NAME_PARTS = APP_NAME.split(' ');
 export const CUSTOMER_SITE_ORIGIN = (
   process.env.NEXT_PUBLIC_CUSTOMER_SITE_URL?.trim() || 'https://ziggygraph.app'
 ).replace(/\/$/, '');
+
+/**
+ * Salon host on the leaderboard: rank #0 in standing, hidden from the public table.
+ * Co-admins (`is_admin` without a matching name here) compete like any guest.
+ * Comma-separated, case-insensitive display names. Default: Ziggy
+ */
+export const LEADERBOARD_HOST_DISPLAY_NAMES: readonly string[] = (
+  process.env.LEADERBOARD_HOST_DISPLAY_NAMES ?? 'Ziggy'
+)
+  .split(',')
+  .map((s) => s.trim().toLowerCase())
+  .filter(Boolean);
+
+export function isLeaderboardHostDisplayName(displayName: string | null | undefined): boolean {
+  const normalized = (displayName ?? '').trim().toLowerCase();
+  return normalized.length > 0 && LEADERBOARD_HOST_DISPLAY_NAMES.includes(normalized);
+}
