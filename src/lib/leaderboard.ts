@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { fetchAttendanceCountForUser } from '@/lib/attendance';
+import { isLeaderboardHostDisplayName } from '@/lib/config';
 
 export const LEADERBOARD_TOP_N = 10;
 
@@ -14,13 +15,13 @@ export type LeaderboardRow = {
 export type UserLeaderboardStanding = {
   rank: number;
   attendanceCount: number;
-  /** Non-admin profiles (registered guests eligible for the public board). */
+  /** Guests with at least one counted screening (excludes salon host). */
   totalRegisteredGuests: number;
-  /** True when viewer is admin: same standing UI, omitted from the table below. */
+  /** True for salon host only: rank 0 in standing; omitted from the table below. */
   excludedFromLeaderboard: boolean;
 };
 
-/** 1-based rank vs other guests' attendance (admins are not in `eligible`). */
+/** 1-based rank vs other guests' attendance (salon host is not in `eligible`). */
 export function rankAmongEligibleGuests(
   attendanceCount: number,
   eligible: ReadonlyArray<CountRow>
@@ -31,26 +32,31 @@ export function rankAmongEligibleGuests(
   return eligible.filter((c) => c.attendance_count > attendanceCount).length + 1;
 }
 
-/** Count of registered guest profiles (excludes admins). */
-export async function fetchRegisteredGuestCount(client: SupabaseClient): Promise<number> {
-  const { count, error } = await client
-    .from('profiles')
-    .select('id', { count: 'exact', head: true })
-    .eq('is_admin', false);
-  if (error) {
-    console.error('[leaderboard] profile count:', error.message);
-    return 0;
-  }
-  return count ?? 0;
+/** Guests in `eligible` with at least one past screening counted toward badges. */
+export function guestsWithAttendanceCount(eligible: ReadonlyArray<CountRow>): number {
+  return eligible.filter((c) => c.attendance_count > 0).length;
 }
 
-async function fetchAdminUserIds(client: SupabaseClient): Promise<Set<string>> {
-  const { data, error } = await client.from('profiles').select('id').eq('is_admin', true);
+/** Guests who have attended ≥1 screening (same pool as ranking; excludes salon host). */
+export async function fetchRegisteredGuestCount(client: SupabaseClient): Promise<number> {
+  const eligible = await fetchEligibleLeaderboardCounts(client);
+  return guestsWithAttendanceCount(eligible);
+}
+
+/** Primary host(s) excluded from public leaderboard (not all `is_admin` accounts). */
+export async function fetchLeaderboardExcludedUserIds(
+  client: SupabaseClient
+): Promise<Set<string>> {
+  const { data, error } = await client.from('profiles').select('id, display_name');
   if (error) {
-    console.error('[leaderboard] admin profiles:', error.message);
+    console.error('[leaderboard] host profiles:', error.message);
     return new Set();
   }
-  return new Set((data ?? []).map((p) => p.id as string));
+  return new Set(
+    (data ?? [])
+      .filter((p) => isLeaderboardHostDisplayName(p.display_name as string | null))
+      .map((p) => p.id as string)
+  );
 }
 
 type CountRow = { user_id: string; attendance_count: number };
@@ -83,11 +89,11 @@ export function leaderboardRankAtIndex(
   return rank;
 }
 
-/** Sorted attendance rows excluding admins (host accounts). */
+/** Sorted attendance rows excluding salon host(s); co-admins still included. */
 export async function fetchEligibleLeaderboardCounts(
   client: SupabaseClient
 ): Promise<CountRow[]> {
-  const adminIds = await fetchAdminUserIds(client);
+  const hostIds = await fetchLeaderboardExcludedUserIds(client);
   const { data: counts, error } = await client
     .from('user_attendance_counts')
     .select('user_id, attendance_count')
@@ -99,14 +105,14 @@ export async function fetchEligibleLeaderboardCounts(
   }
 
   return (counts ?? [])
-    .filter((c) => !adminIds.has(c.user_id as string))
+    .filter((c) => !hostIds.has(c.user_id as string))
     .map((c) => ({
       user_id: c.user_id as string,
       attendance_count: Number(c.attendance_count),
     }));
 }
 
-/** Top guests by badge attendance count (migration 26 view), excluding admins. */
+/** Top guests by badge attendance count (migration 26 view), excluding salon host(s). */
 export async function fetchLeaderboard(
   client: SupabaseClient,
   minPlaces = LEADERBOARD_TOP_N
@@ -149,28 +155,28 @@ export async function fetchLeaderboard(
   });
 }
 
-/** 1-based rank among non-admin guests; admins are not ranked. */
+/** Standing for viewer; salon host gets rank 0, co-admins compete normally. */
 export async function fetchUserLeaderboardRank(
   client: SupabaseClient,
   userId: string
 ): Promise<UserLeaderboardStanding> {
-  const adminIds = await fetchAdminUserIds(client);
-  const [attendanceCount, eligible, totalRegisteredGuests] = await Promise.all([
+  const hostIds = await fetchLeaderboardExcludedUserIds(client);
+  const [attendanceCount, eligible] = await Promise.all([
     fetchAttendanceCountForUser(client, userId),
     fetchEligibleLeaderboardCounts(client),
-    fetchRegisteredGuestCount(client),
   ]);
+  const totalRegisteredGuests = guestsWithAttendanceCount(eligible);
 
-  const rank = rankAmongEligibleGuests(attendanceCount, eligible);
-
-  if (adminIds.has(userId)) {
+  if (hostIds.has(userId)) {
     return {
-      rank,
+      rank: 0,
       attendanceCount,
       totalRegisteredGuests,
       excludedFromLeaderboard: true,
     };
   }
+
+  const rank = rankAmongEligibleGuests(attendanceCount, eligible);
 
   return {
     rank,

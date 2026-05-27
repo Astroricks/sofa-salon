@@ -2,9 +2,25 @@ import {
   LEADERBOARD_TOP_N,
   leaderboardRankAtIndex,
   rankAmongEligibleGuests,
+  guestsWithAttendanceCount,
   selectLeaderboardCutoff,
 } from '../leaderboard';
 import { tEn } from '../i18n';
+
+describe('guestsWithAttendanceCount', () => {
+  it('counts only guests with at least one screening', () => {
+    const eligible = [
+      { user_id: 'a', attendance_count: 4 },
+      { user_id: 'b', attendance_count: 0 },
+      { user_id: 'c', attendance_count: 1 },
+    ];
+    expect(guestsWithAttendanceCount(eligible)).toBe(2);
+  });
+
+  it('returns 0 when nobody has attendance', () => {
+    expect(guestsWithAttendanceCount([{ user_id: 'a', attendance_count: 0 }])).toBe(0);
+  });
+});
 
 describe('LEADERBOARD_TOP_N', () => {
   it('defaults to 10 places', () => {
@@ -68,6 +84,15 @@ describe('yourRank copy', () => {
     expect(line).toBe('Rank #12 of 200 guests');
   });
 
+  it('uses rank 0 in standing copy for salon host', () => {
+    expect(tEn.leaderboard.yourRank.replace('{n}', '0').replace('{total}', '50')).toBe(
+      'Rank #0 of 50 guests'
+    );
+  });
+
+  it('uses pending copy when guest has no counted screenings', () => {
+    expect(tEn.leaderboard.yourRankPending).toBe('Join after your first screening');
+  });
 });
 
 describe('rankAmongEligibleGuests', () => {
@@ -78,7 +103,7 @@ describe('rankAmongEligibleGuests', () => {
     { user_id: 'd', attendance_count: 1 },
   ];
 
-  it('ranks by attendance vs eligible guests (for admin standing too)', () => {
+  it('ranks by attendance vs eligible guests', () => {
     expect(rankAmongEligibleGuests(10, eligible)).toBe(1);
     expect(rankAmongEligibleGuests(5, eligible)).toBe(2);
     expect(rankAmongEligibleGuests(1, eligible)).toBe(4);

@@ -23,6 +23,22 @@ describe('config', () => {
   });
 });
 
+describe('isLeaderboardHostDisplayName', () => {
+  afterEach(() => {
+    delete process.env.LEADERBOARD_HOST_DISPLAY_NAMES;
+  });
+
+  it('matches default host Ziggy but not co-admin 471', () => {
+    jest.isolateModules(() => {
+      delete process.env.LEADERBOARD_HOST_DISPLAY_NAMES;
+      const mod = require('../config') as typeof import('../config');
+      expect(mod.isLeaderboardHostDisplayName('Ziggy')).toBe(true);
+      expect(mod.isLeaderboardHostDisplayName('ziggy')).toBe(true);
+      expect(mod.isLeaderboardHostDisplayName('471')).toBe(false);
+    });
+  });
+});
+
 describe('CUSTOMER_SITE_ORIGIN', () => {
   afterEach(() => {
     delete process.env.NEXT_PUBLIC_CUSTOMER_SITE_URL;
