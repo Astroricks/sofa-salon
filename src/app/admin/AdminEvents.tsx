@@ -12,6 +12,7 @@ interface Screening {
   title: string;
   screening_at: string;
   waitlist_mode: string;
+  room_id: string | null;
   rooms: { name: string } | { name: string }[] | null;
 }
 
@@ -22,21 +23,30 @@ interface WaitlistEntry {
 }
 
 interface Props {
-  screenings: Screening[];
+  futureScreenings: Screening[];
+  initialPastScreenings: Screening[];
+  pastTotalCount: number;
+  pastPageSize: number;
 }
 
-export default function AdminEvents({ screenings }: Props) {
+export default function AdminEvents({
+  futureScreenings,
+  initialPastScreenings,
+  pastTotalCount,
+  pastPageSize,
+}: Props) {
   const { t } = useLocale();
   const router = useRouter();
-  const now = useMemo(() => new Date().toISOString(), []);
-  const futureScreenings = useMemo(
-    () => screenings.filter((s) => s.screening_at >= now),
-    [screenings, now]
-  );
+  const [extraPastScreenings, setExtraPastScreenings] = useState<Screening[]>([]);
+  const [loadingMorePast, setLoadingMorePast] = useState(false);
+  const [loadMorePastError, setLoadMorePastError] = useState<string | null>(null);
+
   const pastScreenings = useMemo(
-    () => screenings.filter((s) => s.screening_at < now),
-    [screenings, now]
+    () => [...initialPastScreenings, ...extraPastScreenings],
+    [initialPastScreenings, extraPastScreenings]
   );
+  const pastShown = pastScreenings.length;
+  const hasMorePast = pastShown < pastTotalCount;
 
   const [waitlistByScreening, setWaitlistByScreening] = useState<
     Record<string, WaitlistEntry[]>
@@ -84,6 +94,29 @@ export default function AdminEvents({ screenings }: Props) {
     setDeleteIsPast(false);
     if (!res.ok) return;
     router.refresh();
+  };
+
+  const loadMorePast = async () => {
+    setLoadMorePastError(null);
+    setLoadingMorePast(true);
+    try {
+      const res = await fetch(
+        `/api/admin/screenings?past=1&offset=${pastShown}&limit=${pastPageSize}`
+      );
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        screenings?: Screening[];
+      };
+      if (!res.ok) {
+        setLoadMorePastError(data.error ?? t.admin.loadMorePastFailed);
+        return;
+      }
+      setExtraPastScreenings((prev) => [...prev, ...(data.screenings ?? [])]);
+    } catch {
+      setLoadMorePastError(t.admin.loadMorePastFailed);
+    } finally {
+      setLoadingMorePast(false);
+    }
   };
 
   const loadWaitlist = async (screeningId: string) => {
@@ -146,13 +179,23 @@ export default function AdminEvents({ screenings }: Props) {
           >
             {t.admin.edit}
           </Link>
-          <Link
-            href={`/screening/${s.id}`}
-            className="font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-2 border border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"
-            style={{ borderRadius: 0 }}
-          >
-            {t.admin.viewSeatMap}
-          </Link>
+          {s.room_id ? (
+            <Link
+              href={`/screening/${s.id}`}
+              className="font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-2 border border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"
+              style={{ borderRadius: 0 }}
+            >
+              {t.admin.viewSeatMap}
+            </Link>
+          ) : (
+            <Link
+              href={`/admin/screenings/${s.id}`}
+              className="font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-2 border border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a] transition-colors"
+              style={{ borderRadius: 0 }}
+            >
+              {t.admin.manageGuests}
+            </Link>
+          )}
           <button
             type="button"
             onClick={() => requestDelete(s.id, isPast)}
@@ -222,17 +265,44 @@ export default function AdminEvents({ screenings }: Props) {
           </div>
         </section>
       )}
-      {pastScreenings.length > 0 && (
+      {(pastTotalCount > 0 || pastScreenings.length > 0) && (
         <section>
-          <h2 className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-4">
-            {t.admin.historyEvents}
-          </h2>
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-4">
+            <h2 className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888]">
+              {t.admin.historyEvents}
+            </h2>
+            {pastTotalCount > 0 ? (
+              <span className="font-mono text-[10px] text-[#555]">
+                {t.admin.pastEventsCount
+                  .replace('{shown}', String(pastShown))
+                  .replace('{total}', String(pastTotalCount))}
+              </span>
+            ) : null}
+          </div>
           <div className="space-y-6">
             {pastScreenings.map((s) => renderEventCard(s, true))}
           </div>
+          {hasMorePast ? (
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={loadMorePast}
+                disabled={loadingMorePast}
+                className="font-mono text-[10px] tracking-[0.2em] uppercase px-4 py-2 border border-[#2a2a2a] text-[#888888] hover:border-[#e8c84a] hover:text-[#e8c84a] disabled:opacity-50 transition-colors"
+                style={{ borderRadius: 0 }}
+              >
+                {loadingMorePast ? '…' : t.admin.loadMorePast}
+              </button>
+              {loadMorePastError ? (
+                <p className="font-mono text-[11px] text-[#f87171] mt-2" role="alert">
+                  {loadMorePastError}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
         </section>
       )}
-      {screenings.length === 0 && (
+      {futureScreenings.length === 0 && pastTotalCount === 0 && (
         <p className="font-mono text-[13px] text-[#666]">{t.admin.noEventsYet}</p>
       )}
 

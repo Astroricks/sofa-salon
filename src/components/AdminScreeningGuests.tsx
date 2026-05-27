@@ -9,6 +9,7 @@ import {
   type ContactPlatform,
 } from '@/lib/contact-platform';
 import { reservationIsNoShow } from '@/lib/attendance';
+import { RETROACTIVE_SEAT_PREFIX } from '@/lib/historical-catalog';
 import { seatKeyToDisplayLabel } from '@/lib/furniture';
 
 interface ReservationRow {
@@ -53,6 +54,9 @@ interface Labels {
   noShow: string;
   noShowColumn: string;
   seatsCount: string;
+  catalogSeat: string;
+  pastHint?: string;
+  removePast: string;
   saveFailed: string;
   reservationsNotUpdated: string;
   actionFailed: string;
@@ -63,9 +67,30 @@ interface Props {
   screeningId: string;
   reservations: ReservationRow[];
   labels: Labels;
+  /** Past screenings: catalog attendance, no removal email. */
+  isPast?: boolean;
 }
 
-export default function AdminScreeningGuests({ screeningId, reservations, labels }: Props) {
+function formatGuestSeats(
+  seatKeys: string[],
+  labels: Pick<Labels, 'seatsCount' | 'catalogSeat'>
+): string {
+  if (seatKeys.length > 1) {
+    return labels.seatsCount.replace('{n}', String(seatKeys.length));
+  }
+  const key = seatKeys[0];
+  if (key?.startsWith(`${RETROACTIVE_SEAT_PREFIX}-`)) {
+    return labels.catalogSeat;
+  }
+  return seatKeyToDisplayLabel(key);
+}
+
+export default function AdminScreeningGuests({
+  screeningId,
+  reservations,
+  labels,
+  isPast = false,
+}: Props) {
   const router = useRouter();
   const [displayNameInput, setDisplayNameInput] = useState('');
   const [candidates, setCandidates] = useState<Candidate[] | null>(null);
@@ -250,7 +275,9 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
           {labels.addButton}
         </button>
       </div>
-      <p className="font-mono text-[10px] text-[#666] mb-3">{labels.addGuest}</p>
+      <p className="font-mono text-[10px] text-[#666] mb-3">
+        {isPast && labels.pastHint ? labels.pastHint : labels.addGuest}
+      </p>
 
       {candidates && candidates.length > 0 ? (
         <div className="mb-4 p-3 border border-[#3a3a20] bg-[#121210]">
@@ -305,9 +332,7 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
                     ) : null}
                   </td>
                   <td className="py-2 pr-4 text-[#888888]">
-                    {row.seatKeys.length > 1
-                      ? labels.seatsCount.replace('{n}', String(row.seatKeys.length))
-                      : seatKeyToDisplayLabel(row.seatKeys[0])}
+                    {formatGuestSeats(row.seatKeys, labels)}
                   </td>
                   <td className="py-2 pr-4">
                     <label className="inline-flex items-center gap-2 cursor-pointer font-mono text-[11px] text-[#e8e4dc]">
@@ -322,7 +347,7 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
                     </label>
                   </td>
                   <td className="py-2">
-                    {removingUserId === userId ? (
+                    {removingUserId === userId && !isPast ? (
                       <div className="min-w-[200px]">
                         <p className="text-[10px] text-[#888] mb-1">{labels.removalMessageLabel}</p>
                         <textarea
@@ -358,18 +383,44 @@ export default function AdminScreeningGuests({ screeningId, reservations, labels
                           </button>
                         </div>
                       </div>
+                    ) : removingUserId === userId && isPast ? (
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => removeGuest(userId)}
+                          disabled={removing}
+                          className="font-mono text-[10px] uppercase px-2 py-1 border border-[#e85a5a] text-[#e85a5a] hover:bg-[#e85a5a] hover:text-[#0f0f0f] disabled:opacity-40"
+                          style={{ borderRadius: 0 }}
+                        >
+                          {labels.removePast}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setRemovingUserId(null)}
+                          disabled={removing}
+                          className="font-mono text-[10px] uppercase px-2 py-1 border border-[#2a2a2a] text-[#888] hover:text-[#e8e4dc]"
+                          style={{ borderRadius: 0 }}
+                        >
+                          {labels.cancel}
+                        </button>
+                      </div>
                     ) : (
                       <button
                         type="button"
                         onClick={() => {
-                          setRemovingUserId(userId);
-                          setRemovalMessage('');
+                          if (isPast) {
+                            setRemovingUserId(userId);
+                            setRemovalMessage('');
+                          } else {
+                            setRemovingUserId(userId);
+                            setRemovalMessage('');
+                          }
                           setActionError(null);
                         }}
                         className="font-mono text-[10px] uppercase px-2 py-1 border border-[#2a2a2a] text-[#888] hover:border-[#e85a5a] hover:text-[#e85a5a]"
                         style={{ borderRadius: 0 }}
                       >
-                        {labels.remove}
+                        {isPast ? labels.removePast : labels.remove}
                       </button>
                     )}
                   </td>

@@ -57,20 +57,20 @@ export default async function ScreeningPage({
   };
   const roomsRaw = screening.rooms;
   const roomData = Array.isArray(roomsRaw) ? roomsRaw[0] : roomsRaw;
-  if (!roomData) {
-    notFound();
-  }
+  const hasRoom = roomData != null;
 
-  const room = roomData as {
-    name: string;
-    furniture_json: unknown;
-    decorations_json: unknown;
-    canvas_w: number;
-    canvas_h: number;
-    room_background_id?: string | null;
-  };
-  const furniture = (room.furniture_json as Array<unknown>) ?? [];
-  const decorations = (room.decorations_json as Array<unknown>) ?? [];
+  const room = hasRoom
+    ? (roomData as {
+        name: string;
+        furniture_json: unknown;
+        decorations_json: unknown;
+        canvas_w: number;
+        canvas_h: number;
+        room_background_id?: string | null;
+      })
+    : null;
+  const furniture = (room?.furniture_json as Array<unknown>) ?? [];
+  const decorations = (room?.decorations_json as Array<unknown>) ?? [];
 
   const { data: userProfile } = user
     ? await supabase
@@ -202,7 +202,9 @@ export default async function ScreeningPage({
         }}
       />
       <p className="font-pixel-cjk text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-6">
-        {room.name} · {dateStr} · {isAdmin ? t.screening.adminViewSeatMapHint : t.screening.tapToClaim}
+        {hasRoom
+          ? `${room!.name} · ${dateStr} · ${isAdmin ? t.screening.adminViewSeatMapHint : t.screening.tapToClaim}`
+          : `${dateStr} · ${t.screening.noPhysicalRoom}`}
       </p>
       {isPast && userHasReservation && (
         <p className="font-mono text-[10px] text-[#888888] mb-4">
@@ -211,7 +213,7 @@ export default async function ScreeningPage({
           </a>
         </p>
       )}
-      {isAdmin && (
+      {isAdmin && hasRoom && (
         <div className="mb-4">
           <GhostSeatManager
             screeningId={screening.id}
@@ -228,10 +230,12 @@ export default async function ScreeningPage({
       {isAdmin && (
         <AdminScreeningGuests
           screeningId={id}
+          isPast={isPast}
           reservations={(reservations ?? []) as unknown as Parameters<typeof AdminScreeningGuests>[0]['reservations']}
           labels={{
             title: t.admin.guestsTitle,
             addGuest: t.admin.guestsAddHint,
+            pastHint: t.admin.guestsPastHint,
             displayNamePlaceholder: t.admin.guestsDisplayNamePlaceholder,
             addButton: t.admin.guestsAddButton,
             displayNameNotFound: t.admin.guestsDisplayNameNotFound,
@@ -249,6 +253,8 @@ export default async function ScreeningPage({
             noShow: t.admin.noShow,
             noShowColumn: t.admin.noShowColumn,
             seatsCount: t.admin.seatsCount,
+            catalogSeat: t.admin.guestsCatalogSeat,
+            removePast: t.admin.guestsRemovePast,
             saveFailed: t.admin.attendanceSaveFailed,
             reservationsNotUpdated: t.admin.attendanceReservationsNotUpdated,
             actionFailed: t.admin.guestsActionFailed,
@@ -261,37 +267,39 @@ export default async function ScreeningPage({
           }}
         />
       )}
-      <div className="border border-[#e8c84a] bg-[#0f0f0f] p-4 md:p-6" style={{ borderRadius: 0 }}>
-        <ScreeningSeatMapWrapper
-          screeningId={screening.id}
-          filmTitle={base.title}
-          filmTitleEn={altRow?.title_en ?? null}
-          room={{
-            furniture: furniture as Parameters<typeof SeatMap>[0]['room']['furniture'],
-            decorations: decorations as Parameters<typeof SeatMap>[0]['room']['decorations'],
-            canvasW: room.canvas_w ?? 600,
-            canvasH: room.canvas_h ?? 400,
-            roomBackgroundId: room.room_background_id ?? 'warm',
-          }}
-          squeezeNote={screening.squeeze_note}
-          initialReservations={(reservations ?? []) as unknown as Parameters<typeof SeatMap>[0]['initialReservations']}
-          initialWaitlist={(waitlist ?? []) as unknown as Parameters<typeof SeatMap>[0]['initialWaitlist']}
-          waitlistMode={(screening.waitlist_mode as 'auto' | 'manual') ?? 'auto'}
-          currentUser={user ? { id: user.id } : null}
-          currentUserProfile={
-            userProfile
-              ? {
-                  wechat_id: userProfile.wechat_id,
-                  contact_platform: userProfile.contact_platform,
-                  contact_id: userProfile.contact_id,
-                  no_show_count: userProfile.no_show_count ?? 0,
-                }
-              : null
-          }
-          isAdmin={isAdmin}
-          testSqueeze={testSqueeze}
-        />
-      </div>
+      {hasRoom ? (
+        <div className="border border-[#e8c84a] bg-[#0f0f0f] p-4 md:p-6" style={{ borderRadius: 0 }}>
+          <ScreeningSeatMapWrapper
+            screeningId={screening.id}
+            filmTitle={base.title}
+            filmTitleEn={altRow?.title_en ?? null}
+            room={{
+              furniture: furniture as Parameters<typeof SeatMap>[0]['room']['furniture'],
+              decorations: decorations as Parameters<typeof SeatMap>[0]['room']['decorations'],
+              canvasW: room!.canvas_w ?? 600,
+              canvasH: room!.canvas_h ?? 400,
+              roomBackgroundId: room!.room_background_id ?? 'warm',
+            }}
+            squeezeNote={screening.squeeze_note}
+            initialReservations={(reservations ?? []) as unknown as Parameters<typeof SeatMap>[0]['initialReservations']}
+            initialWaitlist={(waitlist ?? []) as unknown as Parameters<typeof SeatMap>[0]['initialWaitlist']}
+            waitlistMode={(screening.waitlist_mode as 'auto' | 'manual') ?? 'auto'}
+            currentUser={user ? { id: user.id } : null}
+            currentUserProfile={
+              userProfile
+                ? {
+                    wechat_id: userProfile.wechat_id,
+                    contact_platform: userProfile.contact_platform,
+                    contact_id: userProfile.contact_id,
+                    no_show_count: userProfile.no_show_count ?? 0,
+                  }
+                : null
+            }
+            isAdmin={isAdmin}
+            testSqueeze={testSqueeze}
+          />
+        </div>
+      ) : null}
     </div>
     </ScreeningRedirect>
   );

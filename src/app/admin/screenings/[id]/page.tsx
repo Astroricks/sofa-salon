@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
 import { getT, type Locale } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
+import AdminScreeningGuests from '@/components/AdminScreeningGuests';
 import EditScreeningForm from './EditScreeningForm';
 
 export default async function EditScreeningPage({
@@ -52,6 +54,17 @@ export default async function EditScreeningPage({
     .select('id, name')
     .order('name');
 
+  const admin = createAdminClient();
+  const RESERVATION_SELECT =
+    'id, seat_key, user_id, is_ghost, attended, profiles(display_name, wechat_id, contact_platform, contact_id)';
+  const { data: guestReservations } = admin
+    ? await admin
+        .from('reservations')
+        .select(RESERVATION_SELECT)
+        .eq('screening_id', id)
+        .order('created_at', { ascending: true })
+    : { data: [] };
+
   return (
     <div className="max-w-lg mx-auto px-4 py-8 bg-[#0f0f0f]">
       <EditScreeningForm
@@ -75,6 +88,48 @@ export default async function EditScreeningPage({
         }}
         rooms={rooms ?? []}
         isPast={isPast}
+      />
+      <AdminScreeningGuests
+        screeningId={id}
+        isPast={isPast}
+        reservations={
+          (guestReservations ?? []) as unknown as Parameters<
+            typeof AdminScreeningGuests
+          >[0]['reservations']
+        }
+        labels={{
+          title: t.admin.guestsTitle,
+          addGuest: t.admin.guestsAddHint,
+          pastHint: t.admin.guestsPastHint,
+          displayNamePlaceholder: t.admin.guestsDisplayNamePlaceholder,
+          addButton: t.admin.guestsAddButton,
+          displayNameNotFound: t.admin.guestsDisplayNameNotFound,
+          displayNameAmbiguous: t.admin.guestsDisplayNameAmbiguous,
+          pickCandidate: t.admin.guestsPickCandidate,
+          userMissingWechat: t.admin.guestsMissingWechat,
+          userAlreadyReserved: t.admin.guestsAlreadyReserved,
+          noSeatsAvailable: t.admin.guestsNoSeats,
+          remove: t.admin.guestsRemove,
+          removalMessageLabel: t.admin.guestsRemovalMessageLabel,
+          removalMessagePlaceholder: t.admin.guestsRemovalMessagePlaceholder,
+          confirmRemove: t.admin.guestsConfirmRemove,
+          cancel: t.admin.guestsCancel,
+          guestsEmpty: t.admin.guestsEmpty,
+          noShow: t.admin.noShow,
+          noShowColumn: t.admin.noShowColumn,
+          seatsCount: t.admin.seatsCount,
+          catalogSeat: t.admin.guestsCatalogSeat,
+          removePast: t.admin.guestsRemovePast,
+          saveFailed: t.admin.attendanceSaveFailed,
+          reservationsNotUpdated: t.admin.attendanceReservationsNotUpdated,
+          actionFailed: t.admin.guestsActionFailed,
+          contactLineLabels: {
+            wechat: t.admin.contactIdLabelWechat,
+            whatsapp: t.admin.contactIdLabelWhatsapp,
+            instagram: t.admin.contactIdLabelInstagram,
+            discord: t.admin.contactIdLabelDiscord,
+          },
+        }}
       />
     </div>
   );

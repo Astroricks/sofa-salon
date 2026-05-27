@@ -5,7 +5,7 @@ import {
   getScreeningRoomSeatKeys,
   getUserEmail,
   normalizeDisplayNameQuery,
-  pickAvailableSeatKey,
+  pickSeatKeyForAdminAdd,
 } from '@/lib/admin-screening-reservations';
 import { getProfileContact, hasProfileContact } from '@/lib/contact-platform';
 import { sendAdminRemovedFromScreening, sendConfirmation } from '@/lib/email';
@@ -123,9 +123,7 @@ export async function POST(
   }
 
   const roomSeats = await getScreeningRoomSeatKeys(db, screeningId);
-  if (!roomSeats || roomSeats.seatKeys.length === 0) {
-    return NextResponse.json({ error: 'Room has no seats' }, { status: 400 });
-  }
+  const roomSeatKeys = roomSeats?.seatKeys ?? [];
 
   const { data: existingReservations } = await db
     .from('reservations')
@@ -134,12 +132,18 @@ export async function POST(
   const taken = new Set(
     (existingReservations ?? []).map((r: { seat_key: string }) => r.seat_key)
   );
-  const seatKey = pickAvailableSeatKey(roomSeats.seatKeys, taken);
-  if (!seatKey) {
+  const picked = pickSeatKeyForAdminAdd({
+    userId: targetUserId,
+    screeningAt: screening.screening_at,
+    roomSeatKeys,
+    takenSeatKeys: taken,
+  });
+  if (!picked) {
     return NextResponse.json({ error: 'no_seats_available', code: 'no_seats_available' }, { status: 400 });
   }
+  const { seatKey, isCatalog } = picked;
 
-  const isSqueezed = seatKey.includes('squeeze');
+  const isSqueezed = !isCatalog && seatKey.includes('squeeze');
   const { data: row, error: insertError } = await db
     .from('reservations')
     .insert({
@@ -250,7 +254,9 @@ export async function DELETE(
     return NextResponse.json({ error: delError.message }, { status: 400 });
   }
 
-  if (admin) {
+  const past = isScreeningPast(screening.screening_at);
+
+  if (admin && !past) {
     const email = await getUserEmail(admin, userId);
     if (email) {
       try {
@@ -266,7 +272,7 @@ export async function DELETE(
     }
   }
 
-  if (screening.waitlist_mode === 'auto' && admin) {
+  if (screening.waitlist_mode === 'auto' && admin && !past) {
     const { data: first } = await admin
       .from('waitlist')
       .select('id, user_id')

@@ -3,6 +3,10 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { APP_NAME_PARTS } from '@/lib/config';
 import { getT, type Locale } from '@/lib/i18n';
+import {
+  ADMIN_PAST_PAGE_SIZE,
+  ADMIN_SCREENING_LIST_SELECT,
+} from '@/lib/admin-screenings-list';
 import AdminEvents from './AdminEvents';
 import AdminAnnouncement from './AdminAnnouncement';
 
@@ -11,21 +15,26 @@ export default async function AdminPage() {
   const cookieStore = await cookies();
   const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
   const t = getT(locale);
-  const [{ data: { user } }, { data: screenings }] = await Promise.all([
-    supabase.auth.getUser(),
-    supabase
-      .from('screenings')
-      .select(`
-        id,
-        title,
-        screening_at,
-        waitlist_mode,
-        room_id,
-        rooms ( name )
-      `)
-      .order('screening_at', { ascending: false })
-      .limit(20),
-  ]);
+  const now = new Date().toISOString();
+  const [{ data: { user } }, { data: futureScreenings }, { data: initialPastScreenings }, { count: pastTotalCount }] =
+    await Promise.all([
+      supabase.auth.getUser(),
+      supabase
+        .from('screenings')
+        .select(ADMIN_SCREENING_LIST_SELECT)
+        .gte('screening_at', now)
+        .order('screening_at', { ascending: true }),
+      supabase
+        .from('screenings')
+        .select(ADMIN_SCREENING_LIST_SELECT)
+        .lt('screening_at', now)
+        .order('screening_at', { ascending: false })
+        .range(0, ADMIN_PAST_PAGE_SIZE - 1),
+      supabase
+        .from('screenings')
+        .select('id', { count: 'exact', head: true })
+        .lt('screening_at', now),
+    ]);
   if (!user) return null;
   const { data: profile } = await supabase
     .from('profiles')
@@ -110,7 +119,12 @@ export default async function AdminPage() {
         </Link>
       </div>
       <AdminAnnouncement />
-      <AdminEvents screenings={screenings ?? []} />
+      <AdminEvents
+        futureScreenings={futureScreenings ?? []}
+        initialPastScreenings={initialPastScreenings ?? []}
+        pastTotalCount={pastTotalCount ?? 0}
+        pastPageSize={ADMIN_PAST_PAGE_SIZE}
+      />
     </div>
   );
 }

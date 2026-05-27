@@ -1,10 +1,12 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { catalogSeatKeyForUser } from '@/lib/historical-catalog';
 import { getProfileContact, type ProfileContactRow } from '@/lib/contact-platform';
 import {
   getSeatPositions,
   getSqueezePositions,
   type FurniturePiece,
 } from '@/lib/furniture';
+import { isScreeningPast } from '@/lib/screening-datetime';
 
 export type ProfileMatch = {
   id: string;
@@ -57,6 +59,25 @@ export function pickAvailableSeatKey(
   const regular = available.filter((k) => !k.includes('squeeze'));
   if (regular.length > 0) return regular[0];
   return available[0] ?? null;
+}
+
+/**
+ * Seat for admin-added reservation: physical seat when room has seats and event is upcoming;
+ * otherwise catalog seat (past screenings / sheet catalog rows without a room).
+ */
+export function pickSeatKeyForAdminAdd(opts: {
+  userId: string;
+  screeningAt: string;
+  roomSeatKeys: string[];
+  takenSeatKeys: Set<string>;
+}): { seatKey: string; isCatalog: boolean } | null {
+  const past = isScreeningPast(opts.screeningAt);
+  if (!past && opts.roomSeatKeys.length > 0) {
+    const physical = pickAvailableSeatKey(opts.roomSeatKeys, opts.takenSeatKeys);
+    if (physical) return { seatKey: physical, isCatalog: false };
+    return null;
+  }
+  return { seatKey: catalogSeatKeyForUser(opts.userId), isCatalog: true };
 }
 
 export async function getScreeningRoomSeatKeys(
