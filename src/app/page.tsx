@@ -14,7 +14,13 @@ export default async function HomePage({
   searchParams: Promise<{ open?: string }>;
 }) {
   const supabase = await createClient();
-  const { data: screeningsRaw } = await fetchUpcomingScreeningsForHome(supabase);
+  let screeningsRaw: Awaited<ReturnType<typeof fetchUpcomingScreeningsForHome>>['data'] = [];
+  const { data, error: homeError } = await fetchUpcomingScreeningsForHome(supabase);
+  if (homeError) {
+    console.error('[home] screenings unavailable:', homeError.message);
+  } else {
+    screeningsRaw = data;
+  }
 
   const ids = (screeningsRaw ?? []).map((s) => s.id);
   const altLocaleById = await fetchScreeningAltLocaleByIds(supabase, ids);

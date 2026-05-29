@@ -37,10 +37,21 @@ function buildEventSegmentItems(
   }));
 }
 
+function tickerFallback() {
+  return (
+    <TickerStrip
+      segmentItems={[]}
+      fallbackEn={FALLBACK_STATIC_EN}
+      fallbackZh={FALLBACK_STATIC_ZH}
+    />
+  );
+}
+
 export default async function Ticker() {
   const cookieStore = await cookies();
   const locale: Locale = cookieStore.get(COOKIE_NAME)?.value === 'zh' ? 'zh' : 'en';
 
+  try {
   const supabase = await createClient();
 
   const hostLabel = locale === 'zh' ? '公告' : 'Announcement';
@@ -228,4 +239,8 @@ export default async function Ticker() {
       fallbackZh={FALLBACK_STATIC_ZH}
     />
   );
+  } catch (err) {
+    console.error('[Ticker] Supabase unavailable, using static fallback:', err);
+    return tickerFallback();
+  }
 }
