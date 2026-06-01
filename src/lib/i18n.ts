@@ -31,6 +31,30 @@ export const tEn = {
     leaderboard: 'Leaderboard',
     developedBy: 'Developed by: Eve',
     developedByHref: 'https://eveshi.com/',
+    contactHost: 'Message host',
+  },
+  hostContact: {
+    title: 'Message the host',
+    instructions:
+      'Include in your message:\n• What you prefer to be called\n• One social ID to connect with you\n• A brief introduction if you are a first-timer who wants to join',
+    replyEmailLabel: 'Your email (reply address)',
+    replyEmailHint: 'The host will reply to this address.',
+    subjectLabel: 'Subject',
+    messageLabel: 'Message',
+    messagePlaceholder:
+      'Preferred name, social ID (e.g. WeChat), and a short intro if you are new and want to join…',
+    submit: 'Send message',
+    sending: 'Sending…',
+    success: 'Message sent. The host will reply to your email when they can.',
+    errors: {
+      invalid_subject: 'Enter a subject (1–200 characters).',
+      invalid_message: 'Enter a message (at least 10 characters).',
+      invalid_reply_email: 'Enter a valid email address.',
+      email_not_configured: 'Email is not configured on this server. Try again later.',
+      resend_testing_recipient_only:
+        'This server uses Resend’s test sender (onboarding@resend.dev), which can only deliver to the Resend account email. Verify a domain at resend.com, set EMAIL_FROM to that domain, and set HOST_CONTACT_EMAIL to your inbox—or use the Resend account email as HOST_CONTACT_EMAIL for local testing.',
+      send_failed: 'Could not send. Please try again.',
+    },
   },
   leaderboard: {
     title: 'Leaderboard',
@@ -451,6 +475,29 @@ export const tZh = {
     leaderboard: '排行榜',
     developedBy: '开发者：471',
     developedByHref: 'https://eveshi.com/',
+    contactHost: '联系主理人',
+  },
+  hostContact: {
+    title: '联系主理人',
+    instructions:
+      '请在留言中包含：\n• 你希望被称呼的名字\n• 一个用于联系你的社交账号\n• 若是首次参加、希望加入，请简单自我介绍',
+    replyEmailLabel: '你的邮箱（回复地址）',
+    replyEmailHint: '主理人将通过此邮箱回复你。',
+    subjectLabel: '主题',
+    messageLabel: '留言',
+    messagePlaceholder: '称呼、社交账号（如微信）、以及若是新人想加入的简短介绍…',
+    submit: '发送',
+    sending: '发送中…',
+    success: '已发送。主理人会在方便时回复你的邮箱。',
+    errors: {
+      invalid_subject: '请填写主题（1–200 字）。',
+      invalid_message: '请填写留言（至少 10 字）。',
+      invalid_reply_email: '请填写有效的邮箱地址。',
+      email_not_configured: '服务器未配置邮件，请稍后再试。',
+      resend_testing_recipient_only:
+        '当前使用 Resend 测试发件地址（onboarding@resend.dev），只能投递到 Resend 账号邮箱。请在 resend.com 验证域名并设置 EMAIL_FROM，再将 HOST_CONTACT_EMAIL 设为收件邮箱；本地测试可暂时把 HOST_CONTACT_EMAIL 设为 Resend 账号邮箱。',
+      send_failed: '发送失败，请重试。',
+    },
   },
   leaderboard: {
     title: '排行榜',

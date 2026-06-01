@@ -161,6 +161,9 @@ export default function NavBar() {
               <Link href="/leaderboard" className={linkClass(!!pathname?.startsWith('/leaderboard'))}>
                 {t.nav.leaderboard}
               </Link>
+              <Link href="/contact" className={linkClass(!!pathname?.startsWith('/contact'))}>
+                {t.nav.contactHost}
+              </Link>
               <a
                 href={t.nav.developedByHref}
                 target="_blank"
@@ -233,6 +236,13 @@ export default function NavBar() {
                     >
                       {t.nav.leaderboard}
                     </Link>
+                    <Link
+                      href="/contact"
+                      className={linkClass(!!pathname?.startsWith('/contact')) + ' px-4'}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.nav.contactHost}
+                    </Link>
                     <a
                       href={t.nav.developedByHref}
                       target="_blank"
@@ -287,6 +297,9 @@ export default function NavBar() {
               </a>
               <Link href="/leaderboard" className={linkClass(!!pathname?.startsWith('/leaderboard'))}>
                 {t.nav.leaderboard}
+              </Link>
+              <Link href="/contact" className={linkClass(!!pathname?.startsWith('/contact'))}>
+                {t.nav.contactHost}
               </Link>
               <a
                 href={t.nav.developedByHref}
@@ -351,6 +364,13 @@ export default function NavBar() {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {t.nav.leaderboard}
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className={linkClass(!!pathname?.startsWith('/contact')) + ' px-4'}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.nav.contactHost}
                     </Link>
                     <a
                       href={t.nav.developedByHref}

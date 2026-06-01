@@ -106,6 +106,30 @@ describe('sendCancelConfirmation', () => {
   });
 });
 
+describe('sendHostContactMessage', () => {
+  it('sends to host inbox with replyTo and subject prefix', async () => {
+    jest.resetModules();
+    process.env.HOST_CONTACT_EMAIL = 'host@example.com';
+    const { sendHostContactMessage } = await import('../email');
+    await sendHostContactMessage({
+      subject: 'Want to join',
+      message: 'Call me Ziggy\nWeChat: ziggy123',
+      replyEmail: 'guest@example.com',
+      signedInUserId: 'user-uuid',
+    });
+    expect(mockSend).toHaveBeenCalledTimes(1);
+    const call = mockSend.mock.calls[0][0];
+    expect(call.to).toEqual(['host@example.com']);
+    expect(call.replyTo).toBe('guest@example.com');
+    expect(call.subject).toContain('Want to join');
+    expect(call.html).toContain('guest@example.com');
+    expect(call.html).toContain('Call me Ziggy');
+    expect(call.html).toContain('user-uuid');
+    delete process.env.HOST_CONTACT_EMAIL;
+    jest.resetModules();
+  });
+});
+
 describe('sendWaitlistPromotion', () => {
   it('sends email with subject "You\'re in!" and venue in body', async () => {
     const { sendWaitlistPromotion } = await import('../email');

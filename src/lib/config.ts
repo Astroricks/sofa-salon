@@ -39,3 +39,6 @@ export function isLeaderboardHostDisplayName(displayName: string | null | undefi
   const normalized = (displayName ?? '').trim().toLowerCase();
   return normalized.length > 0 && LEADERBOARD_HOST_DISPLAY_NAMES.includes(normalized);
 }
+
+/** Inbox for “message the host” form (server only). Set HOST_CONTACT_EMAIL in env. */
+export const HOST_CONTACT_EMAIL = process.env.HOST_CONTACT_EMAIL?.trim() ?? '';

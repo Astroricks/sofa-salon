@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { CUSTOMER_SITE_ORIGIN } from '@/lib/config';
+import { CUSTOMER_SITE_ORIGIN, HOST_CONTACT_EMAIL } from '@/lib/config';
 import type { ContactPlatform } from '@/lib/contact-platform';
 import { seatKeyToDisplayLabel } from '@/lib/furniture';
 import {
@@ -469,6 +469,41 @@ export async function sendBugFixedNotification(params: {
     to: [to],
     subject,
     html,
+  });
+  if (error) throw error;
+  return data;
+}
+
+/** Guest message to salon host (reply-to = guest email). */
+export async function sendHostContactMessage(params: {
+  subject: string;
+  message: string;
+  replyEmail: string;
+  locale?: 'en' | 'zh';
+  signedInUserId?: string | null;
+}) {
+  const resend = getResend();
+  if (!resend || !HOST_CONTACT_EMAIL) return null;
+
+  const { subject, message, replyEmail, locale = 'en', signedInUserId } = params;
+  const venue = getVenueName();
+  const accountLine = signedInUserId
+    ? `<p style="color:#888;font-size:12px;">Signed-in account: ${escapeHtmlText(signedInUserId)}</p>`
+    : '<p style="color:#888;font-size:12px;">Sent without signing in</p>';
+
+  const { data, error } = await resend.emails.send({
+    from: FROM,
+    to: [HOST_CONTACT_EMAIL],
+    replyTo: replyEmail,
+    subject: `[${venue}] ${subject}`,
+    html: `
+      <p><strong>Reply to:</strong> ${escapeHtmlText(replyEmail)}</p>
+      <p><strong>Subject:</strong> ${escapeHtmlText(subject)}</p>
+      <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;" />
+      <div style="white-space:pre-wrap;">${escapeHtmlText(message)}</div>
+      ${accountLine}
+      <p style="color:#888;font-size:12px;margin-top:16px;">Locale: ${locale} · via ${escapeHtmlText(CUSTOMER_SITE_ORIGIN)}/contact</p>
+    `,
   });
   if (error) throw error;
   return data;
