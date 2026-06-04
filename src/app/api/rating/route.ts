@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -60,5 +61,11 @@ export async function POST(req: NextRequest) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  revalidatePath('/profile');
+  revalidatePath('/receipt');
+  revalidatePath('/admin/ratings');
+  revalidatePath('/', 'layout');
+
   return NextResponse.json({ ok: true });
 }

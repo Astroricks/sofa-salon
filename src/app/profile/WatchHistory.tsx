@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -46,6 +47,7 @@ function StarRow({
 }
 
 export default function WatchHistory({ items }: Props) {
+  const router = useRouter();
   const { t } = useLocale();
   const [localRatings, setLocalRatings] = useState<Record<string, number>>(() => {
     const o: Record<string, number> = {};
@@ -72,6 +74,7 @@ export default function WatchHistory({ items }: Props) {
           delete next[screeningId];
           return next;
         });
+        router.refresh();
       }
     } finally {
       setSubmitting(null);
@@ -102,8 +105,10 @@ export default function WatchHistory({ items }: Props) {
       <ul className="space-y-4">
         {items.map((item) => {
           const current = localRatings[item.screeningId] ?? item.rating ?? null;
-          const editing = draft[item.screeningId] ?? current;
-          const isEditing = current == null && (draft[item.screeningId] != null || editing != null);
+          const draftRating = draft[item.screeningId];
+          const displayStars = draftRating ?? current ?? 0;
+          const showSubmit =
+            draftRating != null && draftRating >= 1 && draftRating !== current;
           return (
             <li
               key={item.screeningId}
@@ -121,23 +126,26 @@ export default function WatchHistory({ items }: Props) {
               <p className="font-mono text-[10px] tracking-wider text-[#888888] mt-2">
                 {t.profile.rateFilmQuality}
               </p>
+              {current != null && (
+                <p className="font-mono text-[10px] text-[#666] mt-0.5">{t.profile.changeRatingHint}</p>
+              )}
               <div className="flex items-center gap-3 mt-1 flex-wrap">
                 <StarRow
-                  value={editing ?? 0}
+                  value={displayStars}
                   onChange={(v) => setDraft((prev) => ({ ...prev, [item.screeningId]: v }))}
                   disabled={submitting === item.screeningId}
                 />
-                {isEditing && (
+                {showSubmit && (
                   <button
                     type="button"
-                    disabled={submitting === item.screeningId || (editing ?? 0) < 1}
-                    onClick={() => submitRating(item.screeningId, editing ?? 0)}
+                    disabled={submitting === item.screeningId}
+                    onClick={() => submitRating(item.screeningId, draftRating!)}
                     className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] hover:underline disabled:opacity-50"
                   >
-                    {t.profile.submitRating}
+                    {current != null ? t.profile.updateRating : t.profile.submitRating}
                   </button>
                 )}
-                {current != null && (
+                {current != null && !showSubmit && (
                   <span className="font-mono text-[10px] text-[#666]">
                     {t.profile.yourRating}: {current}/5
                   </span>
