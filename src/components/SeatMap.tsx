@@ -87,6 +87,8 @@ interface SeatMapProps {
   testSqueeze?: boolean;
   /** When provided (e.g. by SeatMapInline), called after reserve success or seat-already-taken so parent can refetch data */
   onReservationsChange?: () => void | Promise<void>;
+  /** Home inline map: seatmap API already includes reservations + attendance counts */
+  skipInitialReservationFetch?: boolean;
 }
 
 export default function SeatMap({
@@ -102,6 +104,7 @@ export default function SeatMap({
   isAdmin = false,
   testSqueeze = false,
   onReservationsChange,
+  skipInitialReservationFetch = false,
 }: SeatMapProps) {
   const router = useRouter();
   const { t, locale } = useLocale();
@@ -240,9 +243,10 @@ export default function SeatMap({
       setReservations(withCounts);
     }
 
-    // Always refresh once on mount: SSR payload can be stale relative to RPC,
-    // and when onReservationsChange is set we never refetched until a realtime event.
-    void fetchReservations();
+    if (!skipInitialReservationFetch) {
+      // SSR / dedicated screening page: refresh once (RPC attendance may differ).
+      void fetchReservations();
+    }
 
     const ch1 = supabase
       .channel(`reservations:${screeningId}`)
@@ -292,7 +296,7 @@ export default function SeatMap({
       supabase.removeChannel(ch1);
       supabase.removeChannel(ch2);
     };
-  }, [screeningId, isAdmin, onReservationsChange, fetchWaitlist]);
+  }, [screeningId, isAdmin, onReservationsChange, fetchWaitlist, skipInitialReservationFetch]);
 
   const allSeatKeys = useMemo(
     () =>

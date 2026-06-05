@@ -57,10 +57,11 @@ export default function WatchHistory({ items }: Props) {
     return o;
   });
   const [submitting, setSubmitting] = useState<string | null>(null);
-  const [draft, setDraft] = useState<Record<string, number>>({});
 
-  const submitRating = async (screeningId: string, rating: number) => {
+  const saveRating = async (screeningId: string, rating: number, previous: number | null) => {
+    if (rating === previous) return;
     setSubmitting(screeningId);
+    setLocalRatings((prev) => ({ ...prev, [screeningId]: rating }));
     try {
       const res = await fetch('/api/rating', {
         method: 'POST',
@@ -68,14 +69,22 @@ export default function WatchHistory({ items }: Props) {
         body: JSON.stringify({ screeningId, rating }),
       });
       if (res.ok) {
-        setLocalRatings((prev) => ({ ...prev, [screeningId]: rating }));
-        setDraft((prev) => {
+        router.refresh();
+      } else {
+        setLocalRatings((prev) => {
           const next = { ...prev };
-          delete next[screeningId];
+          if (previous == null) delete next[screeningId];
+          else next[screeningId] = previous;
           return next;
         });
-        router.refresh();
       }
+    } catch {
+      setLocalRatings((prev) => {
+        const next = { ...prev };
+        if (previous == null) delete next[screeningId];
+        else next[screeningId] = previous;
+        return next;
+      });
     } finally {
       setSubmitting(null);
     }
@@ -105,10 +114,7 @@ export default function WatchHistory({ items }: Props) {
       <ul className="space-y-4">
         {items.map((item) => {
           const current = localRatings[item.screeningId] ?? item.rating ?? null;
-          const draftRating = draft[item.screeningId];
-          const displayStars = draftRating ?? current ?? 0;
-          const showSubmit =
-            draftRating != null && draftRating >= 1 && draftRating !== current;
+          const displayStars = current ?? 0;
           return (
             <li
               key={item.screeningId}
@@ -126,26 +132,14 @@ export default function WatchHistory({ items }: Props) {
               <p className="font-mono text-[10px] tracking-wider text-[#888888] mt-2">
                 {t.profile.rateFilmQuality}
               </p>
-              {current != null && (
-                <p className="font-mono text-[10px] text-[#666] mt-0.5">{t.profile.changeRatingHint}</p>
-              )}
+              <p className="font-mono text-[10px] text-[#666] mt-0.5">{t.profile.changeRatingHint}</p>
               <div className="flex items-center gap-3 mt-1 flex-wrap">
                 <StarRow
                   value={displayStars}
-                  onChange={(v) => setDraft((prev) => ({ ...prev, [item.screeningId]: v }))}
+                  onChange={(v) => saveRating(item.screeningId, v, current)}
                   disabled={submitting === item.screeningId}
                 />
-                {showSubmit && (
-                  <button
-                    type="button"
-                    disabled={submitting === item.screeningId}
-                    onClick={() => submitRating(item.screeningId, draftRating!)}
-                    className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] hover:underline disabled:opacity-50"
-                  >
-                    {current != null ? t.profile.updateRating : t.profile.submitRating}
-                  </button>
-                )}
-                {current != null && !showSubmit && (
+                {current != null && (
                   <span className="font-mono text-[10px] text-[#666]">
                     {t.profile.yourRating}: {current}/5
                   </span>

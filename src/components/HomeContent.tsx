@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
+import { prefetchSeatmap } from '@/lib/seatmap-client-cache';
 import ScreeningCard from '@/components/ScreeningCard';
 import SeatMapInline from '@/components/SeatMapInline';
 interface Screening {
@@ -64,6 +65,13 @@ export default function HomeContent({ screenings, openId }: Props) {
   useEffect(() => {
     if (screenings.length > 0 && !selectedId) {
       setSelectedId(screenings[0].id);
+    }
+  }, [screenings, selectedId]);
+
+  // Warm seatmap cache for other carousel cards (switch feels instant after first load).
+  useEffect(() => {
+    for (const s of screenings) {
+      if (s.id !== selectedId) prefetchSeatmap(s.id);
     }
   }, [screenings, selectedId]);
 
