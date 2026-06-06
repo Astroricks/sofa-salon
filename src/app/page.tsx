@@ -2,10 +2,13 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { roomCapacity } from '@/lib/furniture';
 import type { FurniturePiece } from '@/lib/furniture';
 import { fetchUpcomingScreeningsForHome } from '@/lib/fetch-home-screenings';
+import { loadSeatmapPayload } from '@/lib/fetch-seatmap-payload';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
+import type { SeatmapApiPayload } from '@/lib/seatmap-client-cache';
 import HomeSection from '@/components/HomeSection';
 
 export default async function HomePage({
@@ -72,9 +75,26 @@ export default async function HomePage({
 
   const { open: openId } = await searchParams;
 
+  const initialScreeningId =
+    (openId && screenings.some((s) => s.id === openId) ? openId : null) ??
+    screenings[0]?.id ??
+    null;
+  const initialSeatmapById: Record<string, SeatmapApiPayload> = {};
+  if (initialScreeningId) {
+    const admin = createAdminClient();
+    if (admin) {
+      const payload = await loadSeatmapPayload(admin, initialScreeningId);
+      if (payload) initialSeatmapById[initialScreeningId] = payload;
+    }
+  }
+
   return (
     <main>
-      <HomeSection screenings={screenings} openId={openId ?? null} />
+      <HomeSection
+        screenings={screenings}
+        openId={openId ?? null}
+        initialSeatmapById={initialSeatmapById}
+      />
     </main>
   );
 }

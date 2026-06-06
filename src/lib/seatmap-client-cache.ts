@@ -28,6 +28,13 @@ export function setCachedSeatmap(screeningId: string, payload: SeatmapApiPayload
   cache.set(screeningId, payload);
 }
 
+/** Seed cache from server-rendered home page (skips first client seatmap fetch). */
+export function seedSeatmapCache(entries: Record<string, SeatmapApiPayload>): void {
+  for (const [id, payload] of Object.entries(entries)) {
+    if (payload) cache.set(id, payload);
+  }
+}
+
 type FetchOptions = { signal?: AbortSignal; force?: boolean };
 
 /** Fetch seatmap JSON; dedupes concurrent requests per screeningId. */

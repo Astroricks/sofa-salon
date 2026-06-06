@@ -2,6 +2,7 @@
 
 import { useLocale } from '@/components/LocaleProvider';
 import HomeContent from '@/components/HomeContent';
+import type { SeatmapApiPayload } from '@/lib/seatmap-client-cache';
 
 interface Screening {
   id: string;
@@ -24,9 +25,10 @@ interface Screening {
 interface Props {
   screenings: Screening[];
   openId: string | null;
+  initialSeatmapById?: Record<string, SeatmapApiPayload>;
 }
 
-export default function HomeSection({ screenings, openId }: Props) {
+export default function HomeSection({ screenings, openId, initialSeatmapById }: Props) {
   const { t } = useLocale();
 
   return (
@@ -36,7 +38,11 @@ export default function HomeSection({ screenings, openId }: Props) {
         {screenings.length} {t.home.upcoming}
       </p>
       {screenings.length ? (
-        <HomeContent screenings={screenings} openId={openId} />
+        <HomeContent
+          screenings={screenings}
+          openId={openId}
+          initialSeatmapById={initialSeatmapById}
+        />
       ) : (
         <div style={{ border: '1px dashed #2a2a2a', padding: '48px 20px', textAlign: 'center' }}>
           <p className="film-meta">{t.home.noScreenings}</p>

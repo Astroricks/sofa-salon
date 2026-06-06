@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "measure:cold-load": "node scripts/measure-cold-load.mjs",
+    "measure:switch": "node scripts/measure-screening-switch.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",

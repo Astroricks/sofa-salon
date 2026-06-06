@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
-import { prefetchSeatmap } from '@/lib/seatmap-client-cache';
+import {
+  prefetchSeatmap,
+  seedSeatmapCache,
+  type SeatmapApiPayload,
+} from '@/lib/seatmap-client-cache';
 import ScreeningCard from '@/components/ScreeningCard';
 import SeatMapInline from '@/components/SeatMapInline';
 interface Screening {
@@ -26,6 +30,7 @@ interface Screening {
 interface Props {
   screenings: Screening[];
   openId: string | null;
+  initialSeatmapById?: Record<string, SeatmapApiPayload>;
 }
 
 const CARD_WIDTH = 280;
@@ -34,9 +39,17 @@ const CARD_GAP = 16;
 const CARD_HEIGHT = 218;
 const MOBILE_BREAKPOINT = 768;
 
-export default function HomeContent({ screenings, openId }: Props) {
+export default function HomeContent({ screenings, openId, initialSeatmapById }: Props) {
   const { t } = useLocale();
-  const [selectedId, setSelectedId] = useState<string | null>(openId);
+  const seatmapSeeded = useRef(false);
+  if (initialSeatmapById && !seatmapSeeded.current) {
+    seedSeatmapCache(initialSeatmapById);
+    seatmapSeeded.current = true;
+  }
+
+  const [selectedId, setSelectedId] = useState<string | null>(
+    openId ?? screenings[0]?.id ?? null
+  );
   const [isMobile, setIsMobile] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
