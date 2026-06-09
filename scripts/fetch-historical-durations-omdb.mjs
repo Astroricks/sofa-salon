@@ -10,7 +10,7 @@
  */
 import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { buildTitleEnMap, titleEnForRow } from './lib/match-letterboxd-en.mjs';
@@ -157,6 +157,11 @@ async function loadTitleMatch() {
 
 /** @returns {Row[]} */
 function loadRowsFromCsv() {
+  if (!existsSync(DIARY_PATH)) {
+    throw new Error(
+      'Missing scripts/data/letterboxd-diary.csv — export your Letterboxd diary and save it there (see scripts/data/README.md).'
+    );
+  }
   const titleEnMap = buildTitleEnMap(CSV_PATH, DIARY_PATH);
   const raw = readFileSync(CSV_PATH, 'utf8').trim();
   /** @type {Row[]} */

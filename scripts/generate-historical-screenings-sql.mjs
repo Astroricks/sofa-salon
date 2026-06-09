@@ -1,11 +1,12 @@
 /**
- * Reads scripts/data/ziggygraph-screenings-zh.csv + letterboxd-diary.csv (ziggygraph tag)
- * and writes supabase-sql/37-seed-historical-screenings-catalog.sql
+ * Reads scripts/data/ziggygraph-screenings-zh.csv + scripts/data/letterboxd-diary.csv
+ * (bring your own Letterboxd export; see scripts/data/README.md) and writes
+ * supabase-sql/37-seed-historical-screenings-catalog.sql
  *
  * Run: node scripts/generate-historical-screenings-sql.mjs
  */
 import { createHash } from 'crypto';
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { buildTitleEnMap, titleEnForRow } from './lib/match-letterboxd-en.mjs';
@@ -24,6 +25,13 @@ const MAP_PATH = join(__dirname, 'data/historical-title-en-map.json');
 const UNMATCHED_PATH = join(__dirname, 'data/historical-title-en-unmatched.json');
 const OUT_PATH = join(__dirname, '../supabase-sql/37-seed-historical-screenings-catalog.sql');
 const DEDUPE_PATH = join(__dirname, '../supabase-sql/40-remove-sheet-seed-duplicates.sql');
+
+if (!existsSync(DIARY_PATH)) {
+  console.error(
+    'Missing scripts/data/letterboxd-diary.csv — export your Letterboxd diary and save it there (see scripts/data/README.md).'
+  );
+  process.exit(1);
+}
 
 /** Deterministic UUID from sheet date + title (idempotent re-runs). */
 function stableScreeningId(dateStr, title) {

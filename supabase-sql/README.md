@@ -41,7 +41,7 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 29 | `29-screenings-trailer-url.sql` | Adds `screenings.trailer_url` (optional trailer / video link). |
 | 30 | `30-reservations-admin-update-rls.sql` | RLS: admins may `UPDATE` `reservations` (attendance / no-show marks). Requires **03**. |
 | 31 | `31-profiles-contact-platform.sql` | Adds `contact_platform` + `contact_id`; backfill from `wechat_id`. |
-| 32 | `32-profiles-existing-contact-platform-data.sql` | Data: existing users → `wechat`; **charles.j.lovering**, **Sister TangYi** → `whatsapp`. Run after **31**. |
+| 32 | `32-profiles-existing-contact-platform-data.sql` | Data: default `wechat`; edit `YOUR_WHATSAPP_DISPLAY_NAME_*` for WhatsApp guests. Run after **31**. |
 | 33 | `33-profiles-contact-id-unique-index.sql` | Unique on `(display_name, contact_id)` — not global. Run after **32**; if it fails, use `query-find-duplicate-contact-ids.sql` first. |
 | 34 | `34-profiles-reset-no-show-counts.sql` | Resets `no_show_count` and `consecutive_attendances` to 0 for all profiles. |
 | — | `31-attended-present-normalize.sql` | **One-time data:** `attended=true` → `null`. Run once if upgrading from tri-state marks. |

@@ -1,7 +1,7 @@
 -- Data fix after 31-profiles-contact-platform.sql:
--- All existing guests used the legacy field as WeChat ID, except:
---   charles.j.lovering, Sister TangYi (WhatsApp).
--- Safe to re-run.
+-- All existing guests used the legacy field as WeChat ID, except guests listed below (WhatsApp).
+-- Edit YOUR_WHATSAPP_DISPLAY_NAME_* before running on your instance. Safe to re-run.
+-- On a fresh install with no profiles, this updates zero rows.
 
 -- Everyone else: WeChat platform; keep id in contact_id and wechat_id.
 UPDATE profiles
@@ -10,8 +10,8 @@ SET
   contact_id = COALESCE(NULLIF(btrim(contact_id), ''), btrim(wechat_id)),
   wechat_id = COALESCE(NULLIF(btrim(contact_id), ''), btrim(wechat_id))
 WHERE lower(btrim(display_name)) NOT IN (
-    lower('charles.j.lovering'),
-    lower('Sister TangYi')
+    lower('YOUR_WHATSAPP_DISPLAY_NAME_1'),
+    lower('YOUR_WHATSAPP_DISPLAY_NAME_2')
   )
   AND (
     btrim(COALESCE(contact_id, '')) <> ''
@@ -25,8 +25,8 @@ SET
   contact_id = COALESCE(NULLIF(btrim(contact_id), ''), btrim(wechat_id)),
   wechat_id = ''
 WHERE lower(btrim(display_name)) IN (
-    lower('charles.j.lovering'),
-    lower('Sister TangYi')
+    lower('YOUR_WHATSAPP_DISPLAY_NAME_1'),
+    lower('YOUR_WHATSAPP_DISPLAY_NAME_2')
   )
   AND (
     btrim(COALESCE(contact_id, '')) <> ''

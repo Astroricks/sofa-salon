@@ -473,7 +473,7 @@ export const tZh = {
     logOut: '退出',
     pastScreenings: '往期放映',
     pastScreeningsHref:
-      'https://docs.google.com/spreadsheets/d/1lrEE5G72IrhtxurPoYcLOJP2YKwGXGduKA44nYsjQ-M/edit?gid=0#gid=0',
+      'https://docs.google.com/spreadsheets/d/1lrEE5G72IrhtxurPoYcLOJP2YKwGXGduKA44nYsjQ-M/',
     leaderboard: '排行榜',
     developedBy: '开发者：471',
     developedByHref: 'https://eveshi.com/',

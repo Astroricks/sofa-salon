@@ -1,18 +1,14 @@
 -- Merge duplicate guest accounts by user_id: move FROM user's history onto TO user, delete FROM auth user.
--- Run in Supabase SQL Editor. Edit from_id / to_id below for other merges.
+-- Run in Supabase SQL Editor. Edit YOUR_FROM_USER_UUID / YOUR_TO_USER_UUID below.
 --
--- This run: znn → zmm
---   FROM  1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc
---   TO    176fe7d2-b09c-4829-9370-07d4b43aba1c
-
--- ========== IDs (edit for another merge) ==========
--- Use in all steps via merge_ids CTE, and in step 4 DO block.
+-- Resolve IDs from profiles:
+--   SELECT id, display_name FROM profiles WHERE display_name ILIKE 'YOUR_USER_DISPLAY_NAME';
 
 -- ========== 0. Both profiles + target badge count ==========
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT p.id, p.display_name, p.contact_platform, p.contact_id,
        p.no_show_count, p.consecutive_attendances,
@@ -23,11 +19,10 @@ CROSS JOIN merge_ids m
 WHERE p.id IN (m.from_id, m.to_id)
 ORDER BY role;
 
--- Orphan reservations (user_id with no profile — should be empty unless FK bypassed).
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT r.id, r.user_id, r.screening_id, r.seat_key, r.attended
 FROM reservations r
@@ -35,11 +30,11 @@ CROSS JOIN merge_ids m
 WHERE r.user_id = m.from_id
   AND NOT EXISTS (SELECT 1 FROM profiles p WHERE p.id = m.from_id);
 
--- ========== 1. Reservations still on FROM user (including if profile row is gone) ==========
+-- ========== 1. Reservations still on FROM user ==========
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT r.screening_id, s.title, s.screening_at, r.seat_key, r.attended, r.is_ghost
 FROM reservations r
@@ -51,8 +46,8 @@ ORDER BY s.screening_at;
 -- ========== 2. Badge counts before merge ==========
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT public.get_user_attendance_count(m.from_id) AS from_badge_count,
        public.get_user_attendance_count(m.to_id) AS to_badge_count
@@ -61,8 +56,8 @@ FROM merge_ids m;
 -- ========== 3. Conflicts (FROM rows dropped if TO already has same seat / waitlist / rating) ==========
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT 'duplicate seat' AS conflict, r.id, r.screening_id, r.seat_key
 FROM reservations r
@@ -77,8 +72,8 @@ WHERE r.user_id = m.from_id
 
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT 'duplicate waitlist' AS conflict, w.screening_id
 FROM waitlist w
@@ -91,8 +86,8 @@ WHERE w.user_id = m.from_id
 
 WITH merge_ids AS (
   SELECT
-    '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc'::uuid AS from_id,
-    '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+    'YOUR_FROM_USER_UUID'::uuid AS from_id,
+    'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT 'duplicate rating' AS conflict, sr.screening_id
 FROM screening_ratings sr
@@ -103,12 +98,12 @@ WHERE sr.user_id = m.from_id
     WHERE sr2.user_id = m.to_id AND sr2.screening_id = sr.screening_id
   );
 
--- ========== 4. Execute merge (run entire DO block as one query) ==========
-
+-- ========== 4. Execute merge (uncomment and replace UUIDs; run entire DO block as one query) ==========
+/*
 DO $$
 DECLARE
-  from_id uuid := '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc';
-  to_id uuid := '176fe7d2-b09c-4829-9370-07d4b43aba1c';
+  from_id uuid := 'YOUR_FROM_USER_UUID'::uuid;
+  to_id uuid := 'YOUR_TO_USER_UUID'::uuid;
   src_no_show integer;
   src_consecutive integer;
   to_exists boolean;
@@ -202,10 +197,11 @@ BEGIN
     DELETE FROM auth.users WHERE id = from_id;
   END IF;
 END $$;
+*/
 
 -- ========== 5. Verify TO user ==========
 WITH merge_ids AS (
-  SELECT '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+  SELECT 'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT p.id, p.display_name, p.no_show_count, p.consecutive_attendances,
        public.get_user_attendance_count(p.id) AS badge_attendance_count
@@ -214,7 +210,7 @@ CROSS JOIN merge_ids m
 WHERE p.id = m.to_id;
 
 WITH merge_ids AS (
-  SELECT '176fe7d2-b09c-4829-9370-07d4b43aba1c'::uuid AS to_id
+  SELECT 'YOUR_TO_USER_UUID'::uuid AS to_id
 )
 SELECT s.title, s.screening_at, r.seat_key, r.attended
 FROM reservations r
@@ -226,4 +222,6 @@ WHERE r.user_id = m.to_id
 ORDER BY s.screening_at;
 
 -- FROM auth user should be gone (0 rows) if profile existed before step 4.
-SELECT id, email FROM auth.users WHERE id = '1e7cc1b3-3e4d-4368-ba08-bc7e78a274cc';
+/*
+SELECT id, email FROM auth.users WHERE id = 'YOUR_FROM_USER_UUID'::uuid;
+*/

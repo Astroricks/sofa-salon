@@ -1,31 +1,29 @@
 -- Manual: mark a guest 鸽了 (no-show) for one screening — matches admin Guests PATCH attended=false.
 -- Run in Supabase SQL Editor. Review steps 1–2 before step 3.
 --
--- Edit display_name and screening title below (or use user_id / screening_id from step 1).
--- Lucy · 对她说 Hable con ella
+-- Edit YOUR_USER_DISPLAY_NAME and YOUR_SCREENING_TITLE below (or use user_id / screening_id from step 1).
 
 -- ========== 1. Resolve user ==========
 SELECT id AS user_id, display_name, no_show_count, consecutive_attendances
 FROM profiles
-WHERE display_name ILIKE 'Lucy'
+WHERE display_name ILIKE 'YOUR_USER_DISPLAY_NAME'
 ORDER BY display_name;
 
 -- ========== 2. Resolve screening ==========
 SELECT id AS screening_id, title, title_en, screening_at
 FROM screenings
-WHERE title ILIKE '%对她说%'
-   OR title ILIKE '%Hable con ella%'
-   OR title = '对她说 Hable con ella'
+WHERE title ILIKE '%YOUR_SCREENING_TITLE%'
+   OR title_en ILIKE '%YOUR_SCREENING_TITLE_EN%'
 ORDER BY screening_at DESC;
 
--- ========== 3. Preflight: Lucy's reservation(s) on this screening ==========
+-- ========== 3. Preflight: reservation(s) on this screening ==========
 WITH target AS (
   SELECT
-    (SELECT id FROM profiles WHERE display_name ILIKE 'Lucy' ORDER BY display_name LIMIT 1) AS user_id,
+    (SELECT id FROM profiles WHERE display_name ILIKE 'YOUR_USER_DISPLAY_NAME' ORDER BY display_name LIMIT 1) AS user_id,
     (
       SELECT id
       FROM screenings
-      WHERE title = '对她说 Hable con ella'
+      WHERE title = 'YOUR_SCREENING_TITLE'
       ORDER BY screening_at DESC
       LIMIT 1
     ) AS screening_id
@@ -37,7 +35,7 @@ WHERE r.user_id = t.user_id
   AND r.screening_id = t.screening_id;
 
 -- ========== 4. Execute (run entire DO block as one query) ==========
-
+/*
 DO $$
 DECLARE
   target_user_id uuid;
@@ -50,22 +48,22 @@ DECLARE
 BEGIN
   SELECT id INTO target_user_id
   FROM profiles
-  WHERE display_name ILIKE 'Lucy'
+  WHERE display_name ILIKE 'YOUR_USER_DISPLAY_NAME'
   ORDER BY display_name
   LIMIT 1;
 
   SELECT id INTO target_screening_id
   FROM screenings
-  WHERE title = '对她说 Hable con ella'
+  WHERE title = 'YOUR_SCREENING_TITLE'
   ORDER BY screening_at DESC
   LIMIT 1;
 
   IF target_user_id IS NULL THEN
-    RAISE EXCEPTION 'Profile not found for display_name ILIKE Lucy';
+    RAISE EXCEPTION 'Profile not found for display_name ILIKE YOUR_USER_DISPLAY_NAME';
   END IF;
 
   IF target_screening_id IS NULL THEN
-    RAISE EXCEPTION 'Screening not found for title = 对她说 Hable con ella. Fix title from step 2.';
+    RAISE EXCEPTION 'Screening not found for title = YOUR_SCREENING_TITLE. Fix title from step 2.';
   END IF;
 
   SELECT array_agg(r.attended ORDER BY r.seat_key)
@@ -111,15 +109,17 @@ BEGIN
     WHERE id = target_user_id;
   END IF;
 END $$;
+*/
 
 -- ========== 5. Verify ==========
+/*
 WITH target AS (
   SELECT
-    (SELECT id FROM profiles WHERE display_name ILIKE 'Lucy' ORDER BY display_name LIMIT 1) AS user_id,
+    (SELECT id FROM profiles WHERE display_name ILIKE 'YOUR_USER_DISPLAY_NAME' ORDER BY display_name LIMIT 1) AS user_id,
     (
       SELECT id
       FROM screenings
-      WHERE title = '对她说 Hable con ella'
+      WHERE title = 'YOUR_SCREENING_TITLE'
       ORDER BY screening_at DESC
       LIMIT 1
     ) AS screening_id
@@ -132,3 +132,4 @@ CROSS JOIN target t
 WHERE r.user_id = t.user_id
   AND r.screening_id = t.screening_id
   AND COALESCE(r.is_ghost, false) = false;
+*/

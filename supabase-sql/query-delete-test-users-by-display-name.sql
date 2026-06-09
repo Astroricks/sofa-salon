@@ -1,5 +1,5 @@
 -- Delete test guest accounts by exact display name (case-insensitive).
--- Targets: test, test12, test123, 123, qs2027
+-- Edit target_names in each step before running.
 --
 -- Run in Supabase SQL Editor.
 -- 1) Run steps 1–2 (SELECT) and confirm rows look correct.
@@ -7,6 +7,12 @@
 -- Deleting auth.users cascades: profiles, reservations, waitlist, ratings, etc.
 
 -- ========== 1. Profiles to delete ==========
+WITH target_names(name) AS (
+  SELECT unnest(ARRAY[
+    'YOUR_TEST_DISPLAY_NAME_1',
+    'YOUR_TEST_DISPLAY_NAME_2'
+  ]::text[])
+)
 SELECT
   p.id AS user_id,
   p.display_name,
@@ -19,26 +25,20 @@ SELECT
   (SELECT COUNT(*) FROM waitlist w WHERE w.user_id = p.id) AS waitlist_rows,
   (SELECT COUNT(*) FROM screening_ratings sr WHERE sr.user_id = p.id) AS ratings
 FROM profiles p
-WHERE lower(btrim(p.display_name)) IN (
-  'test',
-  'test12',
-  'test123',
-  '123',
-  'qs2027'
-)
+WHERE lower(btrim(p.display_name)) IN (SELECT lower(btrim(name)) FROM target_names)
 ORDER BY p.display_name, p.created_at;
 
 -- ========== 2. Related rows (detail) ==========
-WITH targets AS (
+WITH target_names(name) AS (
+  SELECT unnest(ARRAY[
+    'YOUR_TEST_DISPLAY_NAME_1',
+    'YOUR_TEST_DISPLAY_NAME_2'
+  ]::text[])
+),
+targets AS (
   SELECT id
   FROM profiles
-  WHERE lower(btrim(display_name)) IN (
-    'test',
-    'test12',
-    'test123',
-    '123',
-    'qs2027'
-  )
+  WHERE lower(btrim(display_name)) IN (SELECT lower(btrim(name)) FROM target_names)
 )
 SELECT 'reservations' AS kind, COUNT(*)::bigint AS n FROM reservations r JOIN targets t ON t.id = r.user_id
 UNION ALL
@@ -65,11 +65,11 @@ BEGIN
   INTO target_ids
   FROM profiles p
   WHERE lower(btrim(p.display_name)) IN (
-    'test',
-    'test12',
-    'test123',
-    '123',
-    'qs2027'
+    SELECT lower(btrim(name))
+    FROM unnest(ARRAY[
+      'YOUR_TEST_DISPLAY_NAME_1',
+      'YOUR_TEST_DISPLAY_NAME_2'
+    ]::text[]) AS name
   );
 
   IF target_ids IS NULL OR array_length(target_ids, 1) IS NULL THEN
@@ -87,7 +87,6 @@ BEGIN
     RAISE EXCEPTION 'Refusing to delete admin account(s): %', admin_hit;
   END IF;
 
-  -- FKs without ON DELETE CASCADE on profiles
   UPDATE rooms SET owner_id = NULL WHERE owner_id = ANY(target_ids);
   UPDATE screenings SET created_by = NULL WHERE created_by = ANY(target_ids);
   UPDATE ticker_custom SET created_by = NULL WHERE created_by = ANY(target_ids);
@@ -100,13 +99,13 @@ END $$;
 
 -- ========== 4. Verify (after step 3) ==========
 /*
+WITH target_names(name) AS (
+  SELECT unnest(ARRAY[
+    'YOUR_TEST_DISPLAY_NAME_1',
+    'YOUR_TEST_DISPLAY_NAME_2'
+  ]::text[])
+)
 SELECT id, display_name
 FROM profiles
-WHERE lower(btrim(display_name)) IN (
-  'test',
-  'test12',
-  'test123',
-  '123',
-  'qs2027'
-);
+WHERE lower(btrim(display_name)) IN (SELECT lower(btrim(name)) FROM target_names);
 */

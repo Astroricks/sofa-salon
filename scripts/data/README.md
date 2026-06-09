@@ -1,9 +1,15 @@
 # Historical screening data
 
-- `ziggygraph-screenings-zh.csv` — exported from [Ziggygraph Google Sheet](https://docs.google.com/spreadsheets/d/1lrEE5G72IrhtxurPoYcLOJP2YKwGXGduKA44nYsjQ-M/). Source for migration **37**.
-- `letterboxd-diary.csv` — Letterboxd diary export. Rows whose **Tags** contain `ziggygraph` (case-insensitive) supply English **Name** values, matched to sheet rows by **Watched Date** + release year in the Chinese title `（YYYY）`.
+- `ziggygraph-screenings-zh.csv` — screening catalog export (date, Chinese title, director, etc.). Source for migration **37**. Replace with your own salon’s history or edit in place.
+- **Letterboxd diary (bring your own)** — not shipped in this repo. Export your diary from [Letterboxd](https://letterboxd.com/settings/data/) (CSV), save it as:
 
-Regenerate SQL after editing either file:
+  ```
+  scripts/data/letterboxd-diary.csv
+  ```
+
+  That path is gitignored. Tag salon screenings in Letterboxd so the **Tags** column includes your salon tag (the matcher in `scripts/lib/match-letterboxd-en.mjs` looks for `ziggygraph` by default — change that string if you use a different tag). Rows supply English **Name** values, matched to sheet rows by **Watched Date** + release year in the Chinese title `（YYYY）`.
+
+Regenerate SQL after editing the sheet CSV and/or adding your Letterboxd export:
 
 ```bash
 node scripts/generate-historical-screenings-sql.mjs
@@ -17,7 +23,7 @@ Outputs:
 | `historical-title-en-map.json` | Matched Chinese → English titles |
 | `historical-title-en-unmatched.json` | Rows with no Letterboxd match (fill manually on site) |
 
-Matching rules (see `scripts/lib/match-letterboxd-en.mjs`): same screening date + year; unique-year pairing on multi-film nights; ±1 **Watched Date** when no same-day match and exactly one unused ziggygraph row on the adjacent day with the same release year.
+Matching rules (see `scripts/lib/match-letterboxd-en.mjs`): same screening date + year; unique-year pairing on multi-film nights; ±1 **Watched Date** when no same-day match and exactly one unused tagged row on the adjacent day with the same release year.
 
 ### OMDb runtimes (`duration_minutes`)
 

@@ -1,5 +1,7 @@
 # ZiggyGraph / Sofa Salon
 
+Open-source under the [MIT License](LICENSE). See [SECURITY.md](SECURITY.md).
+
 ## What is this project?
 
 This app is a **private screening room / cinema club booking system**. Members browse upcoming film screenings, reserve seats, and after attending they can rate films and send short messages to a shared ticker. An **admin** manages events (create/edit screenings, rooms, waitlist) and configures the ticker. Main user flows: **browse upcoming screenings ? reserve a seat (or join waitlist) ? attend ? rate and optionally send a ticker message**. The stack is Next.js, Supabase (auth + database), and optional Resend for email.
@@ -17,7 +19,7 @@ sofa-salon/
 ?   ?   ??? auth/               # Login (Google OAuth)
 ?   ?   ??? profile/            # User profile, watch history, ticket stub export
 ?   ?   ??? receipt/            # Viewing receipt (SVG) + export
-?   ?   ??? screening/[id]/    # Seat map for a screening
+?   ?   ??? screening/[id]/     # Seat map for a screening
 ?   ?   ??? layout.tsx
 ?   ?   ??? page.tsx            # Home (upcoming screenings)
 ?   ??? components/             # Shared UI (SeatMap, Ticker, NavBar, ReceiptSVG, etc.)
@@ -27,9 +29,9 @@ sofa-salon/
 ?   ?   ??? i18n.ts             # EN/ZH strings
 ?   ?   ??? badges.ts           # Badge tiers by attendance
 ?   ?   ??? email.ts            # Resend (confirmation, promotion, reminder)
-?   ?   ??? furniture.ts         # Seat layout, squeeze rules
+?   ?   ??? furniture.ts        # Seat layout, squeeze rules
 ?   ??? middleware.ts           # Protects /admin, /profile; redirects empty wechat_id to /profile/setup
-??? supabase-sql/               # Database migrations (run in order 00 ? 21)
+??? supabase-sql/               # Database migrations (run in order 00–21)
 ?   ??? README.md               # Migration list and descriptions
 ?   ??? 00-base-schema.sql      # Base tables and RLS (run first)
 ?   ??? 01-... through 21-...   # Incremental migrations
@@ -44,6 +46,20 @@ sofa-salon/
 - **Frontend**: Next.js 14 (App Router), React 18, Tailwind. Auth: Supabase Auth (Google OAuth).
 - **Backend**: Next.js API routes in `src/app/api/`; Supabase (Postgres) for data; optional Resend for email.
 - **SQL**: All schema and migrations live in `supabase-sql/`. Run files in numeric order in Supabase SQL Editor.
+
+---
+
+## Self-host (your own Supabase + Resend)
+
+This app is designed to run against **your** infrastructure — do not point a public fork at a production database that holds real guest data. This repository does not include a hosted demo or shared database — each deployment uses its own Supabase project.
+
+1. **Supabase** — Create a project, run `supabase-sql/` migrations in order (see `supabase-sql/README.md`), and set `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`. For waitlist promotion, admin attendance, and some cron paths, also set `SUPABASE_SERVICE_ROLE_KEY` (server-only).
+2. **Auth** — Enable Google (or other providers) in Supabase; set Site URL and redirect URLs to your app origin.
+3. **Resend (optional)** — Sign up at [resend.com](https://resend.com), verify a sending domain, then set `RESEND_API_KEY` and `EMAIL_FROM`. Without Resend, bookings still work; confirmation/reminder emails are skipped.
+4. **Host contact (optional)** — Set `HOST_CONTACT_EMAIL` for the `/contact` form.
+5. **Branding** — Override `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_APP_TAGLINE`, and nav links in `src/lib/i18n.ts` for your salon.
+
+Deploy the Next.js app (e.g. Vercel) with the same env vars. Use a **separate** Supabase project for staging vs production.
 
 ---
 
@@ -183,7 +199,7 @@ See **`TESTING.md`** for what each test file covers and how to add new tests.
 
 ### 6.2 Supabase (production)
 
-- Use the same or a dedicated production Supabase project. Run the same `supabase-sql` migrations (00 ? 21) if the DB is new.
+- Use the same or a dedicated production Supabase project. Run the same `supabase-sql` migrations (00–21) if the DB is new.
 - In Supabase Auth ? URL Configuration, set **Site URL** to your production app URL and add the redirect URL for Google OAuth.
 
 ### 6.3 Post-deploy
@@ -210,6 +226,7 @@ See **`TESTING.md`** for what each test file covers and how to add new tests.
 | Unit tests    | `npm test`             |
 | E2E tests     | `npm run test:e2e`     |
 | Lint          | `npm run lint`         |
+| Security      | `SECURITY.md`          |
 | Dev rules     | `docs/DEVELOPMENT_RULES.md` |
 | Test guide    | `TESTING.md`           |
 | DB migrations | Run `supabase-sql/00-...sql` through `21-...sql` in order (see `supabase-sql/README.md`). |

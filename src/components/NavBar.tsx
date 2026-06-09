@@ -94,6 +94,30 @@ export default function NavBar() {
       active ? 'text-[#e8c84a]' : 'text-[#888888]'
     }`;
 
+  const pastScreeningsNavLink = (extraClass = '', onNavigate?: () => void) => {
+    const href = t.nav.pastScreeningsHref;
+    const isExternal = href.startsWith('http://') || href.startsWith('https://');
+    const className = linkClass(!isExternal && !!pathname?.startsWith(href)) + extraClass;
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={className}
+          onClick={onNavigate}
+        >
+          {t.nav.pastScreenings}
+        </a>
+      );
+    }
+    return (
+      <Link href={href} className={className} onClick={onNavigate}>
+        {t.nav.pastScreenings}
+      </Link>
+    );
+  };
+
   return (
     <header className="border-b border-[#2a2a2a] bg-[#0f0f0f] px-4 py-3 flex items-center justify-between sticky top-0 z-50 safe-area-inset-top">
       <Link href="/" className="font-pixel text-sm text-[#e8e4dc] no-underline flex flex-col min-w-0">
@@ -150,14 +174,7 @@ export default function NavBar() {
               <Link href="/" className={linkClass(pathname === '/')}>
                 {t.nav.home}
               </Link>
-              <a
-                href={t.nav.pastScreeningsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass(false)}
-              >
-                {t.nav.pastScreenings}
-              </a>
+              {pastScreeningsNavLink()}
               <Link href="/leaderboard" className={linkClass(!!pathname?.startsWith('/leaderboard'))}>
                 {t.nav.leaderboard}
               </Link>
@@ -220,15 +237,7 @@ export default function NavBar() {
                     >
                       {t.nav.home}
                     </Link>
-                    <a
-                      href={t.nav.pastScreeningsHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={linkClass(false) + ' px-4'}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {t.nav.pastScreenings}
-                    </a>
+                    {pastScreeningsNavLink(' px-4', () => setMobileMenuOpen(false))}
                     <Link
                       href="/leaderboard"
                       className={linkClass(!!pathname?.startsWith('/leaderboard')) + ' px-4'}
@@ -287,14 +296,7 @@ export default function NavBar() {
               <Link href="/" className={linkClass(pathname === '/')}>
                 {t.nav.home}
               </Link>
-              <a
-                href={t.nav.pastScreeningsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass(false)}
-              >
-                {t.nav.pastScreenings}
-              </a>
+              {pastScreeningsNavLink()}
               <Link href="/leaderboard" className={linkClass(!!pathname?.startsWith('/leaderboard'))}>
                 {t.nav.leaderboard}
               </Link>
@@ -349,15 +351,7 @@ export default function NavBar() {
                     >
                       {t.nav.home}
                     </Link>
-                    <a
-                      href={t.nav.pastScreeningsHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={linkClass(false) + ' px-4'}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {t.nav.pastScreenings}
-                    </a>
+                    {pastScreeningsNavLink(' px-4', () => setMobileMenuOpen(false))}
                     <Link
                       href="/leaderboard"
                       className={linkClass(!!pathname?.startsWith('/leaderboard')) + ' px-4'}
