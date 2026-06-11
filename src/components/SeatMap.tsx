@@ -31,7 +31,6 @@ import {
   getProfileContact,
   hasProfileContact,
 } from '@/lib/contact-platform';
-import { MASCOT_STORY_EMBED_URL } from '@/lib/config';
 
 interface Reservation {
   id: string;
@@ -154,6 +153,7 @@ export default function SeatMap({
   const [cancelLoading, setCancelLoading] = useState(false);
   const [showCancelEasterEgg, setShowCancelEasterEgg] = useState(false);
   const [pendingCancelListEasterEgg, setPendingCancelListEasterEgg] = useState<Reservation[]>([]);
+  const YOUTUBE_SHORTS_EMBED = 'https://www.youtube.com/embed/Gd5YJUGlOdg';
   const [seatError, setSeatError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -375,10 +375,6 @@ export default function SeatMap({
     if (current.size === 0) return;
     const list = myReservations.filter((r) => current.has(r.seat_key));
     if (list.length === 0) return;
-    if (!MASCOT_STORY_EMBED_URL) {
-      setCancelModalReservations(list);
-      return;
-    }
     setPendingCancelListEasterEgg(list);
     setShowCancelEasterEgg(true);
   }, [myReservations]);
@@ -1241,7 +1237,7 @@ export default function SeatMap({
             <div className="w-full aspect-[9/16] max-h-[50vh] bg-black flex-shrink-0">
               <iframe
                 title="YouTube Shorts"
-                src={MASCOT_STORY_EMBED_URL}
+                src={YOUTUBE_SHORTS_EMBED}
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
                 allowFullScreen

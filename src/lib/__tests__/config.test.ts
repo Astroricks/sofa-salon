@@ -9,8 +9,6 @@ import {
   DEVELOPER_NAME,
   DEVELOPER_URL,
   HOST_NAME,
-  MASCOT_STORY_EMBED_URL,
-  MASCOT_STORY_URL,
   PAST_SCREENINGS_URL_EN,
   PAST_SCREENINGS_URL_ZH,
   RECEIPT_SUBTITLE,
@@ -43,8 +41,6 @@ describe('config', () => {
     expect(HOST_NAME).toBe('Ziggy');
     expect(VENUE_ADDRESS).toBe('');
     expect(RECEIPT_SUBTITLE).toBe('SCREENING ROOM');
-    expect(MASCOT_STORY_URL).toContain('youtube.com/shorts/');
-    expect(MASCOT_STORY_EMBED_URL).toContain('youtube.com/embed/');
   });
 });
 
@@ -106,8 +102,6 @@ describe('deployment identity overrides', () => {
     'NEXT_PUBLIC_HOST_NAME',
     'NEXT_PUBLIC_VENUE_ADDRESS',
     'NEXT_PUBLIC_RECEIPT_SUBTITLE',
-    'NEXT_PUBLIC_MASCOT_STORY_URL',
-    'NEXT_PUBLIC_MASCOT_STORY_EMBED_URL',
   ] as const;
 
   afterEach(() => {
@@ -123,8 +117,6 @@ describe('deployment identity overrides', () => {
       process.env.NEXT_PUBLIC_HOST_NAME = 'Example Host';
       process.env.NEXT_PUBLIC_VENUE_ADDRESS = 'Example address';
       process.env.NEXT_PUBLIC_RECEIPT_SUBTITLE = 'FILM CLUB';
-      process.env.NEXT_PUBLIC_MASCOT_STORY_URL = '';
-      process.env.NEXT_PUBLIC_MASCOT_STORY_EMBED_URL = '';
       const mod = require('../config') as typeof import('../config');
 
       expect(mod.PAST_SCREENINGS_URL_EN).toBe('https://example.com/archive/en');
@@ -134,8 +126,6 @@ describe('deployment identity overrides', () => {
       expect(mod.HOST_NAME).toBe('Example Host');
       expect(mod.VENUE_ADDRESS).toBe('Example address');
       expect(mod.RECEIPT_SUBTITLE).toBe('FILM CLUB');
-      expect(mod.MASCOT_STORY_URL).toBe('');
-      expect(mod.MASCOT_STORY_EMBED_URL).toBe('');
     });
   });
 });

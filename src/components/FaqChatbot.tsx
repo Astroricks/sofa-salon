@@ -4,12 +4,6 @@ import { useState, useCallback, useEffect, useRef, type ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/client';
 import { useLocale } from '@/components/LocaleProvider';
 import PigeonHead from '@/components/PigeonHead';
-import {
-  DEVELOPER_NAME,
-  DEVELOPER_URL,
-  HOST_NAME,
-  MASCOT_STORY_URL,
-} from '@/lib/config';
 
 type StateId =
   | 'ROOT'
@@ -72,21 +66,15 @@ const STATES: Record<StateId, State> = {
   },
   INFO_DEV: {
     id: 'INFO_DEV',
-    messages_zh: [
-      `本应用由 ${DEVELOPER_NAME} 开发。`,
-      ...(DEVELOPER_URL ? [`开发者主页: ${DEVELOPER_URL}`] : []),
-    ],
-    messages_en: [
-      `This app was built by ${DEVELOPER_NAME}.`,
-      ...(DEVELOPER_URL ? [`Developer: ${DEVELOPER_URL}`] : []),
-    ],
+    messages_zh: ['本应用由 471 开发。', 'GitHub: https://github.com/eveshi'],
+    messages_en: ['This app was built by 471.', 'GitHub: https://github.com/eveshi'],
     options: [{ label_zh: '返回主菜单', label_en: 'Back to menu', next: 'ROOT' }],
   },
   RULES: {
     id: 'RULES',
     messages_zh: [
       '【怎么用】',
-      '首页选一场活动 → 点进去选座位。需要先登录，个人页里填好昵称和联系方式才能选座。',
+      '首页选一场活动 → 点进去选座位。需要先登录，个人页里填好昵称和微信号才能选座。',
       '可以在座位图上帮朋友多选座位。',
       '取消座位：在活动页点你的头像，出现取消键，点一下就释放座位。',
       '',
@@ -94,12 +82,12 @@ const STATES: Record<StateId, State> = {
       '• 满座时可以加入候补，有人取消会按顺序补上（或由管理员安排）。',
       '• 血条：临开场前取消、或被标记鸽了，会掉一格。掉满三格会变成鸽子，需连续两场取消鸽了标记（管理员勾选掉）才能恢复。',
       '• 改期要超过半数已报名者投票同意，管理员批准后生效。',
-      '• 活动地址会在放映前发到你的邮箱和已保存的联系方式；请准时，迟到可能影响他人。',
+      '• 活动地址会在放映前发到你的邮箱和微信；请准时，迟到可能影响他人。',
       '• 当然可以带零食来跟大家分享哟！带上你最喜欢的饮料和零食吧；别带气味太重的。没有着装要求。',
     ],
     messages_en: [
       '【How to use】',
-      'Pick an event on the home page → open it and choose a seat. You need to log in and set your display name and contact details in your profile first.',
+      'Pick an event on the home page → open it and choose a seat. You need to log in and set your display name and WeChat in your profile first.',
       'You can claim extra seats for your friends on the seat map.',
       'To cancel: on the event page tap your avatar, then tap the cancel button to release your seat.',
       '',
@@ -107,7 +95,7 @@ const STATES: Record<StateId, State> = {
       '• When full, you can join the waitlist. If someone cancels, you may be promoted (auto or by admin).',
       '• Blood bar: cancelling close to the event or being marked no-show loses a segment. Three strikes and you become a pigeon; clear no-show on two screenings in a row (admin unchecks) to recover.',
       '• Rescheduling needs a majority vote of registered attendees; admin approves the new time.',
-      '• The address is sent by email and your saved contact channel before the screening. Please be on time.',
+      '• The address is sent by email and WeChat before the screening. Please be on time.',
       '• Of course! Bring your favorite drinks and snacks to share. Avoid strong smells. No dress code.',
     ],
     options: [{ label_zh: '返回主菜单', label_en: 'Back to menu', next: 'ROOT' }],
@@ -195,13 +183,13 @@ const STATES: Record<StateId, State> = {
       '如果你的座位不见了，可能是：',
       '• 管理员取消了这场放映',
       '• 你的预约因故被移除',
-      `请联系 ${HOST_NAME} 确认情况。`,
+      '请联系 Ziggy 确认情况。',
     ],
     messages_en: [
       'If your seat is gone, it may be because:',
       '• The host cancelled this screening',
       '• Your booking was removed for some reason',
-      `Please contact ${HOST_NAME} to confirm.`,
+      'Please contact Ziggy to confirm.',
     ],
     options: [{ label_zh: '返回主菜单', label_en: 'Back to menu', next: 'ROOT' }],
   },
@@ -229,13 +217,13 @@ const STATES: Record<StateId, State> = {
     id: 'INFO_LOCATION',
     messages_zh: [
       '具体地址会在放映前发送给所有已报名者。',
-      '请检查你的邮件和已保存的联系方式。',
-      `如果没收到，请联系 ${HOST_NAME}。`,
+      '请检查你的邮件和微信。',
+      '如果没收到，请联系 Ziggy。',
     ],
     messages_en: [
       'The address will be sent to all registered attendees before the screening.',
-      'Check your email and saved contact channel.',
-      `If you don’t get it, contact ${HOST_NAME}.`,
+      'Check your email and WeChat.',
+      'If you don’t get it, contact Ziggy.',
     ],
     options: [{ label_zh: '返回主菜单', label_en: 'Back to menu', next: 'ROOT' }],
   },
@@ -294,13 +282,13 @@ const STATES: Record<StateId, State> = {
     messages_zh: [
       '请检查以下两点：',
       '1. 你已登录',
-      '2. 你的个人页面里填写了联系方式',
+      '2. 你的个人页面里填写了微信号',
       '两步都完成后，座位应该可以选。',
     ],
     messages_en: [
       'Please check:',
       '1. You are logged in',
-      '2. Your profile has contact details filled in',
+      '2. Your profile has a WeChat ID filled in',
       'After both, seats should be selectable.',
     ],
     options: [
@@ -363,14 +351,8 @@ const STATES: Record<StateId, State> = {
   },
   NONSENSE_MY_STORY: {
     id: 'NONSENSE_MY_STORY',
-    messages_zh: [
-      '咕。这是「我的故事」。',
-      ...(MASCOT_STORY_URL ? [MASCOT_STORY_URL] : []),
-    ],
-    messages_en: [
-      'Coo. This is "My story".',
-      ...(MASCOT_STORY_URL ? [MASCOT_STORY_URL] : []),
-    ],
+    messages_zh: ['咕。这是「我的故事」。', 'https://youtube.com/shorts/Gd5YJUGlOdg'],
+    messages_en: ['Coo. This is "My story".', 'https://youtube.com/shorts/Gd5YJUGlOdg'],
     options: [{ label_zh: '返回主菜单', label_en: 'Back to menu', next: 'ROOT' }],
   },
   NONSENSE_TASTY: {

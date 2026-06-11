@@ -98,13 +98,11 @@ git push -u origin main
 | `NEXT_PUBLIC_APP_TAGLINE` | 否 | 副标题，默认 "Your host's living room" |
 | `NEXT_PUBLIC_PAST_SCREENINGS_URL_EN` | 否 | 英文界面的往期放映链接 |
 | `NEXT_PUBLIC_PAST_SCREENINGS_URL_ZH` | 否 | 中文界面的往期放映链接 |
-| `NEXT_PUBLIC_DEVELOPER_NAME` | 否 | 导航栏与帮助面板显示的开发者名称 |
+| `NEXT_PUBLIC_DEVELOPER_NAME` | 否 | 导航栏显示的开发者名称 |
 | `NEXT_PUBLIC_DEVELOPER_URL` | 否 | 开发者主页链接 |
-| `NEXT_PUBLIC_HOST_NAME` | 否 | 帮助文本与观影小票显示的主理人名称 |
+| `NEXT_PUBLIC_HOST_NAME` | 否 | 观影小票显示的主理人名称 |
 | `NEXT_PUBLIC_VENUE_ADDRESS` | 否 | 观影小票显示的场地地址；留空则隐藏 |
 | `NEXT_PUBLIC_RECEIPT_SUBTITLE` | 否 | 观影小票副标题 |
-| `NEXT_PUBLIC_MASCOT_STORY_URL` | 否 | FAQ 中的吉祥物故事链接；空字符串可禁用 |
-| `NEXT_PUBLIC_MASCOT_STORY_EMBED_URL` | 否 | 取消座位彩蛋视频；空字符串可禁用 |
 
 至少填好两个必填项后保存。
 

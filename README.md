@@ -60,7 +60,7 @@ This app is designed to run against **your** infrastructure — do not point a p
 2. **Auth** — Enable Google (or other providers) in Supabase; set Site URL and redirect URLs to your app origin.
 3. **Resend (optional)** — Sign up at [resend.com](https://resend.com), verify a sending domain, then set `RESEND_API_KEY` and `EMAIL_FROM`. Without Resend, bookings still work; confirmation/reminder emails are skipped.
 4. **Host contact (optional)** — Set `HOST_CONTACT_EMAIL` for the `/contact` form.
-5. **Branding** — Override the `NEXT_PUBLIC_*` display and identity variables in `.env.local`; no source edits are required. This includes the app name/tagline, locale-specific past-screening links, host/developer identity, receipt venue details, and optional mascot story links.
+5. **Branding** — Override the `NEXT_PUBLIC_*` display and identity variables in `.env.local`; no source edits are required. This includes the app name/tagline, locale-specific past-screening links, navigation attribution, and receipt venue details.
 
 Deploy the Next.js app (e.g. Vercel) with the same env vars. Use a **separate** Supabase project for staging vs production.
 
@@ -208,7 +208,7 @@ See **`TESTING.md`** for each file's scope and how to add tests.
 
 ## 7. Code and conventions
 
-- **Deployment identity:** Define app, archive, host, developer, receipt, and mascot values through `.env.local`; `src/lib/config.ts` is the single source of truth.
+- **Deployment identity:** Define app, archive, navigation attribution, and receipt values through `.env.local`; `src/lib/config.ts` is the single source of truth.
 - **Env:** Use `process.env.*`; only `NEXT_PUBLIC_*` is available in the browser.
 - **Naming:** Prefer clear names (`screeningId`, `userId`, `seatKey`).
 - **SQL:** Single source of truth in `supabase-sql/`; run in numeric order.
