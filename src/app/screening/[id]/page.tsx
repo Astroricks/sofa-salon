@@ -165,6 +165,7 @@ export default async function ScreeningPage({
   const isPast = new Date(screening.screening_at).getTime() < Date.now();
   const base = screening as {
     title: string;
+    seat_limit?: number | null;
     description?: string | null;
     year?: number | null;
     director?: string | null;
@@ -280,6 +281,7 @@ export default async function ScreeningPage({
               canvasH: room!.canvas_h ?? 400,
               roomBackgroundId: room!.room_background_id ?? 'warm',
             }}
+            seatLimit={base.seat_limit ?? null}
             squeezeNote={screening.squeeze_note}
             initialReservations={(reservations ?? []) as unknown as Parameters<typeof SeatMap>[0]['initialReservations']}
             initialWaitlist={(waitlist ?? []) as unknown as Parameters<typeof SeatMap>[0]['initialWaitlist']}

@@ -2,6 +2,12 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { persistScreeningAltLocale } from '@/lib/persist-screening-alt-locale';
 import { hasNonEmptyAltLocaleScreeningFields } from '@/lib/screening-alt-locale-schema';
+import type { FurniturePiece } from '@/lib/furniture';
+import {
+  parseSeatLimit,
+  validateSeatLimitForFurniture,
+} from '@/lib/screening-seat-capacity';
+
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const {
@@ -25,6 +31,7 @@ export async function POST(req: NextRequest) {
     description,
     screening_at,
     room_id,
+    seat_limit,
     squeeze_note,
     waitlist_mode,
     year,
@@ -44,11 +51,43 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const parsedSeatLimit = parseSeatLimit(seat_limit);
+  if (parsedSeatLimit.error) {
+    return NextResponse.json({ error: parsedSeatLimit.error }, { status: 400 });
+  }
+  if (parsedSeatLimit.value != null && !room_id) {
+    return NextResponse.json(
+      { error: 'A room is required when setting a seat count' },
+      { status: 400 }
+    );
+  }
+
+  let validatedSeatLimit = parsedSeatLimit.value;
+  if (room_id && parsedSeatLimit.value != null) {
+    const { data: room } = await supabase
+      .from('rooms')
+      .select('furniture_json')
+      .eq('id', room_id)
+      .single();
+    if (!room) {
+      return NextResponse.json({ error: 'Room not found' }, { status: 404 });
+    }
+    const validation = validateSeatLimitForFurniture(
+      (room.furniture_json as FurniturePiece[] | null) ?? [],
+      parsedSeatLimit.value
+    );
+    if (validation.error) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
+    }
+    validatedSeatLimit = validation.value;
+  }
+
   const insertRow = {
     title,
     description: description ?? '',
     screening_at,
     room_id: room_id ?? null,
+    seat_limit: validatedSeatLimit,
     squeeze_note: squeeze_note ?? '',
     waitlist_mode: waitlist_mode ?? 'auto',
     year: year != null ? Number(year) : null,

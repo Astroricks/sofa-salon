@@ -23,6 +23,7 @@ type SeatmapData = {
   waitlist: unknown[];
   user: { id: string } | null;
   profile: { wechat_id: string | null; is_admin?: boolean; no_show_count?: number } | null;
+  seatLimit: number | null;
   squeezeNote: string | null;
   waitlistMode: 'auto' | 'manual';
   filmTitle: string;
@@ -43,6 +44,7 @@ function payloadToData(
     waitlist: payload.waitlist ?? [],
     user,
     profile,
+    seatLimit: payload.seatLimit ?? null,
     squeezeNote: payload.squeezeNote ?? null,
     waitlistMode: (payload.waitlistMode as 'auto' | 'manual') ?? 'auto',
     filmTitle,
@@ -130,6 +132,7 @@ export default function SeatMapInline({ screeningId }: Props) {
             waitlist: [],
             user: user ? { id: user.id } : null,
             profile,
+            seatLimit: null,
             squeezeNote: null,
             waitlistMode: 'auto',
             filmTitle: '',
@@ -172,6 +175,7 @@ export default function SeatMapInline({ screeningId }: Props) {
       screeningId={screeningId}
       screeningTitle={screeningTitle}
       room={data.room}
+      seatLimit={data.seatLimit}
       squeezeNote={data.squeezeNote}
       initialReservations={
         data.reservations as Parameters<typeof SeatMap>[0]['initialReservations']

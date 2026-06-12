@@ -20,6 +20,7 @@ const SELECT_DETAIL = `
         squeeze_note,
         waitlist_mode,
         room_id,
+        seat_limit,
         douban_url,
         letterboxd_url,
         trailer_url,

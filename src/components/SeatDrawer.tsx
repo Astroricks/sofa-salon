@@ -32,6 +32,7 @@ export default function SeatDrawer({ screening, onClose }: Props) {
   } | null>(null);
   const [currentUser, setCurrentUser] = useState<{ id: string } | null>(null);
   const [squeezeNote, setSqueezeNote] = useState<string | null>(null);
+  const [seatLimit, setSeatLimit] = useState<number | null>(null);
   const [waitlistMode, setWaitlistMode] = useState<'auto' | 'manual'>('auto');
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +56,7 @@ export default function SeatDrawer({ screening, onClose }: Props) {
         supabase
           .from('screenings')
           .select(
-            'squeeze_note, waitlist_mode, rooms(furniture_json, decorations_json, canvas_w, canvas_h)'
+            'seat_limit, squeeze_note, waitlist_mode, rooms(furniture_json, decorations_json, canvas_w, canvas_h)'
           )
           .eq('id', screening.id)
           .single(),
@@ -97,10 +98,12 @@ export default function SeatDrawer({ screening, onClose }: Props) {
 
       const s = screeningData as {
         squeeze_note?: string | null;
+        seat_limit?: number | null;
         waitlist_mode?: string | null;
         rooms?: unknown;
       } | null;
       if (s) {
+        setSeatLimit(s.seat_limit ?? null);
         setSqueezeNote(s.squeeze_note ?? null);
         setWaitlistMode((s.waitlist_mode as 'auto' | 'manual') ?? 'auto');
       }
@@ -265,6 +268,7 @@ export default function SeatDrawer({ screening, onClose }: Props) {
               screeningId={screening.id}
               screeningTitle={screening.title}
               room={room}
+              seatLimit={seatLimit}
               squeezeNote={squeezeNote}
               initialReservations={reservations as Parameters<typeof SeatMap>[0]['initialReservations']}
               initialWaitlist={waitlist as Parameters<typeof SeatMap>[0]['initialWaitlist']}

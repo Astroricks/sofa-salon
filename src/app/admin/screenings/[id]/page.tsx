@@ -6,6 +6,7 @@ import { getT, type Locale } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import AdminScreeningGuests from '@/components/AdminScreeningGuests';
 import EditScreeningForm from './EditScreeningForm';
+import { roomCapacity, type FurniturePiece } from '@/lib/furniture';
 
 export default async function EditScreeningPage({
   params,
@@ -37,7 +38,7 @@ export default async function EditScreeningPage({
   const { data: screening } = await supabase
     .from('screenings')
     .select(
-      'id, title, description, screening_at, room_id, squeeze_note, waitlist_mode, is_active, year, director, duration_minutes, douban_url, letterboxd_url, trailer_url'
+      'id, title, description, screening_at, room_id, seat_limit, squeeze_note, waitlist_mode, is_active, year, director, duration_minutes, douban_url, letterboxd_url, trailer_url'
     )
     .eq('id', id)
     .single();
@@ -51,7 +52,7 @@ export default async function EditScreeningPage({
 
   const { data: rooms } = await supabase
     .from('rooms')
-    .select('id, name')
+    .select('id, name, furniture_json')
     .order('name');
 
   const admin = createAdminClient();
@@ -77,6 +78,7 @@ export default async function EditScreeningPage({
           trailer_url: (screening as { trailer_url?: string | null }).trailer_url ?? '',
           screening_at: screening.screening_at ?? '',
           room_id: screening.room_id ?? '',
+          seat_limit: (screening as { seat_limit?: number | null }).seat_limit ?? null,
           squeeze_note: screening.squeeze_note ?? '',
           waitlist_mode: (screening.waitlist_mode as 'auto' | 'manual') ?? 'auto',
           is_active: screening.is_active ?? true,
@@ -86,7 +88,13 @@ export default async function EditScreeningPage({
           title_en: alt?.title_en ?? undefined,
           director_en: alt?.director_en ?? undefined,
         }}
-        rooms={rooms ?? []}
+        rooms={(rooms ?? []).map((room) => ({
+          id: room.id,
+          name: room.name,
+          capacity: roomCapacity(
+            (room.furniture_json as FurniturePiece[] | null) ?? []
+          ),
+        }))}
         isPast={isPast}
       />
       <AdminScreeningGuests

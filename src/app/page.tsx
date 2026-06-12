@@ -3,8 +3,8 @@ export const revalidate = 0;
 
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { roomCapacity } from '@/lib/furniture';
 import type { FurniturePiece } from '@/lib/furniture';
+import { screeningCapacity } from '@/lib/screening-seat-capacity';
 import { fetchUpcomingScreeningsForHome } from '@/lib/fetch-home-screenings';
 import { loadSeatmapPayload } from '@/lib/fetch-seatmap-payload';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
@@ -43,9 +43,9 @@ export default async function HomePage({
     const rooms = s.rooms as { furniture_json?: unknown } | { furniture_json?: unknown }[] | null;
     const room = Array.isArray(rooms) ? rooms[0] : rooms;
     const furniture = (room?.furniture_json as FurniturePiece[] | null) ?? [];
-    const totalSeats = roomCapacity(furniture);
     const reservedCount = reservationCounts[s.id] ?? 0;
     const row = s as {
+      seat_limit?: number | null;
       year?: number | null;
       director?: string | null;
       duration_minutes?: number | null;
@@ -53,6 +53,7 @@ export default async function HomePage({
       letterboxd_url?: string | null;
       trailer_url?: string | null;
     };
+    const totalSeats = screeningCapacity(furniture, row.seat_limit);
     const alt = altLocaleById[s.id];
     return {
       id: s.id,

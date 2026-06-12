@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { sendWaitlistPromotion } from '@/lib/email';
 import { formatScreeningAtForEmail } from '@/lib/screening-datetime';
+import { getScreeningRoomSeatKeys } from '@/lib/admin-screening-reservations';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -52,11 +53,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
   }
 
+  const roomSeats = await getScreeningRoomSeatKeys(admin, screeningId);
+  if (!roomSeats?.seatKeys.includes(seatKey)) {
+    return NextResponse.json(
+      { error: 'Seat is not available for this screening' },
+      { status: 400 }
+    );
+  }
+
   const { error: insertError } = await admin.from('reservations').insert({
     screening_id: screeningId,
     user_id: entry.user_id,
     seat_key: seatKey,
-    is_squeezed: false,
+    is_squeezed: seatKey.includes('squeeze'),
   });
 
   if (insertError) {

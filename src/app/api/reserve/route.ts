@@ -9,6 +9,8 @@ import { getProfileContact, hasProfileContact } from '@/lib/contact-platform';
 import { sendConfirmation } from '@/lib/email';
 import { formatScreeningAtForEmail } from '@/lib/screening-datetime';
 import { randomAvatarConfig } from '@/lib/avatar';
+import type { FurniturePiece } from '@/lib/furniture';
+import { reservableSeatKeys } from '@/lib/screening-seat-capacity';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
   const guestContact = getProfileContact(profile ?? {});
 
   const body = await req.json();
-  const { screeningId, seatKey, seatKeys, isSqueezed } = body;
+  const { screeningId, seatKey, seatKeys } = body;
   const keys: string[] = Array.isArray(seatKeys)
     ? seatKeys.filter((k: unknown) => typeof k === 'string')
     : seatKey != null
@@ -54,14 +56,40 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+  if (new Set(keys).size !== keys.length) {
+    return NextResponse.json(
+      { error: 'Each seat may only be requested once' },
+      { status: 400 }
+    );
+  }
 
   const { data: screening } = await supabase
     .from('screenings')
-    .select('id, title, screening_at, room_id, duration_minutes')
+    .select(
+      'id, title, screening_at, room_id, seat_limit, duration_minutes, rooms(furniture_json)'
+    )
     .eq('id', screeningId)
     .single();
   if (!screening) {
     return NextResponse.json({ error: 'Screening not found' }, { status: 404 });
+  }
+  const roomsRaw = screening.rooms;
+  const room = Array.isArray(roomsRaw) ? roomsRaw[0] : roomsRaw;
+  const furniture =
+    ((room as { furniture_json?: FurniturePiece[] } | null)?.furniture_json ??
+      []) as FurniturePiece[];
+  const allowedSeatKeys = new Set(
+    reservableSeatKeys(
+      furniture,
+      (screening as { seat_limit?: number | null }).seat_limit ?? null
+    )
+  );
+  const invalidSeatKeys = keys.filter((key) => !allowedSeatKeys.has(key));
+  if (invalidSeatKeys.length > 0) {
+    return NextResponse.json(
+      { error: `Seat(s) are not available for this screening: ${invalidSeatKeys.join(', ')}` },
+      { status: 400 }
+    );
   }
 
   const [
