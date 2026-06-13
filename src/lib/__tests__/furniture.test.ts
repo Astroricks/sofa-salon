@@ -8,8 +8,11 @@ import {
   roomCapacity,
   roomCapacityWithSqueeze,
   getSeatPositions,
+  decorationScale,
+  getFurnitureFocusBox,
+  normalizeDecoration,
 } from '../furniture';
-import type { FurniturePiece } from '../furniture';
+import type { Decoration, FurniturePiece } from '../furniture';
 
 describe('seatKeyToDisplayLabel', () => {
   it('strips trailing id from chair', () => {
@@ -127,5 +130,81 @@ describe('roomCapacityWithSqueeze', () => {
     const p = piece('sofa', 3);
     p.squeezeExtra = 1;
     expect(roomCapacityWithSqueeze([p])).toBe(4);
+  });
+});
+
+describe('decorationScale', () => {
+  it('defaults to 1 and clamps saved values to the editor range', () => {
+    expect(decorationScale({})).toBe(1);
+    expect(decorationScale({ scale: 0.1 })).toBe(0.5);
+    expect(decorationScale({ scale: 3 })).toBe(2);
+  });
+});
+
+describe('normalizeDecoration', () => {
+  it('converts legacy plant types to dropdown variants', () => {
+    expect(
+      normalizeDecoration({ id: 'old-fern', type: 'fern', x: 0, y: 0 })
+    ).toMatchObject({
+      type: 'plant',
+      plantVariant: 'maidenhair-fern',
+    });
+    expect(
+      normalizeDecoration({ id: 'old-tall', type: 'plant-tall', x: 0, y: 0 })
+    ).toMatchObject({
+      type: 'plant',
+      plantVariant: 'umbrella-tree',
+    });
+  });
+
+  it('defaults an old generic plant to monstera', () => {
+    expect(
+      normalizeDecoration({ id: 'old-plant', type: 'plant', x: 0, y: 0 })
+    ).toMatchObject({
+      type: 'plant',
+      plantVariant: 'monstera',
+    });
+  });
+});
+
+describe('getFurnitureFocusBox decorations', () => {
+  it('uses scale for every decoration type', () => {
+    const decorations: Decoration[] = [
+      {
+        id: 'screen-1',
+        type: 'projector-screen',
+        x: 300,
+        y: 200,
+        rotation: 0,
+        scale: 2,
+      },
+    ];
+
+    expect(getFurnitureFocusBox([], decorations, 700, 500, 0)).toEqual({
+      minX: 116,
+      minY: 156,
+      w: 368,
+      h: 88,
+    });
+  });
+
+  it('uses the reduced base plant bounds for every dropdown variant', () => {
+    const decorations: Decoration[] = [
+      {
+        id: 'fern-1',
+        type: 'plant',
+        plantVariant: 'maidenhair-fern',
+        x: 100,
+        y: 100,
+        scale: 1,
+      },
+    ];
+
+    expect(getFurnitureFocusBox([], decorations, 400, 300, 0)).toEqual({
+      minX: 81,
+      minY: 76,
+      w: 38,
+      h: 48,
+    });
   });
 });

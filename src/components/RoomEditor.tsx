@@ -9,8 +9,13 @@ import {
   ROOM_BACKGROUND_PRESETS,
   SEAT_RULES,
   canSqueeze,
+  DECORATION_SCALE_MAX,
+  DECORATION_SCALE_MIN,
+  decorationScale,
+  normalizeDecoration,
   type Decoration,
   type DecorationType,
+  type PlantVariant,
 } from '@/lib/furniture';
 import FurnitureSVG from '@/components/FurnitureSVG';
 import DecorationSVG from '@/components/DecorationSVG';
@@ -49,7 +54,9 @@ export default function RoomEditor({
   onRoomBackgroundChange,
 }: Props) {
   const [furniture, setFurniture] = useState<FurniturePiece[]>(initialFurniture);
-  const [decorations, setDecorations] = useState<Decoration[]>(initialDecorations);
+  const [decorations, setDecorations] = useState<Decoration[]>(() =>
+    initialDecorations.map(normalizeDecoration)
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedDecoId, setSelectedDecoId] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState(false);
@@ -149,8 +156,20 @@ export default function RoomEditor({
       x: canvasW / 2,
       y: canvasH / 2,
       rotation: 0,
-      color: type === 'lamp' ? '#c8a060' : type === 'table' ? '#4a3820' : type === 'tv' ? '#0d1a2e' : type === 'rug' ? '#4a3820' : undefined,
-      scale: type === 'coffee-table' ? 1 : undefined,
+      color:
+        type === 'lamp' || type === 'floor-lamp'
+          ? '#c8a060'
+          : type === 'table'
+            ? '#4a3820'
+            : type === 'tv'
+              ? '#0d1a2e'
+              : type === 'speaker'
+                ? '#2a2a2a'
+              : type === 'rug'
+                ? '#4a3820'
+                : undefined,
+      scale: 1,
+      plantVariant: type === 'plant' ? 'cactus' : undefined,
     };
     setDecorations((prev) => [...prev, newDeco]);
     setSelectedDecoId(newDeco.id);
@@ -275,7 +294,17 @@ export default function RoomEditor({
               {re.decor}
             </span>
             {(
-              ['plant', 'lamp', 'table', 'rug', 'tv', 'coffee-table'] as DecorationType[]
+              [
+                'plant',
+                'lamp',
+                'floor-lamp',
+                'table',
+                'rug',
+                'tv',
+                'projector-screen',
+                'speaker',
+                'coffee-table',
+              ] as DecorationType[]
             ).map((type) => (
               <button
                 key={type}
@@ -533,7 +562,7 @@ export default function RoomEditor({
             <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#e8c84a] mb-4">
               {re.decorationTypes[selectedDeco.type]}
             </p>
-            {(['lamp', 'table', 'tv', 'rug'] as DecorationType[]).includes(selectedDeco.type) && (
+            {(['lamp', 'floor-lamp', 'table', 'tv', 'rug', 'speaker'] as DecorationType[]).includes(selectedDeco.type) && (
               <>
                 <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">{re.colour}</p>
                 <div className="grid grid-cols-4 gap-1 mb-3">
@@ -565,23 +594,50 @@ export default function RoomEditor({
                 </label>
               </>
             )}
-            {selectedDeco.type === 'coffee-table' && (
+            {selectedDeco.type === 'plant' && (
               <>
-                <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-1">{re.scale}</label>
-                <input
-                  type="range"
-                  min={0.5}
-                  max={2}
-                  step={0.1}
-                  value={selectedDeco.scale ?? 1}
-                  onChange={(e) => updateDecoration(selectedDeco.id, { scale: parseFloat(e.target.value) })}
-                  className="w-full mb-1"
-                />
-                <p className="font-mono text-[13px] text-[#e8c84a] mb-3">
-                  {(selectedDeco.scale ?? 1).toFixed(1)}×
-                </p>
+                <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-1">
+                  {re.plantVariety}
+                </label>
+                <select
+                  value={selectedDeco.plantVariant ?? 'monstera'}
+                  onChange={(e) =>
+                    updateDecoration(selectedDeco.id, {
+                      plantVariant: e.target.value as PlantVariant,
+                    })
+                  }
+                  className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] p-2 mb-3 outline-none focus:border-[#e8c84a]"
+                  style={{ borderRadius: 0 }}
+                >
+                  {(
+                    [
+                      'cactus',
+                      'maidenhair-fern',
+                      'spider-plant',
+                      'monstera',
+                      'umbrella-tree',
+                    ] as PlantVariant[]
+                  ).map((variant) => (
+                    <option key={variant} value={variant}>
+                      {re.plantVariants[variant]}
+                    </option>
+                  ))}
+                </select>
               </>
             )}
+            <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-1">{re.scale}</label>
+            <input
+              type="range"
+              min={DECORATION_SCALE_MIN}
+              max={DECORATION_SCALE_MAX}
+              step={0.1}
+              value={decorationScale(selectedDeco)}
+              onChange={(e) => updateDecoration(selectedDeco.id, { scale: parseFloat(e.target.value) })}
+              className="w-full mb-1"
+            />
+            <p className="font-mono text-[13px] text-[#e8c84a] mb-3">
+              {decorationScale(selectedDeco).toFixed(1)}×
+            </p>
             <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-1">{re.rotation}</label>
             <div className="grid grid-cols-4 gap-1 mb-3">
               {([0, 90, 180, 270] as const).map((r) => (

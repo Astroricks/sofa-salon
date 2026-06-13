@@ -373,6 +373,14 @@ export const tEn = {
       squeezeWhenFull: '+{n} when full',
       lDirection: 'L direction',
       scale: 'Scale',
+      plantVariety: 'Plant variety',
+      plantVariants: {
+        cactus: 'Cactus',
+        'maidenhair-fern': 'Maidenhair fern',
+        'spider-plant': 'Spider plant',
+        monstera: 'Monstera',
+        'umbrella-tree': 'Umbrella tree',
+      },
       furnitureTypes: {
         sofa: 'Sofa',
         'sofa-l': 'L Sofa',
@@ -384,10 +392,15 @@ export const tEn = {
       },
       decorationTypes: {
         plant: 'Plant',
+        'plant-tall': 'Tall plant',
+        fern: 'Fern',
         lamp: 'Lamp',
+        'floor-lamp': 'Floor lamp',
         table: 'Table',
         rug: 'Rug',
         tv: 'TV',
+        'projector-screen': 'Projector screen',
+        speaker: 'Speaker',
         'coffee-table': 'Coffee table',
       },
       lOrientation: {
@@ -808,6 +821,14 @@ export const tZh = {
       squeezeWhenFull: '满座时 +{n}',
       lDirection: 'L 型方向',
       scale: '缩放',
+      plantVariety: '植物种类',
+      plantVariants: {
+        cactus: '仙人掌',
+        'maidenhair-fern': '铁线蕨',
+        'spider-plant': '吊兰',
+        monstera: '龟背竹',
+        'umbrella-tree': '大叶伞',
+      },
       furnitureTypes: {
         sofa: '沙发',
         'sofa-l': 'L 型沙发',
@@ -819,10 +840,15 @@ export const tZh = {
       },
       decorationTypes: {
         plant: '植物',
+        'plant-tall': '高株植物',
+        fern: '蕨类植物',
         lamp: '灯',
+        'floor-lamp': '落地灯',
         table: '桌子',
         rug: '地毯',
         tv: '电视',
+        'projector-screen': '投影幕布',
+        speaker: '音响',
         'coffee-table': '茶几',
       },
       lOrientation: {

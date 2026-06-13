@@ -8,11 +8,23 @@ export type FurnitureType =
   | 'bean-bag';
 export type DecorationType =
   | 'plant'
+  /** Legacy saved values; normalized to plant variants by the room editor. */
+  | 'plant-tall'
+  | 'fern'
   | 'lamp'
+  | 'floor-lamp'
   | 'table'
   | 'rug'
   | 'tv'
+  | 'projector-screen'
+  | 'speaker'
   | 'coffee-table';
+export type PlantVariant =
+  | 'cactus'
+  | 'maidenhair-fern'
+  | 'spider-plant'
+  | 'monstera'
+  | 'umbrella-tree';
 export type LOrientation =
   | 'bottom-right'
   | 'bottom-left'
@@ -41,8 +53,10 @@ export interface Decoration {
   rotation?: DecorationRotation;
   /** Optional tint for lamp, table, tv, etc. */
   color?: string;
-  /** Scale for coffee-table (0.5–2), default 1. */
+  /** Display scale for room decorations (0.5-2), default 1. */
   scale?: number;
+  /** Botanical style when type is plant. */
+  plantVariant?: PlantVariant;
 }
 
 export interface Room {
@@ -161,13 +175,52 @@ export const FURNITURE_DIMS: Record<FurnitureType, { w: number; h: number }> = {
 
 /** Approximate axis-aligned bounds for decorations (from DecorationSVG). Center at (x,y). */
 export const DECORATION_BOUNDS: Record<DecorationType, { w: number; h: number }> = {
-  plant: { w: 28, h: 32 },
-  lamp: { w: 36, h: 24 },
-  table: { w: 54, h: 54 },
-  rug: { w: 80, h: 50 },
-  tv: { w: 160, h: 42 },
-  'coffee-table': { w: 144, h: 56 },
+  plant: { w: 38, h: 48 },
+  'plant-tall': { w: 52, h: 92 },
+  fern: { w: 72, h: 70 },
+  lamp: { w: 36, h: 38 },
+  'floor-lamp': { w: 56, h: 100 },
+  table: { w: 60, h: 72 },
+  rug: { w: 84, h: 54 },
+  tv: { w: 160, h: 48 },
+  'projector-screen': { w: 184, h: 44 },
+  speaker: { w: 24, h: 36 },
+  'coffee-table': { w: 152, h: 60 },
 };
+
+export const DECORATION_SCALE_MIN = 0.5;
+export const DECORATION_SCALE_MAX = 2;
+
+/** Normalizes decoration scale from saved JSON before using it in SVG geometry. */
+export function decorationScale(decoration: Pick<Decoration, 'scale'>): number {
+  const scale = decoration.scale ?? 1;
+  if (!Number.isFinite(scale)) return 1;
+  return Math.min(DECORATION_SCALE_MAX, Math.max(DECORATION_SCALE_MIN, scale));
+}
+
+export function normalizeDecoration(decoration: Decoration): Decoration {
+  if (decoration.type === 'plant-tall') {
+    return {
+      ...decoration,
+      type: 'plant',
+      plantVariant: 'umbrella-tree',
+    };
+  }
+  if (decoration.type === 'fern') {
+    return {
+      ...decoration,
+      type: 'plant',
+      plantVariant: 'maidenhair-fern',
+    };
+  }
+  if (decoration.type === 'plant' && !decoration.plantVariant) {
+    return {
+      ...decoration,
+      plantVariant: 'monstera',
+    };
+  }
+  return decoration;
+}
 
 function rot(
   px: number,
@@ -361,7 +414,7 @@ export function getFurnitureFocusBox(
   for (const d of decorations) {
     const bounds = DECORATION_BOUNDS[d.type];
     if (!bounds) continue;
-    const scale = d.type === 'coffee-table' ? (d.scale ?? 1) : 1;
+    const scale = decorationScale(d);
     const r = d.rotation ?? 0;
     const aabb = pieceAABB(d.x, d.y, bounds.w * scale, bounds.h * scale, r);
     points.push({ x: aabb.minX, y: aabb.minY });
