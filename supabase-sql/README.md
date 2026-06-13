@@ -1,11 +1,11 @@
 # Supabase SQL migrations
 
-All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order (00 → 21, then 25 → 35 as needed).
+All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabase Dashboard → SQL Editor** in numeric order.
 
 ## Migration safety
 
 - **Always back up your database before running migrations on production.** Use Supabase Dashboard → Database → Backups, or `pg_dump`, before applying new scripts.
-- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then 01 through 21, then 25 through 35 as applicable.
+- **Run migrations in numeric order.** Skipping a file (e.g. running 05 before 04) can cause errors or broken schema. If you are setting up a new environment, run 00 first, then each numbered migration in order.
 - **If a migration fails halfway**, the database may be in an inconsistent state. Read the failed SQL file to understand what it was doing; fix data or schema manually if needed, then re-run only the failed file (or the remainder) after fixing.
 
 ## Order of execution
@@ -49,6 +49,7 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 36 | `36-screenings-catalog-archive.sql` | RLS: authenticated users can read past `screenings` (`screening_at < now()`). |
 | 37 | `37-seed-historical-screenings-catalog.sql` | Sheet seed (273 rows) + fill empty `title`/`title_en` on existing same-night rows. Regenerate: `node scripts/generate-historical-screenings-sql.mjs`. |
 | 41 | `41-patch-historical-duration-minutes.sql` | **One-off data:** `duration_minutes` for past rows (OMDb + manual). Run `node scripts/fetch-historical-durations-omdb.mjs` and/or `apply-manual-durations.mjs`; review `scripts/data/historical-duration-omdb-review.json`. |
+| 42 | `42-screenings-seat-limit.sql` | Adds an optional per-screening hard seat limit. `NULL` preserves the legacy full-room and squeeze-seat behavior. |
 
 ### First-time: past screenings + sheet sync (36 → 37)
 

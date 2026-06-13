@@ -5,6 +5,12 @@ import { formatScreeningAtForEmail } from '@/lib/screening-datetime';
 import { screeningDeleteSkipsCancellationNotify } from '@/lib/screening-delete-policy';
 import { persistScreeningAltLocale } from '@/lib/persist-screening-alt-locale';
 import { textFieldFromPatchOrPreserve } from '@/lib/patch-body-merge';
+import type { FurniturePiece } from '@/lib/furniture';
+import {
+  parseSeatLimit,
+  reservableSeatKeys,
+  validateSeatLimitForFurniture,
+} from '@/lib/screening-seat-capacity';
 const TICKER_EXPIRY_DAYS = 3;
 
 export async function DELETE(
@@ -131,6 +137,7 @@ export async function PATCH(
     description,
     screening_at,
     room_id,
+    seat_limit,
     squeeze_note,
     waitlist_mode,
     year,
@@ -153,7 +160,7 @@ export async function PATCH(
 
   const { data: existing } = await supabase
     .from('screenings')
-    .select('screening_at, title, description, squeeze_note')
+    .select('screening_at, title, description, squeeze_note, room_id, seat_limit')
     .eq('id', id)
     .single();
   const prev = existing as {
@@ -161,6 +168,8 @@ export async function PATCH(
     title?: string;
     description?: string | null;
     squeeze_note?: string | null;
+    room_id?: string | null;
+    seat_limit?: number | null;
   } | null;
   const previousAt = prev?.screening_at ? new Date(prev.screening_at).getTime() : null;
   const newAt = new Date(screening_at).getTime();
@@ -169,12 +178,74 @@ export async function PATCH(
   /** JSON.stringify omits `undefined`; do not wipe DB fields when the client omitted a key. */
   const descriptionNext = textFieldFromPatchOrPreserve(description, prev?.description);
   const squeezeNoteNext = textFieldFromPatchOrPreserve(squeeze_note, prev?.squeeze_note);
+  const seatLimitRaw = Object.prototype.hasOwnProperty.call(body, 'seat_limit')
+    ? seat_limit
+    : prev?.seat_limit;
+  const parsedSeatLimit = parseSeatLimit(seatLimitRaw);
+  if (parsedSeatLimit.error) {
+    return NextResponse.json({ error: parsedSeatLimit.error }, { status: 400 });
+  }
+  if (parsedSeatLimit.value != null && !room_id) {
+    return NextResponse.json(
+      { error: 'A room is required when setting a seat count' },
+      { status: 400 }
+    );
+  }
+
+  let validatedSeatLimit = parsedSeatLimit.value;
+  const nextRoomId = room_id ?? null;
+  if (nextRoomId) {
+    const { data: room } = await supabase
+      .from('rooms')
+      .select('furniture_json')
+      .eq('id', nextRoomId)
+      .single();
+    if (!room) {
+      return NextResponse.json({ error: 'Room not found' }, { status: 404 });
+    }
+    const furniture =
+      (room.furniture_json as FurniturePiece[] | null) ?? [];
+    const validation = validateSeatLimitForFurniture(
+      furniture,
+      parsedSeatLimit.value
+    );
+    if (validation.error) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
+    }
+    validatedSeatLimit = validation.value;
+
+    const seatConfigurationChanged =
+      nextRoomId !== (prev?.room_id ?? null) ||
+      validatedSeatLimit !== (prev?.seat_limit ?? null);
+    if (seatConfigurationChanged) {
+      const allowedSeatKeys = new Set(
+        reservableSeatKeys(furniture, validatedSeatLimit)
+      );
+      const { data: reservations } = await supabase
+        .from('reservations')
+        .select('seat_key')
+        .eq('screening_id', id);
+      const excludedReservation = (reservations ?? []).find(
+        (reservation) => !allowedSeatKeys.has(reservation.seat_key)
+      );
+      if (excludedReservation) {
+        return NextResponse.json(
+          {
+            error:
+              'The new seat count would exclude existing reservations. Move or remove those reservations first.',
+          },
+          { status: 400 }
+        );
+      }
+    }
+  }
 
   const updates: Record<string, unknown> = {
     title,
     description: descriptionNext,
     screening_at,
     room_id: room_id ?? null,
+    seat_limit: validatedSeatLimit,
     squeeze_note: squeezeNoteNext,
     waitlist_mode: waitlist_mode ?? 'auto',
     year: year != null ? Number(year) : null,

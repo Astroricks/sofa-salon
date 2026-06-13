@@ -28,7 +28,7 @@ export async function loadSeatmapPayload(
     admin
       .from('screenings')
       .select(
-        'title, squeeze_note, waitlist_mode, rooms(furniture_json, decorations_json, canvas_w, canvas_h, room_background_id)'
+        'title, seat_limit, squeeze_note, waitlist_mode, rooms(furniture_json, decorations_json, canvas_w, canvas_h, room_background_id)'
       )
       .eq('id', screeningId)
       .single(),
@@ -118,6 +118,7 @@ export async function loadSeatmapPayload(
     filmTitle,
     filmTitleEn,
     screeningTitle: filmTitle,
+    seatLimit: (screening as { seat_limit?: number | null }).seat_limit ?? null,
     squeezeNote: (screening as { squeeze_note?: string | null }).squeeze_note ?? null,
     waitlistMode: ((screening as { waitlist_mode?: string | null }).waitlist_mode as string) ?? 'auto',
   };

@@ -1,12 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { catalogSeatKeyForUser } from '@/lib/historical-catalog';
 import { getProfileContact, type ProfileContactRow } from '@/lib/contact-platform';
-import {
-  getSeatPositions,
-  getSqueezePositions,
-  type FurniturePiece,
-} from '@/lib/furniture';
+import type { FurniturePiece } from '@/lib/furniture';
 import { isScreeningPast } from '@/lib/screening-datetime';
+import { reservableSeatKeys } from '@/lib/screening-seat-capacity';
 
 export type ProfileMatch = {
   id: string;
@@ -86,7 +83,7 @@ export async function getScreeningRoomSeatKeys(
 ): Promise<{ seatKeys: string[]; roomId: string } | null> {
   const { data: screening } = await db
     .from('screenings')
-    .select('room_id')
+    .select('room_id, seat_limit')
     .eq('id', screeningId)
     .single();
   if (!screening?.room_id) return null;
@@ -96,10 +93,10 @@ export async function getScreeningRoomSeatKeys(
     .eq('id', screening.room_id)
     .single();
   const furniture = (room?.furniture_json as FurniturePiece[]) ?? [];
-  const seatKeys = furniture.flatMap((p) => [
-    ...getSeatPositions(p).map((s) => s.seatKey),
-    ...getSqueezePositions(p).map((s) => s.seatKey),
-  ]);
+  const seatKeys = reservableSeatKeys(
+    furniture,
+    (screening as { seat_limit?: number | null }).seat_limit ?? null
+  );
   return { seatKeys, roomId: screening.room_id };
 }
 
