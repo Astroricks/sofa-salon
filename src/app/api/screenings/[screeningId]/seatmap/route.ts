@@ -31,12 +31,11 @@ export async function GET(
     isAdmin = profile?.is_admin === true;
   }
 
-  const admin = createAdminClient();
-  if (!admin) {
-    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
-  }
-
-  const payload = await loadSeatmapPayload(admin, screeningId, {
+  // Public seat-map data is covered by SELECT RLS policies. Prefer the
+  // service-role client when configured, but keep self-hosted/forked
+  // deployments functional when only the public Supabase key is available.
+  const seatmapClient = createAdminClient() ?? supabase;
+  const payload = await loadSeatmapPayload(seatmapClient, screeningId, {
     includeAdminContact: isAdmin,
   });
   if (!payload) {

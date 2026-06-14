@@ -19,6 +19,7 @@ interface Props {
 
 type SeatmapData = {
   room: { furniture: FurniturePiece[]; decorations: Decoration[]; canvasW: number; canvasH: number } | null;
+  loadError: boolean;
   reservations: unknown[];
   waitlist: unknown[];
   user: { id: string } | null;
@@ -39,6 +40,7 @@ function payloadToData(
   const filmTitleEn = payload.filmTitleEn ?? null;
   return {
     room,
+    loadError: false,
     reservations: payload.reservations ?? [],
     waitlist: payload.waitlist ?? [],
     user,
@@ -126,6 +128,7 @@ export default function SeatMapInline({ screeningId }: Props) {
         if (!payload) {
           setData({
             room: null,
+            loadError: true,
             reservations: [],
             waitlist: [],
             user: user ? { id: user.id } : null,
@@ -159,7 +162,7 @@ export default function SeatMapInline({ screeningId }: Props) {
   if (!data.room) {
     return (
       <p className="film-meta" style={{ padding: '24px 0', textAlign: 'center' }}>
-        {t.seatMap.noRoom}
+        {data.loadError ? t.seatMap.loadError : t.seatMap.noRoom}
       </p>
     );
   }

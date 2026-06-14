@@ -81,11 +81,9 @@ export default async function HomePage({
     null;
   const initialSeatmapById: Record<string, SeatmapApiPayload> = {};
   if (initialScreeningId) {
-    const admin = createAdminClient();
-    if (admin) {
-      const payload = await loadSeatmapPayload(admin, initialScreeningId);
-      if (payload) initialSeatmapById[initialScreeningId] = payload;
-    }
+    const seatmapClient = createAdminClient() ?? supabase;
+    const payload = await loadSeatmapPayload(seatmapClient, initialScreeningId);
+    if (payload) initialSeatmapById[initialScreeningId] = payload;
   }
 
   return (

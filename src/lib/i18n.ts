@@ -469,6 +469,7 @@ export const tEn = {
   seatMap: {
     loadingSeats: 'Loading seats...',
     noRoom: 'No room configured for this event.',
+    loadError: 'The seat map could not be loaded. Please refresh and try again.',
   },
   common: {
     loading: 'Loading...',
@@ -915,6 +916,7 @@ export const tZh = {
   seatMap: {
     loadingSeats: '加载座位中...',
     noRoom: '未配置房间。',
+    loadError: '座位图加载失败，请刷新后重试。',
   },
   common: {
     loading: '加载中...',
