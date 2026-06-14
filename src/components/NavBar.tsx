@@ -8,8 +8,7 @@ import { useEffect, useState } from 'react';
 import {
   APP_NAME_PARTS,
   APP_TAGLINE,
-  DEVELOPER_NAME,
-  DEVELOPER_URL,
+  DEVELOPERS,
   PAST_SCREENINGS_URL_EN,
   PAST_SCREENINGS_URL_ZH,
 } from '@/lib/config';
@@ -127,22 +126,33 @@ export default function NavBar() {
   };
 
   const developerNavLink = (extraClass = '', onNavigate?: () => void) => {
-    if (!DEVELOPER_NAME) return null;
+    if (DEVELOPERS.length === 0) return null;
     const className = linkClass(false) + extraClass;
-    const label = t.nav.developedBy.replace('{name}', DEVELOPER_NAME);
-    if (!DEVELOPER_URL) {
-      return <span className={className}>{label}</span>;
-    }
+    const [prefix = '', suffix = ''] = t.nav.developedBy.split('{name}');
+
     return (
-      <a
-        href={DEVELOPER_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-        onClick={onNavigate}
-      >
-        {label}
-      </a>
+      <span className={className}>
+        {prefix}
+        {DEVELOPERS.map((developer, index) => (
+          <span key={`${developer.name}-${developer.url}`}>
+            {index > 0 ? ', ' : ''}
+            {developer.url ? (
+              <a
+                href={developer.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#e8c84a]"
+                onClick={onNavigate}
+              >
+                {developer.name}
+              </a>
+            ) : (
+              developer.name
+            )}
+          </span>
+        ))}
+        {suffix}
+      </span>
     );
   };
 

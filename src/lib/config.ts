@@ -35,11 +35,47 @@ export const PAST_SCREENINGS_URL_EN =
 export const PAST_SCREENINGS_URL_ZH =
   process.env.NEXT_PUBLIC_PAST_SCREENINGS_URL_ZH?.trim() ?? '';
 
-/** Public attribution shown in navigation. */
+export type DeveloperAttribution = {
+  name: string;
+  url: string;
+};
+
+function parseDevelopers(value: string | undefined): DeveloperAttribution[] {
+  if (!value?.trim()) return [];
+
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed.flatMap((entry) => {
+      if (!entry || typeof entry !== 'object') return [];
+
+      const { name, url } = entry as { name?: unknown; url?: unknown };
+      const normalizedName = typeof name === 'string' ? name.trim() : '';
+      const normalizedUrl = typeof url === 'string' ? url.trim() : '';
+      if (!normalizedName) return [];
+
+      return [{ name: normalizedName, url: normalizedUrl }];
+    });
+  } catch {
+    return [];
+  }
+}
+
+/** Legacy single-developer attribution. Prefer NEXT_PUBLIC_DEVELOPERS for new deployments. */
 export const DEVELOPER_NAME =
   process.env.NEXT_PUBLIC_DEVELOPER_NAME?.trim() ?? '';
 export const DEVELOPER_URL =
   process.env.NEXT_PUBLIC_DEVELOPER_URL?.trim() ?? '';
+
+/** Public developer attribution shown in navigation. */
+const configuredDevelopers = parseDevelopers(process.env.NEXT_PUBLIC_DEVELOPERS);
+export const DEVELOPERS: readonly DeveloperAttribution[] =
+  configuredDevelopers.length > 0
+    ? configuredDevelopers
+    : DEVELOPER_NAME
+      ? [{ name: DEVELOPER_NAME, url: DEVELOPER_URL }]
+      : [];
 
 /** Host and venue identity used by help text and exported receipts. */
 export const HOST_NAME = process.env.NEXT_PUBLIC_HOST_NAME?.trim() ?? '';
