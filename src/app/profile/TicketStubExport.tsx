@@ -4,6 +4,7 @@ import { useRef, useCallback, useState, useEffect } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 import { APP_NAME_PARTS } from '@/lib/config';
 import type { PastScreening } from './WatchHistory';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 interface Props {
   items: PastScreening[];
@@ -152,12 +153,15 @@ export default function TicketStubExport({ items }: Props) {
                 </div>
                 <div className="p-4 pt-3">
                   {items.map((item, i) => {
-                    const d = new Date(item.screeningAt);
-                    const dateStr = d.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-GB', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    });
+                    const dateStr = formatScreeningInVenue(
+                      item.screeningAt,
+                      locale === 'zh' ? 'zh-CN' : 'en-GB',
+                      {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      }
+                    );
                     const stars = item.rating != null ? item.rating : 0;
                     const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
                     return (

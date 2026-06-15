@@ -97,6 +97,7 @@ git push -u origin main
 | `NEXT_PUBLIC_APP_NAME` | 否 | 应用名称，默认 "Sofa Salon" |
 | `NEXT_PUBLIC_APP_TAGLINE` | 否 | 副标题，默认 "Your host's living room" |
 | `NEXT_PUBLIC_SALON_NAME` | 否 | 描述文案中的社群/放映空间名称；默认使用 `NEXT_PUBLIC_APP_NAME` |
+| `NEXT_PUBLIC_VENUE_TIMEZONE` | 推荐 | 所有放映时间、预约、公告和邮件使用的 IANA 时区，例如 `America/Los_Angeles`；会自动切换 PST/PDT |
 | `NEXT_PUBLIC_PAST_SCREENINGS_URL_EN` | 否 | 英文界面的往期放映链接；未设置时隐藏 |
 | `NEXT_PUBLIC_PAST_SCREENINGS_URL_ZH` | 否 | 中文界面的往期放映链接；未设置时隐藏 |
 | `NEXT_PUBLIC_DEVELOPERS` | 否 | 导航栏开发者列表，JSON 数组，例如 `[{"name":"A","url":"https://github.com/a"},{"name":"B","url":"https://github.com/b"}]`；未设置时隐藏署名 |

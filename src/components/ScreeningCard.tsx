@@ -4,6 +4,7 @@ import { DoubanMark, LetterboxdMark, TrailerYoutubeMark } from '@/components/Scr
 import { useLocale } from '@/components/LocaleProvider';
 import { screeningDisplayDirector, screeningDisplayTitle } from '@/lib/screening-display';
 import { safeHttpUrl } from '@/lib/safe-http-url';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 interface Screening {
   id: string;
@@ -43,13 +44,12 @@ export default function ScreeningCard({
   const { t, locale } = useLocale();
   const displayTitle = screeningDisplayTitle(locale, screening.title, screening.title_en);
   const displayDirector = screeningDisplayDirector(locale, screening.director, screening.director_en);
-  const date = new Date(screening.screening_at);
-  const dateStr = date.toLocaleDateString('en-GB', {
+  const dateStr = formatScreeningInVenue(screening.screening_at, 'en-GB', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
   });
-  const timeStr = date.toLocaleTimeString('en-GB', {
+  const timeStr = formatScreeningInVenue(screening.screening_at, 'en-GB', {
     hour: '2-digit',
     minute: '2-digit',
   });

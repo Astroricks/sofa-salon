@@ -5,6 +5,7 @@ import { APP_NAME_PARTS } from '@/lib/config';
 import BackButton from '@/components/BackButton';
 import { getT, type Locale } from '@/lib/i18n';
 import RatingsExportButtons, { type RatingsExportRow } from './RatingsExportButtons';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 export default async function AdminRatingsPage() {
   const supabase = await createClient();
@@ -120,7 +121,7 @@ export default async function AdminRatingsPage() {
                 <tr key={s.id} className="border-b border-[#2a2a2a]">
                   <td className="py-3 pr-4 text-[#e8e4dc]">{s.title}</td>
                   <td className="py-3 pr-4 text-[#888888]">
-                    {new Date(s.screening_at).toLocaleDateString('en-GB', {
+                    {formatScreeningInVenue(s.screening_at, 'en-GB', {
                       weekday: 'short',
                       day: 'numeric',
                       month: 'short',

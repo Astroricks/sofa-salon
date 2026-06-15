@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useLocale } from '@/components/LocaleProvider';
 import PigeonHead from '@/components/PigeonHead';
 import { HOST_NAME } from '@/lib/config';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 const HOST_CONTACT_ZH = HOST_NAME ? `请联系 ${HOST_NAME}` : '请联系主理人';
 const HOST_CONFIRM_ZH = HOST_NAME
@@ -627,8 +628,8 @@ export default function FaqChatbot() {
       ? undefined
       : currentStateId === 'RESCHEDULE_PICK_FILM' && currentState.action === 'show_screenings'
         ? screenings.map((s) => ({
-            label_zh: `${s.title} · ${new Date(s.screening_at).toLocaleDateString('zh-CN', { day: 'numeric', month: 'short' })}`,
-            label_en: `${s.title} · ${new Date(s.screening_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`,
+            label_zh: `${s.title} · ${formatScreeningInVenue(s.screening_at, 'zh-CN', { day: 'numeric', month: 'short' })}`,
+            label_en: `${s.title} · ${formatScreeningInVenue(s.screening_at, 'en-GB', { day: 'numeric', month: 'short' })}`,
             next: 'RESCHEDULE_EXPLAIN' as StateId,
             value: s.id,
           }))

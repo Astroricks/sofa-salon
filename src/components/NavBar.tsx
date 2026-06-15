@@ -127,32 +127,35 @@ export default function NavBar() {
 
   const developerNavLink = (extraClass = '', onNavigate?: () => void) => {
     if (DEVELOPERS.length === 0) return null;
-    const className = linkClass(false) + extraClass;
-    const [prefix = '', suffix = ''] = t.nav.developedBy.split('{name}');
-
     return (
-      <span className={className}>
-        {prefix}
-        {DEVELOPERS.map((developer, index) => (
-          <span key={`${developer.name}-${developer.url}`}>
-            {index > 0 ? ', ' : ''}
-            {developer.url ? (
+      <details className={`relative group ${extraClass}`}>
+        <summary className={`${linkClass(false)} cursor-pointer list-none`}>
+          {t.nav.developers} <span aria-hidden="true">▾</span>
+        </summary>
+        <div className="static md:absolute md:right-0 md:top-full min-w-[150px] border border-[#2a2a2a] bg-[#0f0f0f] py-1 md:shadow-lg">
+          {DEVELOPERS.map((developer) =>
+            developer.url ? (
               <a
+                key={`${developer.name}-${developer.url}`}
                 href={developer.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#e8c84a]"
+                className="block whitespace-nowrap px-3 py-2 font-mono text-[10px] tracking-[0.14em] uppercase text-[#888888] hover:bg-[#161616] hover:text-[#e8c84a]"
                 onClick={onNavigate}
               >
                 {developer.name}
               </a>
             ) : (
-              developer.name
-            )}
-          </span>
-        ))}
-        {suffix}
-      </span>
+              <span
+                key={developer.name}
+                className="block whitespace-nowrap px-3 py-2 font-mono text-[10px] tracking-[0.14em] uppercase text-[#888888]"
+              >
+                {developer.name}
+              </span>
+            )
+          )}
+        </div>
+      </details>
     );
   };
 

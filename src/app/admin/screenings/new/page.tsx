@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 import { useLocale } from '@/components/LocaleProvider';
 import { ALT_LOCALE_MIGRATION_ERROR_KEY } from '@/lib/screening-alt-locale-schema';
+import {
+  VENUE_TIMEZONE,
+  venueDatetimeLocalToIso,
+} from '@/lib/screening-datetime';
 
 interface Room {
   id: string;
@@ -49,7 +53,7 @@ export default function NewScreeningPage() {
       body: JSON.stringify({
         title,
         description,
-        screening_at: new Date(screeningAt).toISOString(),
+        screening_at: venueDatetimeLocalToIso(screeningAt),
         room_id: roomId || null,
         waitlist_mode: waitlistMode,
         year: year ? parseInt(year, 10) : null,
@@ -103,7 +107,7 @@ export default function NewScreeningPage() {
         </div>
         <div>
           <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
-            Date & time
+            Date & time ({VENUE_TIMEZONE})
           </label>
           <input
             type="datetime-local"

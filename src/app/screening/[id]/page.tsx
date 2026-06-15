@@ -14,6 +14,7 @@ import ScreeningRedirect from '@/components/ScreeningRedirect';
 import ScreeningSeatMapWrapper from './ScreeningSeatMapWrapper';
 import ScreeningFilmHeading from './ScreeningFilmHeading';
 import ScreeningFilmDetails from './ScreeningFilmDetails';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 export const dynamic = 'force-dynamic';
 
@@ -156,7 +157,7 @@ export default async function ScreeningPage({
     return { ...row, profiles: nextProfile };
   });
 
-  const dateStr = new Date(screening.screening_at).toLocaleDateString('en-GB', {
+  const dateStr = formatScreeningInVenue(screening.screening_at, 'en-GB', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',

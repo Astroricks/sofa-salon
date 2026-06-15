@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 import { useLocale } from '@/components/LocaleProvider';
 import { ALT_LOCALE_MIGRATION_ERROR_KEY } from '@/lib/screening-alt-locale-schema';
+import {
+  formatScreeningInVenue,
+  toVenueDatetimeLocal,
+  VENUE_TIMEZONE,
+  venueDatetimeLocalToIso,
+} from '@/lib/screening-datetime';
 
 interface Room {
   id: string;
@@ -37,17 +43,6 @@ interface Props {
   isPast?: boolean;
 }
 
-function toLocalDatetimeLocal(iso: string): string {
-  if (!iso) return '';
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  const h = String(d.getHours()).padStart(2, '0');
-  const min = String(d.getMinutes()).padStart(2, '0');
-  return `${y}-${m}-${day}T${h}:${min}`;
-}
-
 export default function EditScreeningForm({ screening, rooms, isPast = false }: Props) {
   const router = useRouter();
   const { t } = useLocale();
@@ -56,7 +51,7 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
   const [doubanUrl, setDoubanUrl] = useState(screening.douban_url ?? '');
   const [letterboxdUrl, setLetterboxdUrl] = useState(screening.letterboxd_url ?? '');
   const [trailerUrl, setTrailerUrl] = useState(screening.trailer_url ?? '');
-  const [screeningAt, setScreeningAt] = useState(toLocalDatetimeLocal(screening.screening_at));
+  const [screeningAt, setScreeningAt] = useState(toVenueDatetimeLocal(screening.screening_at));
   const [roomId, setRoomId] = useState(screening.room_id);
   const [waitlistMode, setWaitlistMode] = useState<'auto' | 'manual'>(screening.waitlist_mode);
   const [isActive, setIsActive] = useState(screening.is_active);
@@ -98,7 +93,7 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
           douban_url: doubanUrl.trim(),
           letterboxd_url: letterboxdUrl.trim(),
           trailer_url: trailerUrl.trim(),
-          screening_at: new Date(screeningAt).toISOString(),
+          screening_at: venueDatetimeLocalToIso(screeningAt),
           room_id: roomId || null,
           squeeze_note: screening.squeeze_note ?? '',
           waitlist_mode: waitlistMode,
@@ -165,11 +160,21 @@ export default function EditScreeningForm({ screening, rooms, isPast = false }: 
         </div>
         <div>
           <label className="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
-            Date & time
+            Date & time ({VENUE_TIMEZONE})
           </label>
           {isPast ? (
             <p className="w-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#888888] font-mono text-[13px] px-4 py-3 min-h-[44px]" style={{ borderRadius: 0 }}>
-              {screeningAt ? new Date(screening.screening_at).toLocaleString() : '—'}
+              {screeningAt
+                ? formatScreeningInVenue(screening.screening_at, 'en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    timeZoneName: 'short',
+                  })
+                : '—'}
             </p>
           ) : (
             <input

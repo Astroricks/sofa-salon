@@ -6,6 +6,7 @@ import { useLocale } from '@/components/LocaleProvider';
 import { MAX_CLAIM_SCREENINGS_PER_REQUEST } from '@/lib/historical-catalog';
 import { shouldShowChineseTitleInEnSubtitle } from '@/lib/historical-catalog-ui';
 import { SALON_NAME } from '@/lib/config';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 type CatalogItem = {
   id: string;
@@ -226,8 +227,7 @@ export default function HistoricalAttendanceRegister() {
   };
 
   const formatDate = (iso: string) => {
-    const d = new Date(iso);
-    return d.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-GB', {
+    return formatScreeningInVenue(iso, locale === 'zh' ? 'zh-CN' : 'en-GB', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',

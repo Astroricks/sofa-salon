@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { FurniturePiece, Decoration } from '@/lib/furniture';
 import SeatMap from '@/components/SeatMap';
 import { fetchAttendanceCounts } from '@/lib/attendance';
+import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 interface Props {
   screening: {
@@ -151,13 +152,12 @@ export default function SeatDrawer({ screening, onClose }: Props) {
     load();
   }, [screening.id]);
 
-  const date = new Date(screening.screening_at);
-  const dateStr = date.toLocaleDateString('zh-CN', {
+  const dateStr = formatScreeningInVenue(screening.screening_at, 'zh-CN', {
     month: 'long',
     day: 'numeric',
     weekday: 'long',
   });
-  const timeStr = date.toLocaleTimeString('en-GB', {
+  const timeStr = formatScreeningInVenue(screening.screening_at, 'en-GB', {
     hour: '2-digit',
     minute: '2-digit',
   });

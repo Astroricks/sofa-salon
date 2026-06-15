@@ -4,6 +4,10 @@ import type { Locale } from '@/lib/i18n';
 import { useLocale } from '@/components/LocaleProvider';
 import { screeningDisplayTitle } from '@/lib/screening-display';
 import { formatSystemEventTickerMessage, starsFromAvg } from '@/lib/ticker-utils';
+import {
+  formatScreeningInVenue,
+  getVenueDateTimeParts,
+} from '@/lib/screening-datetime';
 
 export type TickerSegmentItem =
   | string
@@ -12,7 +16,7 @@ export type TickerSegmentItem =
   | { type: 'rating_row'; title: string; title_en?: string | null; avg: number }
   | { type: 'system_event'; variant: 'cancelled' | 'rescheduled'; title: string; title_en?: string | null };
 
-/** Format event segment(s) in the viewer's local time (runs in browser = correct timezone). */
+/** Format event segments in the configured venue timezone. */
 function formatEventSegmentStrings(
   item: { type: 'event'; screening_at: string; title: string; title_en?: string | null },
   locale: Locale
@@ -20,21 +24,16 @@ function formatEventSegmentStrings(
   const { screening_at, title, title_en } = item;
   const displayTitle = screeningDisplayTitle(locale, title, title_en);
   const date = new Date(screening_at);
-  const timeStr = date.toLocaleTimeString('en-GB', {
+  const timeStr = formatScreeningInVenue(screening_at, 'en-GB', {
     hour: '2-digit',
     minute: '2-digit',
   });
-  const datePart =
-    typeof screening_at === 'string' && screening_at.length >= 10
-      ? screening_at.slice(0, 10) + 'T12:00:00Z'
-      : screening_at;
-  const dateForDisplay = new Date(datePart);
-  const dateStrEn = dateForDisplay.toLocaleDateString('en-GB', {
+  const dateStrEn = formatScreeningInVenue(screening_at, 'en-GB', {
     month: 'short',
     day: 'numeric',
     weekday: 'short',
   });
-  const dateStrZh = dateForDisplay.toLocaleDateString('zh-CN', {
+  const dateStrZh = formatScreeningInVenue(screening_at, 'zh-CN', {
     month: 'long',
     day: 'numeric',
     weekday: 'short',
@@ -43,7 +42,16 @@ function formatEventSegmentStrings(
   const dateStr = isZh ? dateStrZh : dateStrEn;
   const now = new Date();
   const diffHours = Math.round((date.getTime() - now.getTime()) / 36e5);
-  const diffDays = Math.round(diffHours / 24);
+  const eventParts = getVenueDateTimeParts(date);
+  const nowParts = getVenueDateTimeParts(now);
+  const diffDays =
+    eventParts && nowParts
+      ? Math.round(
+          (Date.UTC(eventParts.year, eventParts.month - 1, eventParts.day) -
+            Date.UTC(nowParts.year, nowParts.month - 1, nowParts.day)) /
+            86_400_000
+        )
+      : Math.round(diffHours / 24);
   const segments: string[] = [];
   if (diffHours < 3) {
     segments.push(
