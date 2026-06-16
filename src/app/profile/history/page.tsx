@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { APP_NAME_PARTS } from '@/lib/config';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import HistoricalAttendanceRegister from '@/components/HistoricalAttendanceRegister';
 
 export const dynamic = 'force-dynamic';
@@ -18,7 +18,7 @@ export default async function ProfileHistoryPage() {
   }
 
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
 
   return (

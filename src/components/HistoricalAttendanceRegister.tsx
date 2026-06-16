@@ -105,11 +105,11 @@ export default function HistoricalAttendanceRegister() {
     if (search) params.set('q', search);
     const res = await fetch(`/api/historical-attendance/catalog?${params}`);
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error ?? 'Failed to load');
+    if (!res.ok) throw new Error(t.common.loadFailed);
     if (fetchId !== fetchGenerationRef.current) return;
     setRegisteredItems((data.items ?? []) as CatalogItem[]);
     setRegisteredTotal(Number(data.total ?? 0));
-  }, []);
+  }, [t.common.loadFailed]);
 
   const fetchUnclaimed = useCallback(
     async (append: boolean, search: string, nextOffset: number, fetchId: number) => {
@@ -121,7 +121,7 @@ export default function HistoricalAttendanceRegister() {
       if (search) params.set('q', search);
       const res = await fetch(`/api/historical-attendance/catalog?${params}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Failed to load');
+      if (!res.ok) throw new Error(t.common.loadFailed);
       if (fetchId !== fetchGenerationRef.current) return;
 
       const nextItems = (data.items ?? []) as CatalogItem[];
@@ -129,7 +129,7 @@ export default function HistoricalAttendanceRegister() {
       setItems((prev) => (append ? [...prev, ...nextItems] : nextItems));
       setOffset(nextOffset + nextItems.length);
     },
-    []
+    [t.common.loadFailed]
   );
 
   const loadAll = useCallback(
@@ -154,13 +154,13 @@ export default function HistoricalAttendanceRegister() {
           await fetchUnclaimed(true, search, nextOffset, fetchId);
         }
       } catch {
-        setError('Failed to load');
+        setError(t.common.loadFailed);
       } finally {
         setLoading(false);
         setLoadingMore(false);
       }
     },
-    [fetchRegistered, fetchUnclaimed]
+    [fetchRegistered, fetchUnclaimed, t.common.loadFailed]
   );
 
   useEffect(() => {
@@ -210,7 +210,7 @@ export default function HistoricalAttendanceRegister() {
         });
         const data = await res.json();
         if (!res.ok) {
-          setError(data.error ?? 'Failed to save');
+          setError(t.common.saveFailed);
           return;
         }
         claimedTotal += Number(data.claimed ?? 0);
@@ -220,7 +220,7 @@ export default function HistoricalAttendanceRegister() {
       router.refresh();
       await loadAll(false, debouncedQ, 0);
     } catch {
-      setError('Failed to save');
+      setError(t.common.saveFailed);
     } finally {
       setSaving(false);
     }

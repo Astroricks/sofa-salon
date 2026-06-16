@@ -5,7 +5,7 @@ import {
   RECENT_RATINGS_SCREENING_LIMIT,
   tickerUserMessagesVisibleSince,
 } from '@/lib/ticker-utils';
-import type { Locale } from '@/lib/i18n';
+import { localeFromValue } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import TickerStrip, { type TickerSegmentItem } from '@/components/TickerStrip';
 
@@ -49,7 +49,7 @@ function tickerFallback() {
 
 export default async function Ticker() {
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get(COOKIE_NAME)?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get(COOKIE_NAME)?.value);
 
   try {
   const supabase = await createClient();

@@ -3,14 +3,14 @@ import { createClient } from '@/lib/supabase/server';
 import { reservationIsPresent } from '@/lib/attendance';
 import { APP_NAME_PARTS } from '@/lib/config';
 import BackButton from '@/components/BackButton';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import RatingsExportButtons, { type RatingsExportRow } from './RatingsExportButtons';
 import { formatScreeningInVenue } from '@/lib/screening-datetime';
 
 export default async function AdminRatingsPage() {
   const supabase = await createClient();
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
   const {
     data: { user },
@@ -121,7 +121,7 @@ export default async function AdminRatingsPage() {
                 <tr key={s.id} className="border-b border-[#2a2a2a]">
                   <td className="py-3 pr-4 text-[#e8e4dc]">{s.title}</td>
                   <td className="py-3 pr-4 text-[#888888]">
-                    {formatScreeningInVenue(s.screening_at, 'en-GB', {
+                    {formatScreeningInVenue(s.screening_at, locale === 'zh' ? 'zh-CN' : 'en-GB', {
                       weekday: 'short',
                       day: 'numeric',
                       month: 'short',

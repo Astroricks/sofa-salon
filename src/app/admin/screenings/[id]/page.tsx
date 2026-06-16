@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import AdminScreeningGuests from '@/components/AdminScreeningGuests';
 import EditScreeningForm from './EditScreeningForm';
@@ -15,7 +15,7 @@ export default async function EditScreeningPage({
   const { id } = await params;
   const supabase = await createClient();
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
   const {
     data: { user },
@@ -100,6 +100,8 @@ export default async function EditScreeningPage({
         labels={{
           title: t.admin.guestsTitle,
           addGuest: t.admin.guestsAddHint,
+          guestsNameColumn: t.admin.guestsNameColumn,
+          guestsSeatsColumn: t.admin.guestsSeatsColumn,
           pastHint: t.admin.guestsPastHint,
           displayNamePlaceholder: t.admin.guestsDisplayNamePlaceholder,
           addButton: t.admin.guestsAddButton,

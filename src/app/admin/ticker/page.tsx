@@ -251,8 +251,12 @@ export default function AdminTickerPage() {
         </div>
 
         <div className="border border-[#2a2a2a] p-4" style={{ borderRadius: 0 }}>
-          <p className="font-mono text-[10px] tracking-wider text-[#e8c84a] mb-3 uppercase">User ticker messages</p>
-          <p className="font-mono text-[12px] text-[#888888] mb-3">Recent user submissions. Hide to remove from ticker without deleting.</p>
+          <p className="font-mono text-[10px] tracking-wider text-[#e8c84a] mb-3 uppercase">
+            {t.admin.tickerUserMessages}
+          </p>
+          <p className="font-mono text-[12px] text-[#888888] mb-3">
+            {t.admin.tickerUserMessagesHint}
+          </p>
           <ul className="space-y-2">
             {userMessages.map((msg) => (
               <li key={msg.id} className="flex items-center gap-2 flex-wrap border-b border-[#2a2a2a] pb-2">
@@ -260,7 +264,7 @@ export default function AdminTickerPage() {
                   {msg.profiles?.display_name ?? '—'}：{msg.content}
                 </span>
                 <span className="text-[#666] font-mono text-[10px]">
-                  {msg.is_active ? 'Visible' : 'Hidden'}
+                  {msg.is_active ? t.admin.tickerMessageVisible : t.admin.tickerMessageHidden}
                 </span>
                 {msg.is_active && (
                   <button
@@ -269,7 +273,7 @@ export default function AdminTickerPage() {
                     disabled={saving}
                     className="text-[#e8c84a] font-mono text-[10px] hover:underline"
                   >
-                    Hide
+                    {t.admin.tickerMessageHide}
                   </button>
                 )}
                 <button
@@ -278,12 +282,12 @@ export default function AdminTickerPage() {
                   disabled={saving}
                   className="text-[#f87171] font-mono text-[10px] hover:underline"
                 >
-                  Delete
+                  {t.admin.tickerMessageDelete}
                 </button>
               </li>
             ))}
             {userMessages.length === 0 && (
-              <li className="font-mono text-[12px] text-[#666]">No user messages yet.</li>
+              <li className="font-mono text-[12px] text-[#666]">{t.admin.tickerUserMessagesEmpty}</li>
             )}
           </ul>
         </div>

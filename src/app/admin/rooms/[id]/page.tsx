@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { notFound } from 'next/navigation';
 import { redirect } from 'next/navigation';
 import AdminRoomEditor from './AdminRoomEditor';
@@ -13,7 +13,7 @@ export default async function EditRoomPage({
   const { id } = await params;
   const supabase = await createClient();
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
   const {
     data: { user },

@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { APP_NAME } from '@/lib/config';
+import { useLocale } from '@/components/LocaleProvider';
 
 function isMobileExport(): boolean {
   if (typeof window === 'undefined') return false;
@@ -9,6 +10,7 @@ function isMobileExport(): boolean {
 }
 
 export default function ReceiptExportButton() {
+  const { t } = useLocale();
   const [generating, setGenerating] = useState(false);
 
   const exportReceipt = useCallback(async () => {
@@ -32,7 +34,7 @@ export default function ReceiptExportButton() {
           if (navigator.canShare?.({ files: [file] })) {
             await navigator.share({
               files: [file],
-              title: `${APP_NAME} receipt`,
+              title: t.receipt.shareTitle.replace('{appName}', APP_NAME),
             });
             return;
           }
@@ -51,7 +53,7 @@ export default function ReceiptExportButton() {
     } finally {
       setGenerating(false);
     }
-  }, []);
+  }, [t.receipt.shareTitle]);
 
   return (
     <button
@@ -61,7 +63,7 @@ export default function ReceiptExportButton() {
       className="w-full mt-6 font-mono text-[11px] tracking-[0.2em] uppercase py-3 px-8 bg-[#e8c84a] text-[#0f0f0f] hover:opacity-90 disabled:opacity-60 transition-opacity"
       style={{ borderRadius: 0 }}
     >
-      {generating ? '…' : 'Export Receipt ↓'}
+      {generating ? '…' : t.receipt.export}
     </button>
   );
 }

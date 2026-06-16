@@ -12,6 +12,7 @@ import {
   RECEIPT_SUBTITLE,
   VENUE_ADDRESS,
 } from '@/lib/config';
+import { useLocale } from '@/components/LocaleProvider';
 
 const PAPER_WIDTH = 200;
 const PAPER_BASE_HEIGHT = 500;
@@ -107,8 +108,9 @@ function PigeonFeet({ x, y }: { x: number; y: number }) {
   );
 }
 
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: 'en' | 'zh'): string {
   const d = new Date(iso);
+  if (locale === 'zh') return `${d.getMonth() + 1}月${d.getDate()}日`;
   const months = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
   return `${months[d.getMonth()]} ${d.getDate()}`;
 }
@@ -130,6 +132,7 @@ function barcodeWidths(): number[] {
 }
 
 export default function ReceiptSVG({ data }: { data: ReceiptData }) {
+  const { t, locale } = useLocale();
   const isMobile = useIsMobile();
   const viewBoxWidth = isMobile ? VIEWBOX_WIDTH_MOBILE : VIEWBOX_WIDTH_DESKTOP;
   const paperLeft = (viewBoxWidth - PAPER_WIDTH) / 2;
@@ -177,16 +180,16 @@ export default function ReceiptSVG({ data }: { data: ReceiptData }) {
       <text x={centerX} y={headerY + 32} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="middle">{displayName}</text>
 
       <SeparatorDashes paperLeft={paperLeft} y={sep1Y} />
-      <text x={textLeft} y={session1Y} fontFamily={FONT} fontSize={7} fill="#555">VIEWING RECORD</text>
+      <text x={textLeft} y={session1Y} fontFamily={FONT} fontSize={7} fill="#555">{t.receipt.viewingRecord}</text>
       <text x={textRight} y={session1Y} fontFamily={FONT} fontSize={7} fill="#555" textAnchor="end">#{receiptNumber}</text>
       <text x={textLeft} y={session2Y} fontFamily={FONT} fontSize={7} fill="#888">{formatSessionDate(generatedAt)}</text>
       {HOST_NAME ? (
         <text x={textRight} y={session2Y} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="end">{HOST_NAME.toUpperCase()}</text>
       ) : null}
       <SeparatorDashes paperLeft={paperLeft} y={sep2Y} />
-      <text x={textLeft} y={colHeaderY} fontFamily={FONT} fontSize={7} fill="#777">FILM</text>
-      <text x={centerX + 40} y={colHeaderY} fontFamily={FONT} fontSize={7} fill="#777" textAnchor="middle">DATE</text>
-      <text x={textRight} y={colHeaderY} fontFamily={FONT} fontSize={7} fill="#777" textAnchor="end">MIN</text>
+      <text x={textLeft} y={colHeaderY} fontFamily={FONT} fontSize={7} fill="#777">{t.receipt.film}</text>
+      <text x={centerX + 40} y={colHeaderY} fontFamily={FONT} fontSize={7} fill="#777" textAnchor="middle">{t.receipt.date}</text>
+      <text x={textRight} y={colHeaderY} fontFamily={FONT} fontSize={7} fill="#777" textAnchor="end">{t.receipt.minutes}</text>
 
       {films.map((film, i) => {
         const blockY = firstFilmY + i * PER_FILM_HEIGHT;
@@ -198,7 +201,7 @@ export default function ReceiptSVG({ data }: { data: ReceiptData }) {
             <text x={textLeft} y={blockY + 11} fontFamily={FONT} fontSize={7} fill="#888">{directorYear}</text>
             <text x={textRight} y={blockY + 11} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="end">{film.durationMinutes ?? '—'}</text>
             <text x={textLeft} y={blockY + 22} fontFamily={FONT} fontSize={8} fill="#c8a000">{starStr}</text>
-            <text x={textRight} y={blockY + 22} fontFamily={FONT} fontSize={7} fill="#aaa" textAnchor="end">{formatDate(film.screeningAt)}</text>
+            <text x={textRight} y={blockY + 22} fontFamily={FONT} fontSize={7} fill="#aaa" textAnchor="end">{formatDate(film.screeningAt, locale)}</text>
             <DottedLine paperLeft={paperLeft} y={blockY + 32} />
             <Scissors x={textRight - 24} y={blockY + 26} />
           </g>
@@ -211,14 +214,14 @@ export default function ReceiptSVG({ data }: { data: ReceiptData }) {
           <>
             <rect x={paperLeft + 4} y={totalsStartY} width={PAPER_WIDTH - 8} height={2} fill="#111" />
             <rect x={paperLeft + 4} y={totalsStartY + 6} width={PAPER_WIDTH - 8} height={1} fill="#111" />
-            <text x={textLeft} y={totalsStartY + 18} fontFamily={FONT} fontSize={7} fill="#555">SCREENINGS</text>
+            <text x={textLeft} y={totalsStartY + 18} fontFamily={FONT} fontSize={7} fill="#555">{t.receipt.screenings}</text>
             <text x={textRight} y={totalsStartY + 18} fontFamily={FONT} fontSize={8} fontWeight="bold" fill="#111" textAnchor="end">{totalScreenings}</text>
-            <text x={textLeft} y={totalsStartY + 30} fontFamily={FONT} fontSize={7} fill="#555">TOTAL RUNTIME</text>
-            <text x={textRight} y={totalsStartY + 30} fontFamily={FONT} fontSize={8} fontWeight="bold" fill="#111" textAnchor="end">{totalMinutes} MIN</text>
-            <text x={textLeft} y={totalsStartY + 42} fontFamily={FONT} fontSize={7} fill="#555">AVG RATING</text>
+            <text x={textLeft} y={totalsStartY + 30} fontFamily={FONT} fontSize={7} fill="#555">{t.receipt.totalRuntime}</text>
+            <text x={textRight} y={totalsStartY + 30} fontFamily={FONT} fontSize={8} fontWeight="bold" fill="#111" textAnchor="end">{totalMinutes} {t.receipt.minutes}</text>
+            <text x={textLeft} y={totalsStartY + 42} fontFamily={FONT} fontSize={7} fill="#555">{t.receipt.averageRating}</text>
             <text x={textRight} y={totalsStartY + 42} fontFamily={FONT} fontSize={8} fontWeight="bold" fill="#c8a000" textAnchor="end">{avgRating != null ? `★ ${avgRating}` : '—'}</text>
-            <text x={textLeft} y={totalsStartY + 54} fontFamily={FONT} fontSize={7} fill="#555">TIMES BAILED</text>
-            <text x={textRight} y={totalsStartY + 54} fontFamily={FONT} fontSize={8} fontWeight="bold" textAnchor="end" fill={timesBailed === 0 ? '#4a9a4a' : '#f87171'}>{timesBailed === 0 ? '0  CLEAN' : String(timesBailed)}</text>
+            <text x={textLeft} y={totalsStartY + 54} fontFamily={FONT} fontSize={7} fill="#555">{t.receipt.timesBailed}</text>
+            <text x={textRight} y={totalsStartY + 54} fontFamily={FONT} fontSize={8} fontWeight="bold" textAnchor="end" fill={timesBailed === 0 ? '#4a9a4a' : '#f87171'}>{timesBailed === 0 ? `0  ${t.receipt.clean}` : String(timesBailed)}</text>
           </>
         );
       })()}
@@ -234,15 +237,15 @@ export default function ReceiptSVG({ data }: { data: ReceiptData }) {
         const feetY = footer1Y + 24;
         return (
           <>
-            <text x={centerX} y={barcodeLabelY} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="middle">SCAN TO SHARE</text>
+            <text x={centerX} y={barcodeLabelY} fontFamily={FONT} fontSize={7} fill="#888" textAnchor="middle">{t.receipt.scanToShare}</text>
             {barWidths.map((w, i) => {
               const x = barcodeStartX + barWidths.slice(0, i).reduce((a, b) => a + b + 1, 0);
               return <rect key={i} x={x} y={barcodeY} width={w} height={20} fill="#111" />;
             })}
             <text x={centerX} y={barcodeCodeY} fontFamily={FONT} fontSize={6} fill="#bbb" textAnchor="middle" letterSpacing={1}>Z1GGY-{yyyymmdd}-{receiptNumber}</text>
             <SeparatorDashes paperLeft={paperLeft} y={footerSepY} />
-            <text x={centerX} y={footer1Y} fontFamily={FONT} fontSize={8} fill="#888" textAnchor="middle">WHEN YOU&apos;RE FREE —</text>
-            <text x={centerX} y={footer1Y + 12} fontFamily={FONT} fontSize={8} fill="#888" textAnchor="middle">SHOW UP.</text>
+            <text x={centerX} y={footer1Y} fontFamily={FONT} fontSize={8} fill="#888" textAnchor="middle">{t.receipt.footerLine1}</text>
+            <text x={centerX} y={footer1Y + 12} fontFamily={FONT} fontSize={8} fill="#888" textAnchor="middle">{t.receipt.footerLine2}</text>
             <PigeonFeet x={centerX - 10} y={feetY} />
           </>
         );

@@ -24,18 +24,7 @@ function escapeCsvValue(val: string | number | null | undefined): string {
   return s;
 }
 
-function toCsv(rows: RatingsExportRow[]): string {
-  const headers = [
-    'Title',
-    'Description',
-    'Year',
-    'Director',
-    'Duration (min)',
-    'Screening date',
-    'Attendance count',
-    'Rating count',
-    'Average rating',
-  ];
+function toCsv(rows: RatingsExportRow[], headers: readonly string[]): string {
   const lines = [headers.join(',')];
   for (const r of rows) {
     lines.push(
@@ -72,7 +61,17 @@ export default function RatingsExportButtons({ data }: Props) {
   const { t } = useLocale();
 
   const handleExportCsv = () => {
-    const csv = toCsv(data);
+    const csv = toCsv(data, [
+      t.admin.ratingsCsvHeaders.title,
+      t.admin.ratingsCsvHeaders.description,
+      t.admin.ratingsCsvHeaders.year,
+      t.admin.ratingsCsvHeaders.director,
+      t.admin.ratingsCsvHeaders.duration,
+      t.admin.ratingsCsvHeaders.screeningDate,
+      t.admin.ratingsCsvHeaders.attendanceCount,
+      t.admin.ratingsCsvHeaders.ratingCount,
+      t.admin.ratingsCsvHeaders.averageRating,
+    ]);
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const date = new Date().toISOString().slice(0, 10);
     downloadBlob(blob, `ratings-report-${date}.csv`);

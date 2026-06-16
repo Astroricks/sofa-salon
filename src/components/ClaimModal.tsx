@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Props {
   open: boolean;
@@ -27,9 +28,14 @@ export default function ClaimModal({
   children,
   isMobile = false,
 }: Props) {
+  const { t } = useLocale();
   const labels = seatLabels ?? (seatLabel ? [seatLabel] : []);
   const isMulti = labels.length > 1;
-  const title = titleOverride ?? (isMulti ? `Claim ${labels.length} seats` : 'Claim seat');
+  const title =
+    titleOverride ??
+    (isMulti
+      ? t.screening.claimSeats.replace('{n}', String(labels.length))
+      : t.screening.claimSeat);
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -62,7 +68,7 @@ export default function ClaimModal({
         type="button"
         onClick={onClose}
         className="absolute top-2 right-2 font-mono text-xl leading-none text-[#888888] hover:text-[#f87171] transition-colors"
-        aria-label="Close"
+        aria-label={t.common.close}
       >
         ×
       </button>

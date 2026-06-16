@@ -232,7 +232,7 @@ export default function NavBar() {
                 onClick={() => setMobileMenuOpen((o) => !o)}
                 className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-1.5 text-[#888888] hover:text-[#e8c84a]"
                 aria-expanded={mobileMenuOpen}
-                aria-label="Menu"
+                aria-label={t.nav.menu}
               >
                 <span className="w-5 h-0.5 bg-current" />
                 <span className="w-5 h-0.5 bg-current" />
@@ -331,7 +331,7 @@ export default function NavBar() {
                 onClick={() => setMobileMenuOpen((o) => !o)}
                 className="min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-1.5 text-[#888888] hover:text-[#e8c84a]"
                 aria-expanded={mobileMenuOpen}
-                aria-label="Menu"
+                aria-label={t.nav.menu}
               >
                 <span className="w-5 h-0.5 bg-current" />
                 <span className="w-5 h-0.5 bg-current" />

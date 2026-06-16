@@ -27,7 +27,7 @@ export default function AdminRoomRow({ room }: { room: Room }) {
         router.refresh();
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data?.error ?? 'Failed to delete');
+        alert(data?.error ?? t.admin.roomDeleteFailed);
       }
     } finally {
       setDeleting(false);

@@ -78,9 +78,9 @@ export default function AdminFeedbackPage() {
         setProposalOptions(data.proposalOptions ?? {});
         setUserInfo(data.userInfo ?? {});
       })
-      .catch(() => setError(isZh ? '加载失败' : 'Failed to load'))
+      .catch(() => setError(t.common.loadFailed))
       .finally(() => setLoading(false));
-  }, [isZh]);
+  }, [t.common.loadFailed]);
 
   useEffect(() => {
     fetchFeedback();
@@ -124,7 +124,7 @@ export default function AdminFeedbackPage() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <p className="font-mono text-[13px] text-[#888]">{isZh ? '加载中…' : 'Loading…'}</p>
+        <p className="font-mono text-[13px] text-[#888]">{t.common.loading}</p>
       </div>
     );
   }
@@ -148,18 +148,18 @@ export default function AdminFeedbackPage() {
         </Link>
       </div>
       <h1 className="font-mono text-xl text-[#e8e4dc] mb-1">
-        {isZh ? '用户反馈' : 'Feedback'}
+        {t.admin.feedbackTitle}
       </h1>
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-6">
-        {isZh ? '技术支持与改期请求' : 'Support logs & reschedule requests'}
+        {t.admin.feedbackSubtitle}
       </p>
 
       <section className="mb-8">
         <h2 className="font-mono text-[13px] text-[#e8c84a] mb-3">
-          {isZh ? '支持记录' : 'Support logs'}
+          {t.admin.feedbackSupportLogs}
         </h2>
         {supportLogs.length === 0 ? (
-          <p className="font-mono text-[11px] text-[#555]">{isZh ? '暂无' : 'None yet.'}</p>
+          <p className="font-mono text-[11px] text-[#555]">{t.admin.feedbackNone}</p>
         ) : (
           <ul className="space-y-2">
             {supportLogs.map((log) => {
@@ -172,7 +172,7 @@ export default function AdminFeedbackPage() {
                 >
                   <span className="text-[#e8c84a]">{typeLabel(log.type)}</span>
                   {log.priority === 1 && (
-                    <span className="ml-2 text-[#f87171]">{(isZh ? '优先' : 'Priority')}</span>
+                    <span className="ml-2 text-[#f87171]">{t.admin.feedbackPriority}</span>
                   )}
                   {!isOpen && (
                     <span className="ml-2 text-[#666] font-mono text-[10px]">
@@ -188,19 +188,19 @@ export default function AdminFeedbackPage() {
                         href={`/admin/screenings/${log.screening_id}`}
                         className="text-[#e8c84a] hover:underline"
                       >
-                        {screeningTitles[log.screening_id] || `${isZh ? '放映' : 'Screening'} ${log.screening_id.slice(0, 8)}…`}
+                        {screeningTitles[log.screening_id] || `${t.admin.feedbackScreeningFallback} ${log.screening_id.slice(0, 8)}…`}
                       </Link>
                     </span>
                   )}
                   {log.user_id && (
                     <span className="block text-[#888] mt-0.5">
-                      <span className="text-[#666] font-mono text-[10px]">User ID: </span>
+                      <span className="text-[#666] font-mono text-[10px]">{t.admin.userId}: </span>
                       <span className="font-mono break-all">{log.user_id}</span>
                       {(userInfo[log.user_id]?.display_name?.trim() || userInfo[log.user_id]?.wechat_id?.trim() || userInfo[log.user_id]?.email) && (
                         <span className="block mt-0.5 text-[#e8e4dc]">
-                          {userInfo[log.user_id]?.display_name?.trim() && <span>{isZh ? '昵称' : 'Name'}: {userInfo[log.user_id].display_name}</span>}
+                          {userInfo[log.user_id]?.display_name?.trim() && <span>{t.admin.userName}: {userInfo[log.user_id].display_name}</span>}
                           {userInfo[log.user_id]?.wechat_id?.trim() && <span className={userInfo[log.user_id]?.display_name?.trim() ? ' ml-3' : ''}>WeChat: {userInfo[log.user_id].wechat_id}</span>}
-                          {userInfo[log.user_id]?.email && <span className="block mt-0.5 text-[10px]">Email: {userInfo[log.user_id].email}</span>}
+                          {userInfo[log.user_id]?.email && <span className="block mt-0.5 text-[10px]">{t.admin.userEmail}: {userInfo[log.user_id].email}</span>}
                         </span>
                       )}
                     </span>
@@ -214,7 +214,7 @@ export default function AdminFeedbackPage() {
                         disabled={actingLogId !== null}
                         className="font-mono text-[10px] text-[#e8c84a] hover:underline disabled:opacity-50"
                       >
-                        {actingLogId === log.id ? (isZh ? '处理中…' : '…') : t.admin.supportLogFixed}
+                        {actingLogId === log.id ? t.admin.feedbackProcessing : t.admin.supportLogFixed}
                       </button>
                       <button
                         type="button"
@@ -222,7 +222,7 @@ export default function AdminFeedbackPage() {
                         disabled={actingLogId !== null}
                         className="font-mono text-[10px] text-[#888] hover:underline disabled:opacity-50"
                       >
-                        {actingLogId === log.id ? (isZh ? '处理中…' : '…') : t.admin.supportLogDismiss}
+                        {actingLogId === log.id ? t.admin.feedbackProcessing : t.admin.supportLogDismiss}
                       </button>
                     </div>
                   )}
@@ -235,10 +235,10 @@ export default function AdminFeedbackPage() {
 
       <section>
         <h2 className="font-mono text-[13px] text-[#e8c84a] mb-3">
-          {isZh ? '改期记录' : 'Reschedule'}
+          {t.admin.feedbackReschedule}
         </h2>
         {rescheduleProposals.length === 0 ? (
-          <p className="font-mono text-[11px] text-[#555]">{isZh ? '暂无' : 'None yet.'}</p>
+          <p className="font-mono text-[11px] text-[#555]">{t.admin.feedbackNone}</p>
         ) : (
           <ul className="space-y-2">
             {rescheduleProposals.map((p) => (
@@ -251,25 +251,25 @@ export default function AdminFeedbackPage() {
                   href={`/admin/screenings/${p.screening_id}`}
                   className="text-[#e8c84a] hover:underline"
                 >
-                  {screeningTitles[p.screening_id] ?? `${isZh ? '放映' : 'Screening'} ${p.screening_id.slice(0, 8)}…`}
+                  {screeningTitles[p.screening_id] ?? `${t.admin.feedbackScreeningFallback} ${p.screening_id.slice(0, 8)}…`}
                 </Link>
                 <span className="text-[#555] ml-2">
                   {new Date(p.created_at).toLocaleString(isZh ? 'zh-CN' : 'en-GB')}
                 </span>
                 <span className="block text-[#888] mt-0.5">
-                  <span className="text-[#666] font-mono text-[10px]">User ID: </span>
+                  <span className="text-[#666] font-mono text-[10px]">{t.admin.userId}: </span>
                   <span className="font-mono break-all">{p.created_by}</span>
                   {(userInfo[p.created_by]?.display_name?.trim() || userInfo[p.created_by]?.wechat_id?.trim() || userInfo[p.created_by]?.email) && (
                     <span className="block mt-0.5 text-[#e8e4dc]">
-                      {userInfo[p.created_by]?.display_name?.trim() && <span>{isZh ? '昵称' : 'Name'}: {userInfo[p.created_by].display_name}</span>}
+                      {userInfo[p.created_by]?.display_name?.trim() && <span>{t.admin.userName}: {userInfo[p.created_by].display_name}</span>}
                       {userInfo[p.created_by]?.wechat_id?.trim() && <span className={userInfo[p.created_by]?.display_name?.trim() ? ' ml-3' : ''}>WeChat: {userInfo[p.created_by].wechat_id}</span>}
-                      {userInfo[p.created_by]?.email && <span className="block mt-0.5 text-[10px]">Email: {userInfo[p.created_by].email}</span>}
+                      {userInfo[p.created_by]?.email && <span className="block mt-0.5 text-[10px]">{t.admin.userEmail}: {userInfo[p.created_by].email}</span>}
                     </span>
                   )}
                 </span>
                 {(proposalOptions[p.id]?.length ?? 0) > 0 && (
                   <ul className="mt-1.5 space-y-1">
-                    <span className="text-[#888]">{isZh ? '已选时间：' : 'Proposed times: '}</span>
+                    <span className="text-[#888]">{t.admin.feedbackProposedTimes} </span>
                     {[...(proposalOptions[p.id] ?? [])]
                       .sort((a, b) => a.position - b.position)
                       .map((o) => (
@@ -281,7 +281,7 @@ export default function AdminFeedbackPage() {
                             disabled={approvingOptionId !== null}
                             className="font-mono text-[10px] text-[#e8c84a] hover:underline disabled:opacity-50"
                           >
-                            {approvingOptionId === o.id ? (isZh ? '处理中…' : 'Approving…') : (isZh ? '批准此时间' : 'Approve')}
+                            {approvingOptionId === o.id ? t.admin.feedbackApproving : t.admin.feedbackApprove}
                           </button>
                         </li>
                       ))}

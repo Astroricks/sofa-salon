@@ -11,7 +11,7 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function NewRoomPage() {
   const router = useRouter();
   const { t } = useLocale();
-  const [name, setName] = useState('Living Room');
+  const [name, setName] = useState<string>(t.admin.roomDefaultName);
 
   const handleSave = async (
     furniture: FurniturePiece[],
@@ -47,11 +47,11 @@ export default function NewRoomPage() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8c84a] font-serif text-xl outline-none px-3 py-2 flex-1 min-w-0 focus:border-[#e8c84a] placeholder:text-[#444444]"
-          placeholder="Room name"
+          placeholder={t.admin.roomNamePlaceholder}
           style={{ borderRadius: 0 }}
         />
         <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] shrink-0">
-          Room name
+          {t.admin.roomName}
         </span>
       </div>
       <div className="flex-1 overflow-hidden min-h-0">

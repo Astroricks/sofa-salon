@@ -36,7 +36,7 @@ export default function AdminEvents({
   pastTotalCount,
   pastPageSize,
 }: Props) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const router = useRouter();
   const [extraPastScreenings, setExtraPastScreenings] = useState<Screening[]>([]);
   const [loadingMorePast, setLoadingMorePast] = useState(false);
@@ -135,12 +135,13 @@ export default function AdminEvents({
   };
 
   const renderEventCard = (s: Screening, isPast: boolean) => {
-    const dateStr = formatScreeningInVenue(s.screening_at, 'en-GB', {
+    const dateLocale = locale === 'zh' ? 'zh-CN' : 'en-GB';
+    const dateStr = formatScreeningInVenue(s.screening_at, dateLocale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
     });
-    const timeStr = formatScreeningInVenue(s.screening_at, 'en-GB', {
+    const timeStr = formatScreeningInVenue(s.screening_at, dateLocale, {
       hour: '2-digit',
       minute: '2-digit',
     });

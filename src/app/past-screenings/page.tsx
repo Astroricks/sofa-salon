@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 import { APP_NAME_PARTS } from '@/lib/config';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import {
   screeningDisplayDirector,
@@ -41,8 +41,7 @@ export default async function PastScreeningsPage({
   const query = normalizePastScreeningsSearch(params.q);
   const requestedPage = Math.max(1, Number.parseInt(params.page ?? '1', 10) || 1);
   const cookieStore = await cookies();
-  const locale: Locale =
-    cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
 
   // The server-only admin client exposes inactive imported archive rows without

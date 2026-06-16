@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { APP_NAME_PARTS } from '@/lib/config';
 import { getBadgeLevel, BADGE_TIERS } from '@/lib/badges';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import {
   fetchLeaderboard,
   fetchUserLeaderboardRank,
@@ -25,7 +25,7 @@ export default async function LeaderboardPage() {
   } = await supabase.auth.getUser();
 
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
 
   const [rows, you, viewerProfileRes] = await Promise.all([

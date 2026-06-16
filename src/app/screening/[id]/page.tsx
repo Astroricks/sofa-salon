@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { fetchScreeningAltLocaleByIds } from '@/lib/screening-alt-locale-fetch';
 import { fetchScreeningDetailRow } from '@/lib/fetch-screening-detail-row';
 import { fetchAttendanceCounts } from '@/lib/attendance';
@@ -40,7 +40,7 @@ export default async function ScreeningPage({
   })();
   const supabase = await createClient();
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
 
   const [{ data: screening }, { data: { user } }] = await Promise.all([
@@ -157,7 +157,7 @@ export default async function ScreeningPage({
     return { ...row, profiles: nextProfile };
   });
 
-  const dateStr = formatScreeningInVenue(screening.screening_at, 'en-GB', {
+  const dateStr = formatScreeningInVenue(screening.screening_at, locale === 'zh' ? 'zh-CN' : 'en-GB', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
@@ -236,6 +236,8 @@ export default async function ScreeningPage({
           labels={{
             title: t.admin.guestsTitle,
             addGuest: t.admin.guestsAddHint,
+            guestsNameColumn: t.admin.guestsNameColumn,
+            guestsSeatsColumn: t.admin.guestsSeatsColumn,
             pastHint: t.admin.guestsPastHint,
             displayNamePlaceholder: t.admin.guestsDisplayNamePlaceholder,
             addButton: t.admin.guestsAddButton,

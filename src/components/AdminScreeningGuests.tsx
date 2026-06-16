@@ -37,6 +37,8 @@ type Candidate = {
 interface Labels {
   title: string;
   addGuest: string;
+  guestsNameColumn: string;
+  guestsSeatsColumn: string;
   displayNamePlaceholder: string;
   addButton: string;
   displayNameNotFound: string;
@@ -315,8 +317,8 @@ export default function AdminScreeningGuests({
             <thead>
               <tr className="text-left text-[#888888] border-b border-[#2a2a2a]">
                 <th className="py-2 pr-4">#</th>
-                <th className="py-2 pr-4">Name</th>
-                <th className="py-2 pr-4">Seats</th>
+                <th className="py-2 pr-4">{labels.guestsNameColumn}</th>
+                <th className="py-2 pr-4">{labels.guestsSeatsColumn}</th>
                 <th className="py-2 pr-4">{labels.noShowColumn}</th>
                 <th className="py-2" />
               </tr>

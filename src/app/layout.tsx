@@ -6,6 +6,8 @@ import NavBar from '@/components/NavBar';
 import FaqChatbot from '@/components/FaqChatbot';
 import { LocaleProvider } from '@/components/LocaleProvider';
 import { APP_NAME, APP_TAGLINE } from '@/lib/config';
+import { cookies } from 'next/headers';
+import { localeFromValue } from '@/lib/i18n';
 
 const dmMono = DM_Mono({
   subsets: ['latin'],
@@ -31,14 +33,19 @@ export const metadata: Metadata = {
   description: APP_TAGLINE,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialLocale = localeFromValue(
+    cookieStore.get('sofa-salon-locale')?.value
+  );
+
   return (
     <html
-      lang="en"
+      lang={initialLocale === 'zh' ? 'zh-CN' : 'en'}
       className={`${dmMono.variable} ${pressStart.variable} ${instrumentSerif.variable}`}
     >
       <head>
@@ -60,7 +67,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen antialiased">
-        <LocaleProvider>
+        <LocaleProvider initialLocale={initialLocale}>
           <div className="header-and-ticker-fixed">
             <NavBar />
             <Ticker />

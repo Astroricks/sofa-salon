@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { APP_NAME_PARTS } from '@/lib/config';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import {
   ADMIN_PAST_PAGE_SIZE,
   ADMIN_SCREENING_LIST_SELECT,
@@ -13,7 +13,7 @@ import AdminAnnouncement from './AdminAnnouncement';
 export default async function AdminPage() {
   const supabase = await createClient();
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
   const now = new Date().toISOString();
   const [{ data: { user } }, { data: futureScreenings }, { data: initialPastScreenings }, { count: pastTotalCount }] =

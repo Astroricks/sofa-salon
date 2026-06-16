@@ -6,6 +6,8 @@
 import { noShowScreeningIds } from '@/lib/attendance';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
+import { getT, localeFromValue } from '@/lib/i18n';
 import ReceiptSVG from '@/components/ReceiptSVG';
 import ReceiptExportButton from './ReceiptExportButton';
 
@@ -40,6 +42,8 @@ function hashToReceiptNumber(userId: string): string {
 
 export default async function ReceiptPage() {
   const supabase = await createClient();
+  const cookieStore = await cookies();
+  const t = getT(localeFromValue(cookieStore.get('sofa-salon-locale')?.value));
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -133,7 +137,7 @@ export default async function ReceiptPage() {
   const generatedAt = new Date().toISOString();
 
   const data: ReceiptData = {
-    displayName: profile?.display_name ?? 'Guest',
+    displayName: profile?.display_name ?? t.receipt.guest,
     films,
     totalScreenings: films.length,
     totalMinutes,

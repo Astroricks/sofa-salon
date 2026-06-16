@@ -174,7 +174,7 @@ export default function HomeContent({ screenings, openId, initialSeatmapById }: 
               <button
                 type="button"
                 onClick={() => scrollBy('left')}
-                aria-label="Scroll left"
+                aria-label={t.common.scrollLeft}
                 className="carousel-nav-btn carousel-nav-left"
                 style={{
                   position: 'absolute',
@@ -203,7 +203,7 @@ export default function HomeContent({ screenings, openId, initialSeatmapById }: 
               <button
                 type="button"
                 onClick={() => scrollBy('right')}
-                aria-label="Scroll right"
+                aria-label={t.common.scrollRight}
                 className="carousel-nav-btn carousel-nav-right"
                 style={{
                   position: 'absolute',

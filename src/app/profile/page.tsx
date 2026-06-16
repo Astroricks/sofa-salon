@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { APP_NAME_PARTS, SALON_NAME } from '@/lib/config';
-import { getT, type Locale } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { getBadgeLevel } from '@/lib/badges';
 import { jsonToConfig } from '@/lib/avatar';
 import AvatarSVG from '@/components/AvatarSVG';
@@ -103,7 +103,7 @@ export default async function ProfilePage() {
     .sort((a, b) => new Date(a.screeningAt).getTime() - new Date(b.screeningAt).getTime());
 
   const cookieStore = await cookies();
-  const locale: Locale = cookieStore.get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en';
+  const locale = localeFromValue(cookieStore.get('sofa-salon-locale')?.value);
   const t = getT(locale);
 
   return (

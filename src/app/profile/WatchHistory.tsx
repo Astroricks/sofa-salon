@@ -22,13 +22,17 @@ function StarRow({
   value,
   onChange,
   disabled,
+  ariaLabel,
+  starAriaLabel,
 }: {
   value: number;
   onChange: (v: number) => void;
   disabled?: boolean;
+  ariaLabel: string;
+  starAriaLabel: string;
 }) {
   return (
-    <div className="flex gap-0.5" role="group" aria-label="Rating">
+    <div className="flex gap-0.5" role="group" aria-label={ariaLabel}>
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
@@ -36,7 +40,7 @@ function StarRow({
           disabled={disabled}
           onClick={() => onChange(star)}
           className="text-lg leading-none p-0.5 min-w-[28px] min-h-[28px] disabled:opacity-60 transition-opacity focus:outline-none focus:ring-1 focus:ring-[#e8c84a]"
-          aria-label={`${star} star${star > 1 ? 's' : ''}`}
+          aria-label={starAriaLabel.replace('{n}', String(star))}
         >
           <span className={star <= value ? 'text-[#e8c84a]' : 'text-[#444444]'}>
             {star <= value ? '★' : '☆'}
@@ -143,6 +147,8 @@ export default function WatchHistory({ items }: Props) {
                   value={displayStars}
                   onChange={(v) => saveRating(item.screeningId, v, current)}
                   disabled={submitting === item.screeningId}
+                  ariaLabel={t.profile.ratingAria}
+                  starAriaLabel={t.profile.ratingStarAria}
                 />
                 {current != null && (
                   <span className="font-mono text-[10px] text-[#666]">

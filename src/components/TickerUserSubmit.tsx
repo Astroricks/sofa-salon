@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLocale } from '@/components/LocaleProvider';
 
 export type TickerUserSubmitLabels = {
   placeholder: string;
@@ -9,14 +10,13 @@ export type TickerUserSubmitLabels = {
   sentButton: string;
 };
 
-const DEFAULT_LABELS: TickerUserSubmitLabels = {
-  placeholder: 'Send to ticker...',
-  sendButton: 'Send',
-  sentButton: 'Sent',
-};
-
 export default function TickerUserSubmit({ labels }: { labels?: TickerUserSubmitLabels }) {
-  const { placeholder, sendButton, sentButton } = labels ?? DEFAULT_LABELS;
+  const { t } = useLocale();
+  const { placeholder, sendButton, sentButton } = labels ?? {
+    placeholder: t.profile.sendToTickerPlaceholder,
+    sendButton: t.profile.sendToTickerButton,
+    sentButton: t.profile.sendToTickerSent,
+  };
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [content, setContent] = useState('');
   const [sending, setSending] = useState(false);
@@ -48,7 +48,7 @@ export default function TickerUserSubmit({ labels }: { labels?: TickerUserSubmit
         setSent(true);
         setTimeout(() => setSent(false), 3000);
       } else {
-        setError((data as { error?: string }).error ?? 'Send failed');
+        setError((data as { error?: string }).error ?? t.common.sendFailed);
       }
     } finally {
       setSending(false);

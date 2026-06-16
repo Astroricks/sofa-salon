@@ -69,7 +69,7 @@ function buildAnnouncementWithSignup(screenings: ScreeningRow[], registrationLin
     const label = s.director ? `${s.director}《${s.title}》` : `《${s.title}》`;
     const full = s.reservedCount >= s.capacity;
     const status = full
-      ? '报名已满，可加入 Waiting List'
+      ? '报名已满，可加入候补名单'
       : `已报名 ${s.reservedCount} 位`;
     lines.push(`* ${label}：${status}`);
   }

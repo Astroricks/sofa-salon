@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { APP_NAME_PARTS } from '@/lib/config';
-import { getT } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { hasProfileContact } from '@/lib/contact-platform';
 import LoginForm from './LoginForm';
 
@@ -37,7 +37,7 @@ export default async function LoginPage({
         <span className="text-[#e8c84a]">{APP_NAME_PARTS.slice(1).join('')}</span>
       </h1>
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-10">
-        {getT(cookies().get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en').auth.loginSubtitle}
+        {getT(localeFromValue(cookies().get('sofa-salon-locale')?.value)).auth.loginSubtitle}
       </p>
       <LoginForm redirectTo={goTo} />
     </div>

@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { APP_NAME_PARTS } from '@/lib/config';
-import { getT } from '@/lib/i18n';
+import { getT, localeFromValue } from '@/lib/i18n';
 import { hasProfileContact } from '@/lib/contact-platform';
 import ProfileSetupForm from './ProfileSetupForm';
 
@@ -33,7 +33,7 @@ export default async function ProfileSetupPage({
     redirect(redirectTo);
   }
 
-  const t = getT(cookies().get('sofa-salon-locale')?.value === 'zh' ? 'zh' : 'en');
+  const t = getT(localeFromValue(cookies().get('sofa-salon-locale')?.value));
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] px-4 py-8 safe-area-inset-bottom">

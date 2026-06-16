@@ -45,7 +45,7 @@ export default function AdminSettingsPage() {
       </BackButton>
       <h1 className="font-mono text-xl text-[#e8e4dc] mb-1">
         {APP_NAME_PARTS[0]}{APP_NAME_PARTS.slice(1).join('')}{' '}
-        <span className="text-[#e8c84a]">Admin</span>
+        <span className="text-[#e8c84a]">{t.admin.title}</span>
       </h1>
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-6">
         {t.admin.settings}

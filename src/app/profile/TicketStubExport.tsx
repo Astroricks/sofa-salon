@@ -31,6 +31,7 @@ export default function TicketStubExport({ items }: Props) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
   const isMobile = useIsMobile();
+  const appName = APP_NAME_PARTS.join('');
 
   const generateImage = useCallback(async (): Promise<string | null> => {
     if (!ref.current || items.length === 0) return null;
@@ -68,7 +69,7 @@ export default function TicketStubExport({ items }: Props) {
         try {
           await navigator.share({
             files: [file],
-            title: 'Zigigraph watch history',
+            title: `${appName} ${t.profile.watchHistory}`,
           });
           return;
         } catch {
@@ -79,7 +80,7 @@ export default function TicketStubExport({ items }: Props) {
     } finally {
       setGenerating(false);
     }
-  }, [generateImage]);
+  }, [appName, generateImage, t.profile.watchHistory]);
 
   if (items.length === 0) return null;
 
@@ -94,8 +95,6 @@ export default function TicketStubExport({ items }: Props) {
       : hours > 0
         ? `${hours} h ${mins} min`
         : `${mins} min`;
-
-  const appName = APP_NAME_PARTS.join('');
 
   return (
     <>
@@ -185,7 +184,7 @@ export default function TicketStubExport({ items }: Props) {
                 {totalMinutes > 0 && (
                   <div className="p-4 pt-2 border-t border-[#2a2a2a] text-center">
                     <p className="text-[10px] text-[#666] uppercase tracking-[0.2em]">
-                      {t.profile.timeSpentHere}
+                      {t.profile.timeSpentHere.replace('{appName}', appName)}
                     </p>
                     <p className="text-[14px] text-[#e8c84a] mt-1 font-medium tracking-wide">
                       {totalTimeLabel}

@@ -44,7 +44,7 @@ export default function GhostSeatManager({ screeningId, ghosts }: Props) {
       router.refresh();
     } else {
       const data = await res.json().catch(() => ({}));
-      setError((data as { error?: string }).error ?? 'Failed to rename');
+      setError((data as { error?: string }).error ?? t.admin.ghostRenameFailed);
     }
   };
 
@@ -61,10 +61,10 @@ export default function GhostSeatManager({ screeningId, ghosts }: Props) {
       if (res.ok) {
         router.refresh();
       } else {
-        setError((data as { error?: string }).error ?? `Request failed (${res.status})`);
+        setError((data as { error?: string }).error ?? t.admin.ghostAddFailed);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : t.common.networkError);
     } finally {
       setLoading(false);
     }
@@ -80,7 +80,7 @@ export default function GhostSeatManager({ screeningId, ghosts }: Props) {
     if (res.ok) router.refresh();
     else {
       const data = await res.json().catch(() => ({}));
-      setError((data as { error?: string }).error ?? `Delete failed (${res.status})`);
+      setError((data as { error?: string }).error ?? t.admin.ghostDeleteFailed);
     }
   };
 
@@ -90,10 +90,10 @@ export default function GhostSeatManager({ screeningId, ghosts }: Props) {
       style={{ borderRadius: 0 }}
     >
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#444444] mb-3">
-        GHOST SEATS 幽灵座位
+        {t.admin.ghostSeatsTitle}
       </p>
       <p className="font-mono text-[13px] text-[#888888] mb-3">
-        {ghosts.length} / 3 ghost{ghosts.length !== 1 ? 's' : ''}
+        {t.admin.ghostSeatsCount.replace('{n}', String(ghosts.length))}
       </p>
       {error && (
         <p className="font-mono text-[11px] text-[#f87171] mb-2" role="alert">
@@ -107,7 +107,7 @@ export default function GhostSeatManager({ screeningId, ghosts }: Props) {
         className="font-mono text-[10px] tracking-[0.2em] uppercase border border-[#2a2a2a] text-[#888888] px-3 py-2 hover:border-[#e8c84a] hover:text-[#e8c84a] disabled:opacity-50 transition-colors mb-4"
         style={{ borderRadius: 0 }}
       >
-        {loading ? 'Adding…' : 'Add ghost'}
+        {loading ? t.admin.ghostAdding : t.admin.ghostAdd}
       </button>
       <ul className="space-y-2">
         {ghosts.map((g) => (
@@ -164,7 +164,7 @@ export default function GhostSeatManager({ screeningId, ghosts }: Props) {
               className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#f87171] hover:opacity-85 disabled:opacity-50"
               style={{ borderRadius: 0 }}
             >
-              Remove
+              {t.admin.ghostRemove}
             </button>
           </li>
         ))}

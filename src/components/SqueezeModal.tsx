@@ -51,7 +51,7 @@ export default function SqueezeModal({
         type="button"
         onClick={onClose}
         className="absolute top-2 right-2 font-mono text-xl leading-none text-[#888888] hover:text-[#f87171] transition-colors"
-        aria-label="Close"
+        aria-label={t.common.close}
       >
         ×
       </button>

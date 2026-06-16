@@ -25,7 +25,7 @@ export default function AdminTestPage() {
   useEffect(() => {
     fetch('/api/admin/test-profile')
       .then((res) => {
-        if (!res.ok) throw new Error(res.status === 403 ? 'Admin only' : 'Failed to load');
+        if (!res.ok) throw new Error(res.status === 403 ? t.admin.adminOnly : t.common.loadFailed);
         return res.json();
       })
       .then((data) => {
@@ -34,7 +34,7 @@ export default function AdminTestPage() {
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoaded(true));
-  }, []);
+  }, [t.admin.adminOnly, t.common.loadFailed]);
 
   const save = async () => {
     setError(null);
@@ -47,7 +47,7 @@ export default function AdminTestPage() {
     setSaving(false);
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError((data as { error?: string }).error ?? 'Failed');
+      setError((data as { error?: string }).error ?? t.common.saveFailed);
       return;
     }
     const r2 = await fetch('/api/admin/test-profile');
@@ -89,7 +89,7 @@ export default function AdminTestPage() {
     );
   }
 
-  if (error && error === 'Admin only') {
+  if (error && error === t.admin.adminOnly) {
     return (
       <div className="max-w-lg mx-auto px-4 py-8 bg-[#0f0f0f]">
         <p className="font-mono text-[13px] text-[#f87171]">{t.admin.adminOnly}</p>

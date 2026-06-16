@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { randomAvatarConfig, type AvatarConfig } from '@/lib/avatar';
 import AvatarSVG from '@/components/AvatarSVG';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Props {
   initialConfig: AvatarConfig;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function AvatarRegen({ initialConfig, onSave }: Props) {
+  const { t } = useLocale();
   const [config, setConfig] = useState<AvatarConfig>(initialConfig);
   const [saving, setSaving] = useState(false);
 
@@ -35,16 +37,16 @@ export default function AvatarRegen({ initialConfig, onSave }: Props) {
   return (
     <div className="w-full">
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888888] mb-2">
-        Avatar preview
+        {t.profile.avatarPreview}
       </p>
       <div className="flex gap-4 items-end flex-wrap">
         <div className="flex flex-col items-center gap-1">
           <AvatarSVG config={config} size={48} pose="stand" />
-          <span className="font-mono text-[10px] text-[#444444]">Stand</span>
+          <span className="font-mono text-[10px] text-[#444444]">{t.profile.avatarStand}</span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <AvatarSVG config={config} size={48} pose="sit" />
-          <span className="font-mono text-[10px] text-[#444444]">Sit</span>
+          <span className="font-mono text-[10px] text-[#444444]">{t.profile.avatarSit}</span>
         </div>
       </div>
       <button
@@ -54,10 +56,10 @@ export default function AvatarRegen({ initialConfig, onSave }: Props) {
         className="w-full mt-4 bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase px-6 py-3 min-h-[44px] hover:opacity-85 active:scale-[0.97] disabled:opacity-60 transition-all"
         style={{ borderRadius: 0 }}
       >
-        Regenerate
+        {t.profile.avatarRegenerate}
       </button>
       <p className="font-mono text-[10px] text-[#444444] mt-2 text-center">
-        Keep clicking until you find one you like.
+        {t.profile.avatarRegenerateHint}
       </p>
     </div>
   );

@@ -48,7 +48,7 @@ export default function AdminRoomEditor({
         router.refresh();
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data?.error ?? 'Failed to save name');
+        alert(data?.error ?? t.admin.roomSaveNameFailed);
       }
     } finally {
       setSavingName(false);
