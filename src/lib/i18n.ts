@@ -4,7 +4,7 @@ export type Locale = 'en' | 'zh';
 
 const STORAGE_KEY = 'sofa-salon-locale';
 const COOKIE_NAME = 'sofa-salon-locale';
-export const DEFAULT_LOCALE: Locale = 'en';
+export const DEFAULT_LOCALE: Locale = 'zh';
 
 /** Preserves supported locale values and otherwise uses the deployment default. */
 export function localeFromValue(value: unknown): Locale {
