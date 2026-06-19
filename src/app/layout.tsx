@@ -4,6 +4,7 @@ import './globals.css';
 import Ticker from '@/components/Ticker';
 import NavBar from '@/components/NavBar';
 import FaqChatbot from '@/components/FaqChatbot';
+import SiteFooter from '@/components/SiteFooter';
 import { LocaleProvider } from '@/components/LocaleProvider';
 import { APP_NAME, APP_TAGLINE } from '@/lib/config';
 import { cookies } from 'next/headers';
@@ -74,6 +75,7 @@ export default async function RootLayout({
           </div>
           <div className="header-ticker-spacer" aria-hidden="true" />
           <main className="min-h-[60vh]">{children}</main>
+          <SiteFooter />
           <FaqChatbot />
         </LocaleProvider>
       </body>
