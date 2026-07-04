@@ -109,23 +109,6 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
     return signIn(e);
   };
 
-  const signInWithGoogle = async () => {
-    clearNotices();
-    setLoading(true);
-    const origin = typeof window !== 'undefined' ? window.location.origin : '';
-    const { error: err } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
-      },
-    });
-    setLoading(false);
-    if (err) {
-      setError(err.message);
-      return;
-    }
-  };
-
   return (
     <div className="w-full max-w-sm">
       <div className="mb-5 border border-[#2a2a2a] bg-[#151515]" style={{ borderRadius: 0 }}>
@@ -257,17 +240,6 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
         </button>
       </form>
 
-      <div className="mt-4 pt-4 border-t border-[#2a2a2a]">
-        <button
-          type="button"
-          onClick={signInWithGoogle}
-          disabled={loading}
-          className="w-full bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-8 min-h-[44px] hover:opacity-85 active:scale-[0.97] transition-all disabled:opacity-60"
-          style={{ borderRadius: 0 }}
-        >
-          {t.auth.signInWithGoogle}
-        </button>
-      </div>
     </div>
   );
 }
