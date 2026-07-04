@@ -11,9 +11,12 @@ interface LoginFormProps {
   redirectTo?: string;
 }
 
+type AuthMode = 'signin' | 'signup';
+
 export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
   const router = useRouter();
   const { locale, t } = useLocale();
+  const [mode, setMode] = useState<AuthMode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -23,6 +26,17 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
   const [resetLoading, setResetLoading] = useState(false);
 
   const supabase = createClient();
+
+  const clearNotices = () => {
+    setError(null);
+    setSignupEmailTaken(false);
+    setResetSentNotice(false);
+  };
+
+  const switchMode = (nextMode: AuthMode) => {
+    setMode(nextMode);
+    clearNotices();
+  };
 
   const sendPasswordResetEmail = async () => {
     const trimmed = email.trim().toLowerCase();
@@ -48,11 +62,12 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSignupEmailTaken(false);
-    setResetSentNotice(false);
+    clearNotices();
     setLoading(true);
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    const { error: err } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
     setLoading(false);
     if (err) {
       setError(err.message);
@@ -64,11 +79,12 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSignupEmailTaken(false);
-    setResetSentNotice(false);
+    clearNotices();
     setLoading(true);
-    const { error: err } = await supabase.auth.signUp({ email, password });
+    const { error: err } = await supabase.auth.signUp({
+      email: email.trim().toLowerCase(),
+      password,
+    });
     setLoading(false);
     if (err) {
       if (isSignupEmailTakenError(err)) {
@@ -88,10 +104,13 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
     router.refresh();
   };
 
+  const submitAuth = (e: React.FormEvent) => {
+    if (mode === 'signup') return signUp(e);
+    return signIn(e);
+  };
+
   const signInWithGoogle = async () => {
-    setError(null);
-    setSignupEmailTaken(false);
-    setResetSentNotice(false);
+    clearNotices();
     setLoading(true);
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const { error: err } = await supabase.auth.signInWithOAuth({
@@ -109,7 +128,41 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-sm">
-      <form className="space-y-4" onSubmit={signIn}>
+      <div className="mb-5 border border-[#2a2a2a] bg-[#151515]" style={{ borderRadius: 0 }}>
+        <div className="grid grid-cols-2">
+          <button
+            type="button"
+            onClick={() => switchMode('signin')}
+            aria-pressed={mode === 'signin'}
+            className={`font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-4 min-h-[44px] transition-all ${
+              mode === 'signin'
+                ? 'bg-[#e8c84a] text-[#0f0f0f]'
+                : 'text-[#888888] hover:text-[#e8c84a]'
+            }`}
+            style={{ borderRadius: 0 }}
+          >
+            {t.auth.signIn}
+          </button>
+          <button
+            type="button"
+            onClick={() => switchMode('signup')}
+            aria-pressed={mode === 'signup'}
+            className={`font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-4 min-h-[44px] transition-all ${
+              mode === 'signup'
+                ? 'bg-[#e8c84a] text-[#0f0f0f]'
+                : 'text-[#888888] hover:text-[#e8c84a]'
+            }`}
+            style={{ borderRadius: 0 }}
+          >
+            {t.auth.createAccount}
+          </button>
+        </div>
+        <p className="border-t border-[#2a2a2a] px-4 py-3 font-mono text-[12px] leading-relaxed text-[#888888]">
+          {mode === 'signup' ? t.auth.signUpModeHint : t.auth.signInModeHint}
+        </p>
+      </div>
+
+      <form className="space-y-4" onSubmit={submitAuth}>
         <div>
           <label
             htmlFor="email"
@@ -123,9 +176,7 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setSignupEmailTaken(false);
-              setResetSentNotice(false);
-              setError(null);
+              clearNotices();
             }}
             placeholder={t.auth.emailPlaceholder}
             className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a] placeholder:text-[#444444]"
@@ -142,14 +193,16 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
             >
               {t.auth.password}
             </label>
-            <button
-              type="button"
-              disabled={loading || resetLoading}
-              onClick={sendPasswordResetEmail}
-              className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#e8c84a] hover:opacity-85 disabled:opacity-50 whitespace-nowrap"
-            >
-              {resetLoading ? t.auth.resetPasswordSending : t.auth.forgotPassword}
-            </button>
+            {mode === 'signin' && (
+              <button
+                type="button"
+                disabled={loading || resetLoading}
+                onClick={sendPasswordResetEmail}
+                className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#e8c84a] hover:opacity-85 disabled:opacity-50 whitespace-nowrap"
+              >
+                {resetLoading ? t.auth.resetPasswordSending : t.auth.forgotPassword}
+              </button>
+            )}
           </div>
           <input
             id="password"
@@ -163,7 +216,7 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
             className="w-full bg-[#1e1e1e] border border-[#2a2a2a] text-[#e8e4dc] font-mono text-[13px] px-4 py-3 min-h-[44px] outline-none focus:border-[#e8c84a] placeholder:text-[#444444]"
             style={{ borderRadius: 0 }}
             required
-            autoComplete="current-password"
+            autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
           />
         </div>
         {(signupEmailTaken || resetSentNotice) && (
@@ -194,25 +247,14 @@ export default function LoginForm({ redirectTo = '/' }: LoginFormProps) {
         {error && (
           <p className="font-mono text-[13px] text-[#f87171]">{error}</p>
         )}
-        <div className="flex gap-2">
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex-1 bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-6 min-h-[44px] hover:opacity-85 active:scale-[0.97] disabled:opacity-60 transition-all"
-            style={{ borderRadius: 0 }}
-          >
-            {t.auth.signIn}
-          </button>
-          <button
-            type="button"
-            onClick={signUp}
-            disabled={loading}
-            className="flex-1 border border-[#2a2a2a] text-[#888888] font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-6 min-h-[44px] hover:border-[#e8c84a] hover:text-[#e8c84a] disabled:opacity-60 transition-all"
-            style={{ borderRadius: 0 }}
-          >
-            {t.auth.createAccount}
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-[#e8c84a] text-[#0f0f0f] font-mono text-[10px] tracking-[0.2em] uppercase py-3 px-6 min-h-[44px] hover:opacity-85 active:scale-[0.97] disabled:opacity-60 transition-all"
+          style={{ borderRadius: 0 }}
+        >
+          {mode === 'signup' ? t.auth.createAccount : t.auth.signIn}
+        </button>
       </form>
 
       <div className="mt-4 pt-4 border-t border-[#2a2a2a]">

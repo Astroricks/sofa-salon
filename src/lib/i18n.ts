@@ -117,6 +117,8 @@ export const tEn = {
     passwordPlaceholderRepeat: '••••••••',
     signIn: 'Sign in',
     createAccount: 'Create account',
+    signInModeHint: 'Already have an account? Enter your email and password to sign in.',
+    signUpModeHint: 'New here? Choose Create account first, then enter your email and make a password.',
     forgotPassword: 'Forgot password?',
     resetPasswordSending: 'Sending…',
     resetPasswordSent:
@@ -688,6 +690,8 @@ export const tZh = {
     passwordPlaceholderRepeat: '••••••••',
     signIn: '登录',
     createAccount: '注册账号',
+    signInModeHint: '已有账号？填写邮箱和密码登录。',
+    signUpModeHint: '新用户先选「注册账号」，再填写邮箱并设置密码。',
     forgotPassword: '忘记密码？',
     resetPasswordSending: '发送中…',
     resetPasswordSent: '若该邮箱已有账号，我们已发送重置说明。请查收邮件与垃圾邮箱。',
