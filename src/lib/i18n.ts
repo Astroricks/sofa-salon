@@ -107,7 +107,6 @@ export const tEn = {
     open: 'OPEN',
   },
   auth: {
-    signInWithGoogle: 'Sign in with Google',
     loginSubtitle: 'Private screenings',
     email: 'Email',
     password: 'Password',
@@ -680,7 +679,6 @@ export const tZh = {
     open: '可选',
   },
   auth: {
-    signInWithGoogle: '使用 Google 登录',
     loginSubtitle: '私人观影',
     email: '电子邮箱',
     password: '密码',
