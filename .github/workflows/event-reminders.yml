@@ -2,8 +2,9 @@ name: Send event reminders
 
 on:
   schedule:
-    # GitHub Actions uses UTC: about 10:17 PDT / 09:17 PST in Seattle.
-    - cron: '17 17 * * *'
+    # Run at 6:17 PM Seattle time year-round, including daylight-saving changes.
+    - cron: '17 18 * * *'
+      timezone: 'America/Los_Angeles'
   workflow_dispatch:
 
 permissions: {}
