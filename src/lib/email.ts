@@ -261,8 +261,9 @@ export async function sendReminder(params: {
   screeningTitle: string;
   screeningAt: string;
   calendar?: ScreeningEmailCalendar;
+  timing?: 'ten_hours' | 'tonight';
 }) {
-  const { to, screeningTitle, screeningAt, calendar } = params;
+  const { to, screeningTitle, screeningAt, calendar, timing = 'ten_hours' } = params;
   const resend = getResend();
   if (!resend) return null;
   const venue = getVenueName();
@@ -274,7 +275,10 @@ export async function sendReminder(params: {
   const { data, error } = await resend.emails.send({
     from: FROM,
     to: [to],
-    subject: `Reminder — ${screeningTitle} in about 10 hours`,
+    subject:
+      timing === 'tonight'
+        ? `Reminder — ${screeningTitle} tonight`
+        : `Reminder — ${screeningTitle} in about 10 hours`,
     html: `
       <p>Reminder: <strong>${screeningTitle}</strong> at <strong>${venue}</strong> is coming up.</p>
       <p><strong>When:</strong> ${screeningAt}</p>

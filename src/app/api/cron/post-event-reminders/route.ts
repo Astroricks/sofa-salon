@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
       .from('reservations')
       .select('user_id')
       .eq('screening_id', screening.id)
-      .or('is_ghost.eq(false),is_ghost.is.null');
+      .or('is_ghost.eq.false,is_ghost.is.null');
 
     const userIds = Array.from(new Set((reservations ?? []).map((r: { user_id: string }) => r.user_id)));
 
