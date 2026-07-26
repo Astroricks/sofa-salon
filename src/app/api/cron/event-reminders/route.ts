@@ -2,13 +2,13 @@
  * Cron: send event reminder emails (活动提示) before screening.
  * Call with Authorization: Bearer <CRON_SECRET> or ?secret=<CRON_SECRET>.
  * Run hourly. Sends one reminder per user per screening for screenings taking
- * place about 10 hours later, unless the user has opted out.
+ * place about 24 hours later, unless the user has opted out.
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { sendReminder } from '@/lib/email';
 import { formatScreeningAtForEmail } from '@/lib/screening-datetime';
 
-const REMINDER_LEAD_MS = 10 * 60 * 60 * 1000;
+const REMINDER_LEAD_MS = 24 * 60 * 60 * 1000;
 const REMINDER_WINDOW_MS = 30 * 60 * 1000;
 const STALE_CLAIM_MS = 90 * 60 * 1000;
 
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
       sent: 0,
       message: manualScreeningId
         ? 'No active screening found for the requested manual reminder'
-        : 'No screenings in the 10-hour reminder window',
+        : 'No screenings in the 24-hour reminder window',
       windowStart: windowStart.toISOString(),
       windowEnd: windowEnd.toISOString(),
     });
@@ -127,7 +127,7 @@ export async function GET(req: NextRequest) {
           to: email,
           screeningTitle: screening.title ?? 'Screening',
           screeningAt,
-          timing: manualScreeningId ? 'tonight' : 'ten_hours',
+          timing: manualScreeningId ? 'tonight' : 'twenty_four_hours',
           calendar: {
             screeningId: screening.id,
             screeningAtIso: new Date(screening.screening_at).toISOString(),

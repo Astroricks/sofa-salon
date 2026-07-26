@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Trigger the 10-hour reminder window
+      - name: Trigger the 24-hour reminder window
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
