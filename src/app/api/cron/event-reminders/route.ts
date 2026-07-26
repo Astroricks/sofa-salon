@@ -37,20 +37,18 @@ export async function GET(req: NextRequest) {
   const now = new Date();
   const windowStart = new Date(now.getTime() + REMINDER_LEAD_MS - REMINDER_WINDOW_MS);
   const windowEnd = new Date(now.getTime() + REMINDER_LEAD_MS + REMINDER_WINDOW_MS);
-  const manualScreeningId = req.nextUrl.searchParams.get('screeningId');
 
   const admin = (await import('@/lib/supabase/admin')).createAdminClient();
   if (!admin) {
     return NextResponse.json({ error: 'Admin client not configured' }, { status: 500 });
   }
 
-  const screeningQuery = admin
+  const { data: screenings, error: screeningsError } = await admin
     .from('screenings')
     .select('id, title, screening_at, duration_minutes')
+    .gte('screening_at', windowStart.toISOString())
+    .lt('screening_at', windowEnd.toISOString())
     .eq('is_active', true);
-  const { data: screenings, error: screeningsError } = manualScreeningId
-    ? await screeningQuery.eq('id', manualScreeningId)
-    : await screeningQuery.gte('screening_at', windowStart.toISOString()).lt('screening_at', windowEnd.toISOString());
 
   if (screeningsError) {
     return NextResponse.json({ error: screeningsError.message }, { status: 500 });
@@ -59,9 +57,7 @@ export async function GET(req: NextRequest) {
   if (!screenings?.length) {
     return NextResponse.json({
       sent: 0,
-      message: manualScreeningId
-        ? 'No active screening found for the requested manual reminder'
-        : 'No screenings in the 24-hour reminder window',
+      message: 'No screenings in the 24-hour reminder window',
       windowStart: windowStart.toISOString(),
       windowEnd: windowEnd.toISOString(),
     });
@@ -127,7 +123,6 @@ export async function GET(req: NextRequest) {
           to: email,
           screeningTitle: screening.title ?? 'Screening',
           screeningAt,
-          timing: manualScreeningId ? 'tonight' : 'twenty_four_hours',
           calendar: {
             screeningId: screening.id,
             screeningAtIso: new Date(screening.screening_at).toISOString(),

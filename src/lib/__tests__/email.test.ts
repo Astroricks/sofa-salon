@@ -107,7 +107,7 @@ describe('sendCancelConfirmation', () => {
 });
 
 describe('sendReminder', () => {
-  it('states the 24-hour lead time instead of always saying tomorrow', async () => {
+  it('says the screening is tomorrow', async () => {
     const { sendReminder } = await import('../email');
     await sendReminder({
       to: 'user@example.com',
@@ -115,20 +115,8 @@ describe('sendReminder', () => {
       screeningAt: '2026-07-26 19:00',
     });
     const call = mockSend.mock.calls[0][0];
-    expect(call.subject).toBe('Reminder — Perfect Days in about 24 hours');
+    expect(call.subject).toBe('Reminder — Perfect Days tomorrow');
     expect(call.html).toContain('<strong>Where:</strong> Sofa Salon');
-  });
-
-  it('uses a tonight subject for an authorised late reminder', async () => {
-    const { sendReminder } = await import('../email');
-    await sendReminder({
-      to: 'user@example.com',
-      screeningTitle: 'Lost Highway',
-      screeningAt: '2026-07-26 19:00',
-      timing: 'tonight',
-    });
-    const call = mockSend.mock.calls[0][0];
-    expect(call.subject).toBe('Reminder — Lost Highway tonight');
   });
 });
 
