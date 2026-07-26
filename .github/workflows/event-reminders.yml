@@ -1,0 +1,24 @@
+name: Send event reminders
+
+on:
+  schedule:
+    # Run at 6:17 PM Seattle time year-round, including daylight-saving changes.
+    - cron: '17 18 * * *'
+      timezone: 'America/Los_Angeles'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger tomorrow's reminder batch
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$CRON_SECRET"
+          curl --fail --silent --show-error --retry 2 --retry-all-errors \
+            --header "Authorization: Bearer $CRON_SECRET" \
+            https://ironpillar-theater.sidefold.org/api/cron/event-reminders

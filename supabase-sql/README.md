@@ -51,6 +51,7 @@ All database schema and migrations for ZiggyGraph / Sofa Salon. Run in **Supabas
 | 41 | `41-patch-historical-duration-minutes.sql` | **One-off data:** `duration_minutes` for past rows (OMDb + manual). Run `node scripts/fetch-historical-durations-omdb.mjs` and/or `apply-manual-durations.mjs`; review `scripts/data/historical-duration-omdb-review.json`. |
 | 43 | `43-avatar-style-options.sql` | Updates `handle_new_user` so future profiles receive the expanded hair, top, accessory, and bottom avatar options. Existing profiles are unchanged. |
 | 44 | `44-public-past-screenings-archive.sql` | Allows anonymous and signed-in visitors to browse completed screenings on `/past-screenings`. |
+| 45 | `45-event-reminder-deliveries.sql` | Records pre-screening reminder delivery claims so each user receives at most one reminder per screening. |
 
 ### First-time: past screenings + sheet sync (36 → 37)
 

@@ -65,6 +65,7 @@ export function buildScreeningIcs(params: {
   start: Date;
   end: Date;
   url?: string;
+  location?: string;
 }): string {
   const dtStamp = formatGoogleCalendarUtc(new Date());
   const dtStart = formatGoogleCalendarUtc(params.start);
@@ -86,6 +87,7 @@ export function buildScreeningIcs(params: {
     `DTEND:${dtEnd}`,
     `SUMMARY:${summary}`,
     `DESCRIPTION:${desc}`,
+    ...(params.location ? [`LOCATION:${escapeIcsText(params.location.slice(0, 500))}`] : []),
     'END:VEVENT',
     'END:VCALENDAR',
   ];

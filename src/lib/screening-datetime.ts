@@ -121,6 +121,29 @@ export function venueDatetimeLocalToIso(value: string): string {
   return new Date(instant).toISOString();
 }
 
+/** UTC bounds for the next calendar day in the configured venue timezone. */
+export function getNextVenueCalendarDayUtcRange(now: Date = new Date()): {
+  startIso: string;
+  endIso: string;
+} {
+  const current = getVenueDateTimeParts(now);
+  if (!current) throw new Error('Invalid current date');
+
+  const nextDay = new Date(Date.UTC(current.year, current.month - 1, current.day + 1));
+  const followingDay = new Date(Date.UTC(current.year, current.month - 1, current.day + 2));
+  const localMidnight = (date: Date) => {
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    return venueDatetimeLocalToIso(`${year}-${month}-${day}T00:00:00`);
+  };
+
+  return {
+    startIso: localMidnight(nextDay),
+    endIso: localMidnight(followingDay),
+  };
+}
+
 /** True when `screening_at` is before now (matches profile/admin “past” lists). */
 export function isScreeningPast(screeningAtIso: string): boolean {
   const ts = new Date(screeningAtIso).getTime();

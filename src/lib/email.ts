@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { CUSTOMER_SITE_ORIGIN, HOST_CONTACT_EMAIL } from '@/lib/config';
+import { CUSTOMER_SITE_ORIGIN, HOST_CONTACT_EMAIL, VENUE_ADDRESS } from '@/lib/config';
 import type { ContactPlatform } from '@/lib/contact-platform';
 import { seatKeyToDisplayLabel } from '@/lib/furniture';
 import {
@@ -20,6 +20,12 @@ const FROM = process.env.EMAIL_FROM ?? 'onboarding@resend.dev';
 /** Venue name for all emails (e.g. "Film Club"). From env so users know who the email is from. */
 function getVenueName(): string {
   return process.env.NEXT_PUBLIC_APP_NAME || 'Sofa Salon';
+}
+
+/** Venue name plus an optional street address for guest-facing emails and calendars. */
+function getVenueLocation(): string {
+  const venue = getVenueName();
+  return VENUE_ADDRESS ? `${venue} — ${VENUE_ADDRESS}` : venue;
 }
 
 /**
@@ -84,11 +90,13 @@ function calendarFragmentAndAttachments(opts: {
   if (Number.isNaN(start.getTime())) return null;
 
   const venue = getVenueName();
+  const venueLocation = getVenueLocation();
   const end = screeningEndUtc(start, opts.calendar.durationMinutes);
   const pageUrl = `${CUSTOMER_SITE_ORIGIN}/screening/${opts.calendar.screeningId}`;
   const seatLine = opts.seatKeysCsv ? seatSummaryLine(opts.seatKeysCsv) : undefined;
   const detailsLines = [
     `${opts.screeningTitle} at ${venue}`,
+    `Location: ${venueLocation}`,
     ...(seatLine ? [seatLine] : []),
     `Details: ${pageUrl}`,
   ];
@@ -99,7 +107,7 @@ function calendarFragmentAndAttachments(opts: {
     start,
     end,
     details,
-    location: venue,
+    location: venueLocation,
   });
 
   const ics = buildScreeningIcs({
@@ -109,6 +117,7 @@ function calendarFragmentAndAttachments(opts: {
     start,
     end,
     url: pageUrl,
+    location: venueLocation,
   });
 
   const html = `
@@ -155,6 +164,7 @@ export async function sendConfirmation(params: {
   const resend = getResend();
   if (!resend) return null;
   const venue = getVenueName();
+  const venueLocation = getVenueLocation();
   const seatLabel = seatLabelsHuman(seatKey);
   const cal =
     calendar != null
@@ -172,6 +182,7 @@ export async function sendConfirmation(params: {
       <p>Your seat is confirmed for <strong>${screeningTitle}</strong> at <strong>${venue}</strong>.</p>
       <p><strong>Seat:</strong> ${seatLabel}</p>
       <p><strong>When:</strong> ${screeningAt}</p>
+      <p><strong>Where:</strong> ${venueLocation}</p>
       <p><strong>Your name:</strong> ${displayName}</p>
       <p><strong>Your ${contactLabel}:</strong> ${contactId}</p>
       <p>See you there!</p>
@@ -255,6 +266,7 @@ export async function sendReminder(params: {
   const resend = getResend();
   if (!resend) return null;
   const venue = getVenueName();
+  const venueLocation = getVenueLocation();
   const cal =
     calendar != null
       ? calendarFragmentAndAttachments({ screeningTitle, calendar })
@@ -266,6 +278,7 @@ export async function sendReminder(params: {
     html: `
       <p>Reminder: <strong>${screeningTitle}</strong> at <strong>${venue}</strong> is coming up.</p>
       <p><strong>When:</strong> ${screeningAt}</p>
+      <p><strong>Where:</strong> ${venueLocation}</p>
       <p>See you there!</p>
       ${cal?.html ?? ''}
       <p style="color:#888;font-size:12px;">— from ${venue}</p>
