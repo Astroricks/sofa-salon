@@ -1,0 +1,23 @@
+name: Send event reminders
+
+on:
+  schedule:
+    # GitHub Actions uses UTC. Offset from the top of the hour to reduce scheduler delay.
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger the 10-hour reminder window
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$CRON_SECRET"
+          curl --fail --silent --show-error --retry 2 --retry-all-errors \
+            --header "Authorization: Bearer $CRON_SECRET" \
+            https://ironpillar-theater.sidefold.org/api/cron/event-reminders
