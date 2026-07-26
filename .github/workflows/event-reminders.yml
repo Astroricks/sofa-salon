@@ -2,8 +2,8 @@ name: Send event reminders
 
 on:
   schedule:
-    # GitHub Actions uses UTC. Offset from the top of the hour to reduce scheduler delay.
-    - cron: '17 * * * *'
+    # GitHub Actions uses UTC: about 10:17 PDT / 09:17 PST in Seattle.
+    - cron: '17 17 * * *'
   workflow_dispatch:
 
 permissions: {}
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Trigger the 24-hour reminder window
+      - name: Trigger tomorrow's reminder batch
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |

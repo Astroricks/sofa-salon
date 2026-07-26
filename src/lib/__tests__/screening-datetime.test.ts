@@ -60,4 +60,24 @@ describe('formatScreeningAtForEmail', () => {
       '2026-01-16T00:00:00.000Z'
     );
   });
+
+  it('returns UTC bounds for tomorrow in the venue timezone', async () => {
+    const { getNextVenueCalendarDayUtcRange } = await import('../screening-datetime');
+    expect(
+      getNextVenueCalendarDayUtcRange(new Date('2026-07-26T17:17:00.000Z'))
+    ).toEqual({
+      startIso: '2026-07-27T07:00:00.000Z',
+      endIso: '2026-07-28T07:00:00.000Z',
+    });
+  });
+
+  it('handles a daylight-saving transition in tomorrow’s date range', async () => {
+    const { getNextVenueCalendarDayUtcRange } = await import('../screening-datetime');
+    expect(
+      getNextVenueCalendarDayUtcRange(new Date('2026-03-07T18:00:00.000Z'))
+    ).toEqual({
+      startIso: '2026-03-08T08:00:00.000Z',
+      endIso: '2026-03-09T07:00:00.000Z',
+    });
+  });
 });

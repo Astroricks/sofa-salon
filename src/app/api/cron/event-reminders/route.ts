@@ -1,15 +1,16 @@
 /**
  * Cron: send event reminder emails (活动提示) before screening.
  * Call with Authorization: Bearer <CRON_SECRET> or ?secret=<CRON_SECRET>.
- * Run hourly. Sends one reminder per user per screening for screenings taking
- * place about 24 hours later, unless the user has opted out.
+ * Run once daily. Sends one reminder per user per screening for screenings
+ * taking place tomorrow in the venue timezone, unless the user has opted out.
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { sendReminder } from '@/lib/email';
-import { formatScreeningAtForEmail } from '@/lib/screening-datetime';
+import {
+  formatScreeningAtForEmail,
+  getNextVenueCalendarDayUtcRange,
+} from '@/lib/screening-datetime';
 
-const REMINDER_LEAD_MS = 24 * 60 * 60 * 1000;
-const REMINDER_WINDOW_MS = 30 * 60 * 1000;
 const STALE_CLAIM_MS = 90 * 60 * 1000;
 
 function getCronSecret(): string | null {
@@ -35,8 +36,8 @@ export async function GET(req: NextRequest) {
   }
 
   const now = new Date();
-  const windowStart = new Date(now.getTime() + REMINDER_LEAD_MS - REMINDER_WINDOW_MS);
-  const windowEnd = new Date(now.getTime() + REMINDER_LEAD_MS + REMINDER_WINDOW_MS);
+  const { startIso: tomorrowStart, endIso: tomorrowEnd } =
+    getNextVenueCalendarDayUtcRange(now);
 
   const admin = (await import('@/lib/supabase/admin')).createAdminClient();
   if (!admin) {
@@ -46,8 +47,8 @@ export async function GET(req: NextRequest) {
   const { data: screenings, error: screeningsError } = await admin
     .from('screenings')
     .select('id, title, screening_at, duration_minutes')
-    .gte('screening_at', windowStart.toISOString())
-    .lt('screening_at', windowEnd.toISOString())
+    .gte('screening_at', tomorrowStart)
+    .lt('screening_at', tomorrowEnd)
     .eq('is_active', true);
 
   if (screeningsError) {
@@ -57,9 +58,9 @@ export async function GET(req: NextRequest) {
   if (!screenings?.length) {
     return NextResponse.json({
       sent: 0,
-      message: 'No screenings in the 24-hour reminder window',
-      windowStart: windowStart.toISOString(),
-      windowEnd: windowEnd.toISOString(),
+      message: 'No screenings tomorrow',
+      tomorrowStart,
+      tomorrowEnd,
     });
   }
 
@@ -157,7 +158,7 @@ export async function GET(req: NextRequest) {
     skippedPreference,
     skippedAlreadyClaimed,
     failed,
-    windowStart: windowStart.toISOString(),
-    windowEnd: windowEnd.toISOString(),
+    tomorrowStart,
+    tomorrowEnd,
   });
 }
